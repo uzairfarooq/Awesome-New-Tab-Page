@@ -1,0 +1,119 @@
+<!-- <script src="core.jquery.js"></script> -->
+<script type="text/javascript">
+window.setTimeout(' window.location = window.location; ', 60*60*1000);
+
+
+var recently_closed = JSON.parse(localStorage.getItem("recently_closed")) || [];
+chrome.tabs.onRemoved.addListener( onRemoved );
+
+function onRemoved(tabId) {
+  var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
+
+  if(!tab || tab.incognito === true) {
+    return;
+  }
+
+  if(tab.title === "") {
+    return;
+  }
+
+  recently_closed.unshift({title: tab.title, url: tab.url});
+
+  if(recently_closed.length > 15) {
+    recently_closed.pop();
+  }
+
+  localStorage.setItem("recently_closed", JSON.stringify( recently_closed ))
+  getAllTabs();
+}
+
+chrome.tabs.onCreated.addListener( getAllTabs );
+
+var tabs = null;
+function getAllTabs() {
+  chrome.tabs.getAllInWindow(null, getAllTabs_callback);
+}
+function getAllTabs_callback(data) {
+  tabs = data;
+}
+chrome.tabs.getAllInWindow(null, getAllTabs);
+
+var recently_installed = null;
+chrome.management.onInstalled.addListener( onInstalled );
+
+function onInstalled(ExtensionInfo) {
+
+  console.log(ExtensionInfo);
+
+  recently_installed = ExtensionInfo;
+
+  setTimeout(function() {
+    recently_installed = null;
+  }, 5000);
+
+}
+
+function setupDrawerWidgets(extensions) {
+  e = extensions;
+  // $.each(extensions, setupDrawerWidget);
+  for(var i in extensions) {
+    setupDrawerWidget(i, extensions[i]);
+  }
+
+  setTimeout(function() {
+    window.location = window.location;
+  }, 3000);
+};
+
+function setupDrawerWidget(index, value) {
+    if(value.type !== "stock") {
+      chrome.extension.sendRequest(
+        value.id,
+        "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-poke"
+      );
+    }
+  }
+
+chrome.extension.onRequestExternal.addListener( onRequestExternal );
+function onRequestExternal(request, sender, sendResponse) {
+  if(request.head) {
+    if(request.head === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback") {
+      console.log(request, sender);
+      respond({
+        fn: "setupDrawerWidgets",
+        data: {
+          "request": request,
+          "sender": sender,
+        },
+      });
+    }
+  }
+}
+
+
+// Listen to Content Scripts
+chrome.extension.onConnect.addListener( onConnect );
+function onConnect(port) {
+  console.assert(port.name == "NTP-Port");
+  port.onMessage.addListener( onMessage );
+
+  respond = function(d) {
+    port.postMessage(d);
+  }
+
+}
+
+function onMessage(msg) {
+
+  if(!msg.fn || !msg.data) {
+    return false;
+  }
+
+  if(typeof window[msg.fn] === 'function') {
+    window[msg.fn](msg.data);
+  } else {
+    return false;
+  }
+
+}
+</script>

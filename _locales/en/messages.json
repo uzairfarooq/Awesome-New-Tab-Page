@@ -1,0 +1,182 @@
+{
+  "ui_button_apps": {
+    "message": "Apps"
+  },
+  "ui_button_widgets": {
+    "message": "Widgets"
+  },
+  "ui_button_reset": {
+    "message": "Reset"
+  },
+  "ui_button_unlock": {
+    "message": "Unlock"
+  },
+  "ui_button_lock": {
+    "message": "Lock to Interact with Apps & Widgets"
+  },
+  "ui_button_rct": {
+    "message": "Recently Closed Tabs"
+  },
+  "ui_button_bgc": {
+    "message": "Background Color"
+  },
+  "ui_button_download": {
+    "message": "Download Widgets"
+  },
+  "ui_button_close": {
+    "message": "Close"
+  },
+  "ui_button_about": {
+    "message": "About"
+  },
+  "ui_confirm_reset": {
+    "message": "Are you sure you want to reset widget and app placements, stock widget preferences (notepad, coloring, etc.), and coloring preferences? Any customizations will be irrevocably lost."
+  },
+  "ui_confirm_uninstall": {
+    "message": "Are you sure you want to uninstall $app$?",
+    "placeholders": {
+      "app": {
+        "content": "$1",
+        "example": "Chrome Web Store"
+      }
+    }
+  },
+  "ui_note_apps": {
+    "message": "\"Unlock\" to drag apps to your home screen, or quickly access them here. \"Lock\" to uninstall apps."
+  },
+  "ui_note_widgets": {
+    "message": "\"Unlock\" to drag widgets to your home screen. Mouseover to see how wide/tall it is."
+  },
+  "ui_bmb_ob": {
+    "message": "Other Bookmarks"
+  },
+  "app_webstore": {
+    "message": "Chrome Web Store"
+  },
+  "widget_tv": {
+    "message": "Hulu / Netflix (Stock)"
+  },
+  "widget_amazon": {
+    "message": "Amazon (Stock)"
+  },
+  "widget_fandango": {
+    "message": "Fandango (Stock)"
+  },
+  "widget_google": {
+    "message": "Google (Wide) (Stock)"
+  },
+  "widget_notepad": {
+    "message": "Notepad (Stock)"
+  },
+  "widget_clock": {
+    "message": "Clock (Stock)"
+  },
+  "widget_tutorial": {
+    "message": "Tutorial (Stock)"
+  },
+  "tutorial_ui_next": {
+    "message": "Next"
+  },
+  "tutorial_ui_back": {
+    "message": "Back"
+  },
+  "tutorial_1_welcome": {
+    "message": "Welcome to"
+  },
+  "tutorial_1_desc1": {
+    "message": "A New Tab Page (NTP) replacement that doesn't suck."
+  },
+  "tutorial_1_desc2": {
+    "message": "(... or at least tries really hard not to.)"
+  },
+  "tutorial_1_desc3": {
+    "message": "Click <span class=\"ul\">Next</span> to learn more."
+  },
+  "tutorial_2_title": {
+    "message": "No Longer Just <span class=\"ul\">Icons</span>"
+  },
+  "tutorial_2_desc1": {
+    "message": "Icons are out-dated. Technology is pacing forward, with extremely powerful and dynamic widgets found in Android, Windows Phone 7, and (soon) Windows 8."
+  },
+  "tutorial_2_desc2": {
+    "message": "This extension is a start at bringing the same power to Chrome's New Tab Page."
+  },
+  "tutorial_2_desc3": {
+    "message": "Say hello to <span class=\"ul\">widgets</span>."
+  },
+  "tutorial_3_title": {
+    "message": "Make Things Fit <span class=\"ul\">Your</span> Needs"
+  },
+  "tutorial_3_desc1": {
+    "message": "Click unlock and <span class=\"ul\">move</span> widgets and icons to wherever you want. <span class=\"ul\">Delete</span> things you don't want (when they're unlocked)."
+  },
+  "tutorial_4_title": {
+    "message": "Your Apps Are Safe"
+  },
+  "tutorial_4_desc1": {
+    "message": "Don't worry, your apps haven't gone too far."
+  },
+  "tutorial_4_desc2": {
+    "message": "Feel free to unlock tiles then drag apps to your home screen."
+  },
+  "tutorial_4_desc3": {
+    "message": "Show what you regularly use, hide everything else."
+  },
+  "tutorial_5_title1": {
+    "message": "Enjoy"
+  },
+  "tutorial_5_desc1": {
+    "message": "Enjoy! Remember to give this app 5 stars on the Web Store."
+  },
+  "tutorial_5_desc2": {
+    "message": "Got an idea for this extension? Leave it <a href=\"http://ntp.uservoice.com/\" target=\"_top\">here</a>."
+  },
+  "tutorial_5_title2": {
+    "message": "Are you a developer?"
+  },
+  "tutorial_5_desc3": {
+    "message": "Make your own widgets! Find out how here:"
+  },
+  "ui_config_general": {
+    "message": "General"
+  },
+  "ui_config_shgrid": {
+    "message": "Show / Hide Grid (when unlocked)"
+  },
+  "ui_config_bmb": {
+    "message": "Show / Hide Bookmark Bar"
+  },
+  "ui_config_bg": {
+    "message": "Background"
+  },
+  "ui_config_bgimg1": {
+    "message": "<b>Advanced</b> (CSS): Use your own image (hosted elsewhere, like Flickr or Picasa). The image should at least be your monitor's resolution."
+  },
+  "ui_config_bgimg2": {
+    "message": "Example (NO trailing semicolon!):"
+  },
+  "ui_config_bgimg3": {
+    "message": "Erase the box to use the default background (solid color)."
+  },
+  "ui_config_share": {
+    "message": "Share"
+  },
+  "ui_config_share1": {
+    "message": "Do you like Awesome New Tab Page? Why not share it with friends and family?"
+  },
+  "ui_config_contrib": {
+    "message": "Contributors"
+  },
+  "ui_shortcut_name": {
+    "message": "Image URL must be exactly 128px by 128px, preferably in PNG format with alpha transparency. To reset to default, just erase everything in the field."
+  },
+  "ui_shortcut_img": {
+    "message": "Image URL must be exactly 128px by 128px, preferably in PNG format with alpha transparency. To reset to default, just erase everything in the field."
+  },
+  "ui_shortcut_img1": {
+    "message": "Image URL must be exactly 128px by 128px, preferably in PNG format with alpha transparency. To reset to default, just erase everything in the field."
+  },
+  "notepad_default": {
+    "message": "Type anything here. Everything you type will be saved on every keystroke.\n\nBe careful though; there are NO backups, and the Reset button *DOES* reset this widget!"
+  }
+}

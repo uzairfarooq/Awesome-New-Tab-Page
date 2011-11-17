@@ -1,0 +1,162 @@
+/*
+  Original code by Sachleen (sachleen.com // sachleen.sandhu@gmail.com)
+  https://chrome.google.com/webstore/detail/feckadlaijbceoglkncdgebgkminbkia
+
+  New Tab With Clock by Sachleen Sandhu is licensed under a Creative
+  Commons Attribution-ShareAlike 3.0 Unported License.
+  http://creativecommons.org/licenses/by-sa/3.0/
+*/
+
+#bookmarksBar li#other {
+  margin-right: 0px;
+  position: fixed;
+  top: 0; right: 0;
+  z-index: 900;
+}
+#bookmarksBar li#other a {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+#toggleBmb-holder {
+/*  position: fixed;
+  padding: 5px;
+  right: 0px; top: 0;
+  z-index: 901;
+  opacity: .5;*/
+  display: inline-block;
+}
+
+#toggleBmb-holder:hover {
+  opacity: 1;
+}
+
+#bookmarksBar {
+	margin: 0;
+	padding: 0;
+    width:5000px;
+    background-color:#DFDFDF;
+    border-bottom: 1px solid #B6BAC0;
+    -webkit-box-shadow: 0px 0px 10px #333;
+    height: 28px;
+    position:fixed;
+    z-index:899;
+    line-height: 25px;
+  left: 0; top: 0;
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+}
+#bookmarksBar li {
+	margin: 1px;
+	float: left;
+	position: relative;
+	list-style: none;
+}
+#bookmarksBar li#other {
+    float:right;
+}
+
+/* main level link */
+#bookmarksBar a {
+	text-decoration: none;
+	display: block;
+	padding:  0px 4px;
+	line-height:25px;
+	
+	border: 1px solid #DFDFDF;
+    background-color: #DFDFDF;
+    -webkit-border-radius: 6px;
+    height:100%;
+    
+    color:#062D75;
+}
+#bookmarksBar a img {
+    vertical-align:middle;
+    margin-bottom:3px;
+}
+#bookmarksBar a:hover {
+    border: 1px solid #CBCBCA;
+    background-color: #F2F4F7;
+}
+
+/* main level link hover */
+#bookmarksBar .current a, #bookmarksBar li:hover > a {
+    border: 1px solid #CBCBCA;
+    background-color: #F2F4F7;
+}
+
+/* sub levels link hover */
+#bookmarksBar ul li:hover a, #bookmarksBar li:hover li a {
+    
+}
+#bookmarksBar ul a:hover {
+    border: 1px solid #CBCBCA;
+    background-color: #F2F4F7;
+}
+
+/* dropdown */
+#bookmarksBar li:hover > ul {
+	display: block;
+}
+
+/* level 2 list */
+#bookmarksBar ul {
+	display: none;
+	margin: 0;
+	padding: 0;
+	width: 185px;
+	position: absolute;
+	top: 27px;
+	left: 0;
+	background: #DFDFDF;
+	border: solid 1px #CCC;
+	-webkit-border-radius: 6px;
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, .3);
+}
+#bookmarksBar #other ul {
+    left: auto;
+    right: 0px;
+}
+#bookmarksBar ul li {
+	float: none;
+	margin: 0;
+}
+/* level 3+ list */
+#bookmarksBar ul ul {
+	left: 180px;
+	top: 5px;
+	z-index:1000;
+}
+#bookmarksBar #other ul ul {
+	left: -180px;
+}
+
+/* rounded corners of first and last link */
+#bookmarksBar ul li:first-child > a {
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+}
+#bookmarksBar ul li:last-child > a {
+	-webkit-border-bottom-left-radius: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+}
+
+/* clearfix */
+#bookmarksBar:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+#bookmarksBar {
+	display: inline-block;
+} 
+html[xmlns] #bookmarksBar {
+	display: block;
+}
+ 
+* html #bookmarksBar {
+	height: 1%;
+}
