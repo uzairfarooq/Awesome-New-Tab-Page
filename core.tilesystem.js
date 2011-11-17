@@ -1,11 +1,18 @@
 /*
+ *
+ * Awesome New Tab Page
+ *   Copyright 2011 Michael Hart (http://h4r7.me/).
+ * 
+ * Want to make it even more awesome?
+ *   https://github.com/michaelhart/Awesome-New-Tab-Page/
+
  * Tile / Widget System
- * Copyright 2011 Michael Hart (http://michaelhart.me/).
- * Immense thanks to David Shorten (shortenda at gmail.com)
- * the original author of the below code.
+ *   Immense thanks to David Shorten (shortenda at gmail.com)
+ *   the original author of the below code.
  *
  * Licensed under GPL v2:
- * http://www.gnu.org/licenses/gpl-2.0.txt
+ *   http://www.gnu.org/licenses/gpl-2.0.txt
+ *
  */
 
 var update = true;
