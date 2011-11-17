@@ -1,0 +1,544 @@
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: black
+}
+::-webkit-scrollbar {
+  background: transparent;
+  overflow: visible;
+  width: 15px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border: solid #fff;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.8)
+}
+::-webkit-scrollbar-thumb:horizontal {
+  border-width: 4px 4px;
+  min-width: 100px;
+}
+::-webkit-scrollbar-thumb:vertical {
+  border-width: 4px 4px;
+  min-height: 100px;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: #fff;
+}
+::-webkit-scrollbar-corner {
+  background: transparent
+}
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+* {
+  text-decoration: none
+}
+u {
+  text-decoration: underline;
+}
+body {
+  background: #260930;
+  margin-top: 0;
+  padding: 0;
+  font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", "Luxi Sans", Tahoma, sans-serif;
+  font-size: 14px;
+  overflow-y: hidden;
+  width: 3550px;
+  /*min-height: 850px; */
+  user-select: none;
+  -webkit-user-select: none;
+}
+.url {
+  cursor: pointer
+}
+#groups {
+  margin-top: 70px;
+  margin-left: 34px;
+}
+.group {
+  display: inline-block;
+  list-style-type: none;
+  margin: 0;
+  margin-left: -4px;
+  padding: 0;
+  width: 824px;
+}
+.tile {
+  background-color: rgba(0, 0, 0, .2);
+  margin: 3px;
+  padding: 0px;
+  float: left;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  display: block;
+}
+.tile-grid {
+  background-color: rgba(0, 0, 0, .2);
+  opacity: 1 !important;
+}
+.tile-red {
+  background-color: rgba(255, 0, 0, .4) !important;
+}
+.tile-green {
+  background-color: rgba(0, 255, 0, .4) !important;
+}
+.widget {
+  margin: 3px;
+  padding: 0px;
+}
+.widget-drag {
+  opacity: .5
+}
+.widget-bar {
+  z-index: 810;
+  background-repeat: no-repeat;
+}
+.widget-bar-drag {
+  width: 23px;
+  height: 23px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+#app-drawer .widget-bar-drag,
+#widget-drawer .widget-bar-drag {
+  position: relative;
+  top: -330px;
+  right: -122px;
+}
+.iframe-mask {
+  background-color: transparent;
+  z-index: 802;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.o1x1,
+.o1x2,
+.o1x3,
+.o2x1,
+.o2x2,
+.o2x3,
+.o3x1,
+.o3x2,
+.o3x3 {
+  opacity: .7;
+  width: 200px;
+  height: 200px;
+}
+.o1x1:hover {
+  background: url("/images/widget-overlay/1x1.png") 0 0 no-repeat
+}
+.o1x2:hover {
+  background: url("/images/widget-overlay/1x2.png") 0 0 no-repeat
+}
+.o1x3:hover {
+  background: url("/images/widget-overlay/1x3.png") 0 0 no-repeat
+}
+.o2x1:hover {
+  background: url("/images/widget-overlay/2x1.png") 0 0 no-repeat
+}
+.o2x2:hover {
+  background: url("/images/widget-overlay/2x2.png") 0 0 no-repeat
+}
+.o2x3:hover {
+  background: url("/images/widget-overlay/2x3.png") 0 0 no-repeat
+}
+.o3x1:hover {
+  background: url("/images/widget-overlay/3x1.png") 0 0 no-repeat
+}
+.o3x2:hover {
+  background: url("/images/widget-overlay/3x2.png") 0 0 no-repeat
+}
+.o3x3:hover {
+  background: url("/images/widget-overlay/3x3.png") 0 0 no-repeat
+}
+#delete,
+.locked #uninstall {
+  width: 48px;
+  height: 48px;
+  background-image: url("/images/core.delete.png");
+  cursor: pointer;
+  display: none;
+}
+#delete:hover,
+.locked #uninstall:hover {
+  background-image: url("/images/core.delete_h.png")
+}
+.shortcut .app-name {
+  padding-left: 25px;
+  background-repeat: no-repeat;
+  background-position: 4px 6px;
+  max-width: 150px;
+}
+.shortcut img {
+  width: 128px;
+  height: 128px;
+}
+#shortcut-edit {
+  width: 48px;
+  height: 48px;
+  background-image: url("/images/core.edit.png");
+  cursor: pointer;
+  display: none;
+}
+#shortcut-edit:hover {
+  background-image: url("/images/core.edit_h.png")
+}
+.iframe-mask:hover #delete,
+.locked .iframe-mask:hover #uninstall,
+.iframe-mask:hover #shortcut-edit {
+  display: block
+}
+#app-drawer .iframe-mask {
+  display: block !important;
+}
+#app-drawer .iframe-mask {
+  top: -185px;
+  position: relative;
+}
+#widget-drawer .iframe-mask {
+  top: -390px;
+  position: relative;
+}
+.app,
+.shortcut {
+  text-align: center
+}
+.app img {
+  display: block;
+  margin: 0 auto;
+  padding-top: 15px;
+  transition: all 250ms linear;
+  -webkit-transition: all 250ms linear;
+  -moz-transition: all 250ms linear;
+  -ms-transition: all 250ms linear;
+  -o-transition: all 250ms linear;
+}
+.app:hover img {
+  transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+}
+.app-mask {
+  background-color: transparent;
+  z-index: 801;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+#app-drawer .app-mask,
+#widget-drawer .app-mask {
+  position: relative;
+  top: -160px;
+}
+.app-name {
+  max-height: 31px;
+  max-width: 175px;
+  overflow: hidden;
+  display: inline-block;
+  padding: 5px;
+  border-radius: 3px;
+  background-color: rgba(255,255,255,0.90);
+  border: 2px solid rgba(255,255,255,0.99);
+  margin-top: 7px;
+}
+.app:hover .app-name {
+  background-color: rgba(240,240,240,0.90);
+  border: 2px solid rgba(240,240,240,0.99);
+}
+.note {
+  position: absolute;
+  top: 17px;
+  width: 700px;
+  left: 100px;
+}
+#app-drawer,
+#widget-drawer {
+  padding-top: 30px;
+  position: fixed;
+  top: 90px;
+  width: 800px;
+  background-color: white;
+  z-index: 950;
+  display: none;
+  border-radius: 7px;
+  overflow: auto;
+  padding-left: 60px;
+  bottom: 10%;
+  /* Center */
+  left: 50%;
+  margin: 0 0 0 -400px;
+}
+#config-button {
+  opacity: .75;
+}
+#config-button:hover {
+  opacity: 1;
+}
+#options-ui {
+  padding-bottom: 25px;
+  position: fixed;
+  top: 100px;
+  width: 500px;
+  opacity: .99;
+  background-color: #DFDFDF;
+  z-index: 999;
+  display: none;
+  border-radius: 7px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /*bottom: 10%;*/
+  height: 550px;
+  /* Center */
+  left: 50%;
+  margin: 0 0 0 -250px;
+}
+#options-ui h1, #options-ui p,
+#options-ui h3, #options-ui hr,
+#options-ui input, #options-ui .p,
+#options-ui pre {
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 7px;
+  margin-bottom: 3px;
+}
+#options-ui input[type=text] {
+  width: 462px;
+  margin-left: 0;
+}
+#options-ui pre {
+  background-color: white;
+  padding: 2px;
+  font-size: 10px;
+  text-align: center;
+}
+p.inline {
+  display: inline-block;
+}
+#options-ui .bubble {
+  right: 10px !important;
+  text-align: center;
+  display: block;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 10px;
+  position: static;
+}
+#top-buttons {
+  position: fixed;
+  text-decoration: none;
+  top: 35px;
+  left: 0px;
+  display: block;
+  cursor: pointer;
+}
+#top-right {
+  position: fixed;
+  text-decoration: none;
+  top: 35px;
+  right: 5px;
+  height: 48px;
+  display: block;
+  cursor: pointer;
+}
+#lock-button {
+  background-color: red;
+  border-color: red;
+  opacity: 1;
+  color: white;
+}
+.app-drawer-app {
+  width: 160px;
+  text-align: center;
+  display: inline-block;
+  padding: 10px;
+  margin: 0;
+  height: 165px;
+  color: black;
+  overflow: hidden;
+}
+.app-drawer-app .app-name,
+.widget-drawer-app .app-name {
+  position: relative;
+  bottom: 0;
+  height: 15px;
+}
+.widget-drawer-app {
+  width: 200px;
+  text-align: center;
+  display: inline-block;
+  padding: 10px;
+  height: 200px;
+  color: black;
+  overflow: hidden;
+}
+.app-drawer-app img,
+.widget-drawer-app img {
+  padding: 7px 16px;
+  transition: all 250ms linear;
+  -webkit-transition: all 250ms linear;
+  -moz-transition: all 250ms linear;
+  -ms-transition: all 250ms linear;
+  -o-transition: all 250ms linear;
+}
+.app-drawer-app:hover img,
+.widget-drawer-app:hover img {
+  transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+}
+.bubble {
+  max-height: 35px;
+  /* max-width: 350px; */
+  overflow: hidden;
+  display: inline-block;
+  padding: 5px;
+  border-radius: 3px;
+  background-color: rgba(255,255,255,0.90);
+  border: 2px solid rgba(255,255,255,0.99);
+  opacity: 0.25;
+  transition: all 250ms ease-in-out; /* for mouseover effect */
+  -webkit-transition: all 250ms ease-in-out;
+  -moz-transition: all 250ms ease-in-out;
+  -ms-transition: all 250ms ease-in-out;
+  -o-transition: all 250ms ease-in-out;
+}
+.bubble-grey {
+  background-color: #C0C0C0;
+  border: 2px solid #C0C0C0;
+}
+.bubble:hover {
+  background-color: rgba(240,240,240,0.90);
+  border: 2px solid rgba(240,240,240,0.99);
+  opacity: 0.85;
+}
+.bubble-grey:hover {
+  background-color: #808080;
+  border: 2px solid #808080;
+}
+#recently-closed-tabs {
+  z-index: 1101
+}
+#recently-closed-tabs-menu {
+  position: fixed;
+  right: 192px;
+  top: 40px;
+  margin-top: 35px;
+  z-index: 1100;
+  min-width: 200px;
+  display: none;
+  padding: 5px;
+  border-radius: 3px;
+  background-color: rgba(255,255,255,0.90);
+  border: 2px solid rgba(255,255,255,0.99);
+}
+.rctm-item {
+  display: block
+}
+.rctm-icon,
+.rctm-link {
+  display: inline-block
+}
+.rctm-link {
+  float: right;
+  color: #0E3F96;
+}
+#colorselector-bg {
+  cursor: pointer;
+}
+.close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+}
+.unlocked .empty.add-shortcut {
+  background-image: url("/images/core.shortcut.png");
+  opacity: .5 !important;
+  cursor: pointer;
+}
+.edit-shortcut-ui {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  z-index: 1000;
+  position: absolute;
+  display: none;
+  top: -500px;
+  left: -500px;
+  background-color: #DFDFDF;
+  height: 200px;
+  width: 200px;
+  opacity: .85;
+}
+.edit-shortcut-ui .bubble {
+  right: 10px !important;
+  text-align: center;
+  display: block;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 10px;
+  position: static;
+}
+.sid-i {
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 161px;
+}
+.edit-shortcut-ui p {
+  -webkit-margin-before: 10px;
+  -webkit-margin-after: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.colorpicker {
+  z-index: 1000
+}
+#config-button {
+  background-color: transparent;
+  background-image: url("/images/core.config.png");
+  width: 24px;
+  background-position: 0 -7px;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  border-color: transparent;
+}
+.perm-grid .tile {
+  background-color: rgba(0, 0, 0, .2);
+  opacity: 1;
+}
+.hide-app-names #widget-holder .app:not(.shortcut) .app-name {
+  display:none;
+}
+.hide-shortcut-names #widget-holder .shortcut .app-name {
+  display:none;
+}
+.opaque {
+  opacity: 1 !important
+}
+.hidden {
+  display: none
+}
+.scroll-helper {
+  z-index: -5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.center {
+  text-align: center;
+}

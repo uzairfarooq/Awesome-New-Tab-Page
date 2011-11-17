@@ -17,7 +17,7 @@ chrome.bookmarks.getTree(getBookmarks);
 function getBookmarks(tree)
 {
     //bookmarksList = '<ul id="nav">';
-    bookmarksList = '<li id="other"><a href="#"><img class="favicon" src="core.bookmarkbar.folder.png" title="Other"> Other Bookmarks   </a><ul>';
+    bookmarksList = '<li id="other"><a href="#"><img class="favicon" src="/images/core.bookmarkbar.folder.png" title="Other"> Other Bookmarks   </a><ul>';
     buildTree(tree[0].children[1]);
     bookmarksList += '</ul></li>';
     buildTree(tree[0].children[0]);
@@ -38,7 +38,7 @@ function buildTree(items)
         else
         {
             bookmarksList += '<li>';
-            bookmarksList += '<a href="#"><img height="16px" width="16px" class="favicon" src="core.bookmarkbar.folder.png" title="{0}">{0}</a>'.format(items[i].title != "" ? " " + truncate(items[i].title, 23, true) : "");
+            bookmarksList += '<a href="#"><img height="16px" width="16px" class="favicon" src="/images/core.bookmarkbar.folder.png" title="{0}">{0}</a>'.format(items[i].title != "" ? " " + truncate(items[i].title, 23, true) : "");
             bookmarksList += '<ul>';
             buildTree(items[i]);
             bookmarksList += '</ul></li>';
