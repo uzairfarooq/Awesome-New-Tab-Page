@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <!--
+     -
+     - Awesome New Tab Page
+     -   Copyright 2011 Michael Hart (http://h4r7.me/).
+     - 
+     - Want to make it even more awesome?
+     -   https://github.com/michaelhart/Awesome-New-Tab-Page/
+     -
+     - Licensed under GPL v3:
+     -   http://www.gnu.org/licenses/gpl-3.0.txt
+     -
+     -->
+    <title>New Tab</title>
+    <link rel="canonical" href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg" />
+    <link rel="publisher" href="https://plus.google.com/101062285048075360930" />
+    <link rel="stylesheet" href="/css/core.bookmarkbar.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="/colorpicker/css/colorpicker.css" type="text/css" media="screen">
+    <link rel="shortcut icon" href="/images/favicon-20111025.png">
+
+    <link rel="stylesheet" href="core.style.css" type="text/css" media="screen">
+
+    <script type="text/javascript" src="/javascript/jquery.js"></script>
+    <script type="text/javascript" src="/javascript/tilesystem.js"></script>
+    <script>
+        var bp = chrome.extension.getBackgroundPage();
+        var port = chrome.extension.connect({name: "NTP-Port"});
+        var extensions = {};
+        var widgets = {};
+
+        function reset() {
+          localStorage.clear();
+        }
+
+        function reload() {
+          window.location.reload( false );
+        }
+
+        stock_widgets = {
+          webstore: {
+            where: [2,3],
+            size: [1,1],
+            isApp: true,
+            enabled: true,
+            name: "Chrome Web Store",
+            id: "webstore",
+            stock: true,
+            img: "app.webstore.png",
+            appLaunchUrl: "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage",
+          },
+          tutorial: {
+            where: [0,0],
+            size: [2,2],
+            type: "iframe",
+            isApp: false,
+            stock: true,
+            name: "Tutorial (Stock)",
+            id: "tutorial",
+            path: "widgets/widget.tutorial.html",
+          },
+          clock: {
+            where: [1,3],
+            size: [1,1],
+            type: "iframe",
+            isApp: false,
+            stock: true,
+            name: "Clock (Stock)",
+            id: "clock",
+            path: "widgets/widget.clock.html",
+          },
+          notepad: {
+            where: [1,2],
+            size: [1,1],
+            type: "iframe",
+            isApp: false,
+            stock: true,
+            name: "Notepad (Stock)",
+            id: "notepad",
+            path: "widgets/widget.notepad.html",
+          },
+          google: {
+            where: [0,2],
+            size: [1,2],
+            type: "iframe",
+            isApp: false,
+            stock: true,
+            name: "Google (Wide) (Stock)",
+            id: "google",
+            path: "widgets/widget.google.html",
+          },
+          fandango: {
+            where: [2,1],
+            size: [1,1],
+            type: "iframe",
+            isApp: false,
+            stock: true,
+            name: "Fandango (Stock)",
+            id: "fandango",
+            path: "widgets/widget.fandango.html",
+          },
+          amazon: {
+            where: [2,2],
+            size: [1,1],
+            type: "iframe",
+            isApp: false,
+            stock: true,
+            name: "Amazon (Stock)",
+            id: "amazon",
+            path: "widgets/widget.amazon.html",
+          },
+          tv: {
+            where: [2,0],
+            size: [1,1],
+            type: "iframe",
+            isApp: false,
+            stock: true,
+            name: "Hulu / Netflix (Stock)",
+            id: "tv",
+            path: "widgets/widget.tv.html",
+          }
+        };
+
+        if(JSON.parse(localStorage.getItem("widgets")) === null) {
+          localStorage.setItem("widgets", JSON.stringify( stock_widgets ));
+        }
+
+        function localStorageSync(re) {
+          localStorage.setItem("widgets", JSON.stringify( widgets ));
+
+          if(re === true) {
+            reload();
+          }
+        }
+
+        widgets = JSON.parse(localStorage.getItem("widgets"));
+
+        function setupDrawerApps(_extensions) {
+          // try {
+            if($.isArray( _extensions )) {
+
+              extensions = _extensions;
+              _extensions.push(stock_widgets.webstore);
+
+              $.each(_extensions, function(index, value) {
+                if(value.isApp === true && value.enabled === true) {
+                  // console.log(value.name, value);
+
+                  // $('<a href="' + value.appLaunchUrl + '" id="' + value.id + '" class="app-drawer-app widget"><img src="chrome://extension-icon/' + value.id + '/128/0" height="128">' + value.name + '</a>').prependTo("#app-drawer");
+
+                  if(value.stock === true) {
+                    var app_img_url = value.img;
+                  } else {
+                    var app_img_url = "chrome://extension-icon/" + value.id + "/128/0";
+                  }
+
+                  $(stitch(
+                    /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "app-drawer",
+                    /*  Destination: str [home, app-drawer, widget-drawer]*/  "app-drawer",
+                    /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  value.id,
+                    /*  Ext. Name: str [Awesome New Tab Page]             */  value.name,
+                    /*  URL: str, can be iframe or app url                */  value.appLaunchUrl,
+                    /*  Img: str, full path or [id]                       */  ( app_img_url ),
+                    /*  Height: int [1, 2, 3]                             */  1,
+                    /*  Width: int [1, 2, 3]                              */  1,
+                    /*  Top: int                                          */  null,
+                    /*  Left: int                                         */  null,
+                    /*  Poke: int                                         */  null
+                  )).appendTo("#app-drawer");
+              
+                }
+              });
+
+            }
+          // }
+          // catch (err) {
+          //   _e(1);
+          // }
+        }
+
+        // Listen to background.html
+        port.onMessage.addListener(function(msg) {
+            if(!msg.fn || !msg.data) {
+              return false;
+            }
+
+            if(typeof window[msg.fn] === 'function') {
+                window[msg.fn](msg.data);
+            }
+        });
+        
+        /*  Type: str [app, widget, app-drawer, widget-drawer]  */
+        /*  Destination: str [home, app-drawer, widget-drawer]  */
+        /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]     */
+        /*  Ext. Name: str [Awesome New Tab Page]               */
+        /*  URL: str, can be iframe or app url                  */
+        /*  Img: str, full path or [id]                         */
+        /*  Height: int [1, 2, 3]                               */
+        /*  Width: int [1, 2, 3]                                */
+        /*  Top: int                                            */
+        /*  Left: int                                           */
+        /*  Poke: int                                           */
+        function stitch(type, destination, id, name, url, img, height, width, top, left, poke) {
+          var stitch = "";
+          var img_favicon = false;
+          var img_favicon_temp = false;
+
+          if(!type || !destination || !height || !width) {
+            return false;
+          }
+
+          // if(destination === "home") {
+          //   if(!top || !left && top !== 0 && left !== 0) return false;
+          // }
+
+          // if( type === ( "app" || "app-drawer" || "widget-drawer" ) ) {
+          //   if(!name || !img) return false;
+          // }
+
+          if(!url) {
+            if(id === "webstore") {
+              url = "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage";
+            } else {
+              return [false, "Not webstore & no URL"];
+            }
+          }
+
+          if(height > 3 || width > 3) return [false, "Too big"];
+
+          if(img === "id") {
+            // if( type === ( "app" || "app-drawer" || "widget-drawer" ) ) {
+              img = "chrome://extension-icon/" + id + "/128/0";
+            // }
+          }
+
+          if(type === "app") {
+            stitch += '<div class="widget app" style="position:absolute;" ';
+          } else if (type === "iframe") {
+            stitch += '<div class="widget" style="position:absolute;" ';
+          } else if (type === "shortcut") {
+            stitch += '<div class="widget app shortcut" style="position:absolute;" ';
+          } else if (type === "widget-drawer") {
+            stitch += '<div class="widget app widget-drawer-app" ';
+            stitch += 'data-app-source="from-drawer" data-widget="true" data-stock="'+id+'" ';
+            stitch += 'data-poke="' + poke + '" ';
+            stitch += 'data-widget-src="' + url + '" ';
+            stitch += 'data-tile-height="' + height + '" ';
+            stitch += 'data-tile-width="' + width + '" ';
+          } else if (type === "app-drawer") {
+            stitch += '<div class="widget app app-drawer-app" ';
+            stitch += 'id="' + id + '" data-app-source="from-drawer" ';
+            stitch += 'data-tile-height="1" data-tile-width="1" ';
+          } else {
+            return [false, "Unknown type"];
+          }
+
+          stitch += 'id="' + id + '" ';
+          stitch += 'data-tile-height="' + height + '" ';
+          stitch += 'data-tile-width="' + width + '" ';
+
+          if(destination === "home") {
+            stitch += 'inittop="' + top + '" ';
+            stitch += 'initleft="' + left + '" ';
+          }
+
+          stitch += '>\n';
+
+          if(type === "app") {
+            stitch += '<img src="' + img + '"> ';
+            stitch += '<div class="app-name">' + name + '</div> ';
+            stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
+            stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div></div>\n ';
+          } else if (type === "iframe") {
+            stitch += '<iframe src="' + url + '" scrolling="no" frameborder="0" ';
+            stitch += 'align="center" height="100%" width="100%"></iframe> ';
+            stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div></div>\n ';
+          } else if (type === "shortcut") {
+
+            stitch += '<img src="' + img + '"> ';
+            stitch += '<div class="app-name" style="background-image: url(chrome://favicon/'+url+'); ">' + name + '</div> ';
+            stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
+            stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
+
+          } else if (type === "widget-drawer") {
+            stitch += '<img src="' + img + '"> ';
+            stitch += '<div class="app-name">' + name + '</div> ';
+            stitch += '<div class="app-mask">&nbsp;</div> ';
+            stitch += '<div class="iframe-mask o'+width+'x'+height+'"  ';
+            stitch += 'style="display: block !important;">&nbsp;</div> ';
+          } else if (type === "app-drawer") {
+            stitch += '<img src="' + img + '"> ';
+            stitch += '<div class="app-name">' + name + '</div> ';
+            // stitch += '<a href="' + url + '"><div class="app-mask"><div id="uninstall">&nbsp;</div></div></a> ';
+            stitch += '<div class="iframe-mask url" data-url="' + url + '"><div id="uninstall">&nbsp;</div></div> ';
+          }
+
+          stitch += '<div>';
+          // console.log(stitch);
+          return stitch;
+        }
+
+        // Only handles 1 at a time; widget
+        function setupDrawerWidgets(_widget) {
+          try {
+            if(!_widget.request || !_widget.sender) {
+              return false;
+            }
+            if(!_widget.request.body) {
+              return false;
+            }
+            if(_widget.request.body.poke === 1) {
+              widgets[_widget.sender.id] = _widget.body;
+
+              if( parseInt(_widget.request.body.height) > 3 || parseInt(_widget.request.body.width) > 3 ) {
+                return false;
+              }
+
+              var widget_name = null;
+              if(_widget.sender.name) {
+                widget_name = _widget.sender.name;
+              } else {
+                widget_name = extensions.filter(function (ext) { return ext.id === _widget.sender.id})[0].name;
+              }
+
+              var widget_img = null;
+              if(_widget.sender.id === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
+                widget_img = "icon128.png";
+              } else {
+                widget_img = 'chrome://extension-icon/' + _widget.sender.id + '/128/0"';
+              }
+
+              $(stitch(
+                /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "widget-drawer",
+                /*  Destination: str [home, app-drawer, widget-drawer]*/  "widget-drawer",
+                /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  _widget.sender.id,
+                /*  Ext. Name: str [Awesome New Tab Page]             */  widget_name,
+                /*  URL: str, can be iframe or app url                */  (_widget.request.body.path).replace(/\s+/g, ''),
+                /*  Img: str, full path or [id]                       */  ( "id" ),
+                /*  Height: int [1, 2, 3]                             */  parseInt(_widget.request.body.height),
+                /*  Width: int [1, 2, 3]                              */  parseInt(_widget.request.body.width),
+                /*  Top: int                                          */  null,
+                /*  Left: int                                         */  null,
+                /*  Poke: int                                         */  parseInt(_widget.request.body.poke)
+              )).prependTo("#widget-drawer");
+
+              return;
+            }
+          }
+          catch (err) {
+            _e(5);
+          }
+        }
+
+        function placeWidgets() {
+          if(JSON.parse(localStorage.getItem("widgets")) === null) {
+            localStorage.setItem("widgets", JSON.stringify( stock_widgets ));
+          }
+
+          widgets = JSON.parse(localStorage.getItem("widgets"));
+
+          $.each(widgets, function(id, widget){
+            if(widget.type === "iframe" && widget.size[0] <= 3 && widget.size[1] <= 3) {
+              $(stitch(
+                /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "iframe",
+                /*  Destination: str [home, app-drawer, widget-drawer]*/  "home",
+                /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  id,
+                /*  Ext. Name: str [Awesome New Tab Page]             */  widget.name,
+                /*  URL: str, can be iframe or app url                */  widget.path,
+                /*  Img: str, full path or [id]                       */  "id",
+                /*  Height: int [1, 2, 3]                             */  widget.size[0],
+                /*  Width: int [1, 2, 3]                              */  widget.size[1],
+                /*  Top: int                                          */  widget.where[0],
+                /*  Left: int                                         */  widget.where[1],
+                /*  Poke: int                                         */  null
+              )).appendTo("#widget-holder");
+            }
+
+            if(widget.isApp === true) {
+              img = false;
+              if( id === ("webstore") ) {
+                img = "app.webstore.png";
+              }
+
+              $(stitch(
+                /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "app",
+                /*  Destination: str [home, app-drawer, widget-drawer]*/  "home",
+                /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  id,
+                /*  Ext. Name: str [Awesome New Tab Page]             */  widget.name,
+                /*  URL: str, can be iframe or app url                */  widget.url ,
+                /*  Img: str, full path or [id]                       */  ( img || "id" ),
+                /*  Height: int [1, 2, 3]                             */  widget.size[0],
+                /*  Width: int [1, 2, 3]                              */  widget.size[1],
+                /*  Top: int                                          */  widget.where[0],
+                /*  Left: int                                         */  widget.where[1],
+                /*  Poke: int                                         */  null
+              )).appendTo("#widget-holder");
+            }
+
+            if(widget.type === "shortcut") {
+
+              $(stitch(
+                /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "shortcut",
+                /*  Destination: str [home, app-drawer, widget-drawer]*/  "home",
+                /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  id,
+                /*  Ext. Name: str [Awesome New Tab Page]             */  widget.name,
+                /*  URL: str, can be iframe or app url                */  widget.appLaunchUrl,
+                /*  Img: str, full path or [id]                       */  widget.img,
+                /*  Height: int [1, 2, 3]                             */  widget.size[0],
+                /*  Width: int [1, 2, 3]                              */  widget.size[1],
+                /*  Top: int                                          */  widget.where[0],
+                /*  Left: int                                         */  widget.where[1],
+                /*  Poke: int                                         */  null
+              )).appendTo("#widget-holder");
+            }
+
+          });
+
+          setStuff();
+        }
+
+        function new_guid() {
+          var S4 = function() {
+            return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+          };
+          return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+        }
+
+        $(".unlocked .empty.add-shortcut").live("click", function() {
+          var new_shortcut_id = new_guid();
+
+          addShortcut(
+            new_shortcut_id,
+            $(this).attr("data-land-top"),
+            $(this).attr("data-land-left")
+          );
+
+          $(stitch(
+            /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "shortcut",
+            /*  Destination: str [home, app-drawer, widget-drawer]*/  "home",
+            /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  new_shortcut_id,
+            /*  Ext. Name: str [Awesome New Tab Page]             */  "Google",
+            /*  URL: str, can be iframe or app url                */  "http://www.google.com/",
+            /*  Img: str, full path or [id]                       */  "core.shortcut.blank2.png",
+            /*  Height: int [1, 2, 3]                             */  1,
+            /*  Width: int [1, 2, 3]                              */  1,
+            /*  Top: int                                          */  $(this).attr("data-land-top"),
+            /*  Left: int                                         */  $(this).attr("data-land-left"),
+            /*  Poke: int                                         */  null
+          )).appendTo("#widget-holder");
+          
+          $("#" + new_shortcut_id).css({
+            "left": $(this).position().left,
+            "top": $(this).position().top,
+            "width": "200",
+            "height": "200",
+            "zIndex": "1"
+          }).find(".iframe-mask").removeClass("hidden").find("#shortcut-edit").trigger("click");
+
+          $(this).removeClass("add-shortcut").removeClass("empty");
+        });
+
+        $("#shortcut-edit").live("click", function(){
+          var shortcut_parent = $(this).parent().parent()[0];
+
+          if( $(".edit-shortcut-ui").hasClass( $(shortcut_parent).attr("id") ) ) {
+            $(".edit-shortcut-ui").remove();
+            hscroll = true;
+            return;
+          }
+          $(".edit-shortcut-ui").remove();
+
+          if(!shortcut_parent) { return; }
+          var shortcut_id = $(shortcut_parent).attr("id");
+
+          var img_src = $("#"+shortcut_id+" img").attr("src");
+            if(img_src === "core.shortcut.blank2.png") {
+              img_src = "";
+            }
+
+          var shortcut_ui = '<div class="edit-shortcut-ui ' + shortcut_id + '">';
+              shortcut_ui += '<div class="bubble bubble-grey opaque close">'
+                + chrome.i18n.getMessage("ui_button_close") + '</div>';
+              shortcut_ui += '<p>'+chrome.i18n.getMessage("ui_shortcut_name")+'</p> <input id="shortcut_name" class="sid-i" type="text" data-sid="'
+                + $(shortcut_parent).attr("id") + '" value="'+$("#"+shortcut_id+" .app-name").html()+'" />';
+              shortcut_ui += '<p>URL</p> <input id="shortcut_url" class="sid-i" type="text" data-sid="'
+              + $(shortcut_parent).attr("id") + '" value="'+$("#"+shortcut_id+" a").attr("href")+'" />';
+              shortcut_ui += '<p>'+chrome.i18n.getMessage("ui_shortcut_img")+'</p> <input id="img_url" class="sid-i" type="text" \
+                data-sid="' + $(shortcut_parent).attr("id") + '" value="'+img_src+'" />';
+              shortcut_ui += '<p>'+chrome.i18n.getMessage("ui_shortcut_img1")+'</p>';
+              shortcut_ui += '</div>';
+      
+          $(shortcut_ui).prependTo("body").css({
+            "left": $(shortcut_parent).position().left + 0 + 3,
+            "top": $(shortcut_parent).position().top + 3,
+            "display": "block"
+          })
+        });
+
+        $(".sid-i").live('keyup', updateShortcut);
+
+        function updateShortcut(e) {
+          try {
+            var id   = $("#shortcut_name").attr("data-sid");
+            var name = $("#shortcut_name").val();
+            var url  = $("#shortcut_url").val();
+            var img  = $("#img_url").val();
+
+            if(img === "") {
+              img = "core.shortcut.blank2.png";
+            }
+
+            if(name === "") {
+              name = "Please enter a name";
+            }
+
+            $("#" + id + " img").attr("src", img);
+            widgets[id].img = img;
+
+            $("#" + id + " a").attr("href", url);
+            $("#" + id + " .app-name").css("background-image", "url(chrome://favicon/"+url+")");
+            widgets[id].appLaunchUrl = url;
+
+            $("#" + id + " .app-name").html(name);
+            widgets[id].name = name;
+
+            localStorageSync(false);
+          }
+          catch (err) {
+            _e(7);
+          }
+        }
+
+        function addShortcut(widget, top, left) {
+          try {
+              widgets[widget] = {
+                where: [top,left],
+                size: [1,1],
+                type: "shortcut",
+                isApp: false,
+                name: "Google",
+                id: widget,
+                img: "core.shortcut.blank2.png",
+                appLaunchUrl: "http://www.google.com/",
+              };
+
+            localStorageSync(false);
+          }
+          catch (err) {
+            _e(6);
+          }
+        }
+
+        function updateWidget(widget, top, left) {
+          try {
+            if(!widgets[widget]) return;
+            widgets = JSON.parse(localStorage.getItem("widgets"));
+
+            widgets[widget].where = [top, left];
+
+            localStorageSync();
+          }
+          catch (err) {
+            _e(2);
+          }
+        }
+
+        function addWidget(is_widget, widget, top, left, src, width, height, poke, stock) {
+          try {
+            widgets = JSON.parse(localStorage.getItem("widgets"));
+            var new_ext_data = null;
+            var widget_img = null;
+            var appLaunchUrl = null;
+            var widget_name = null;
+            var widget_src = null;
+            if(!height) height = 1;
+            if(!width) width = 1;
+
+            if(stock) {
+              if(is_widget === false) {
+                widget_img = stock.img;
+                appLaunchUrl = stock.appLaunchUrl;
+              } else {
+                widget_src = stock.path;
+              }
+              widget_name = stock.name;
+              widget = stock.id;
+            } else {
+              new_ext_data = extensions.filter(function (ext) { return ext.id === widget})[0];
+              if(is_widget === false) {
+                widget_img = "chrome://extension-icon/"+new_ext_data.id+"/128/0";
+                appLaunchUrl = new_ext_data.appLaunchUrl;
+              } else {
+                widget_src = "chrome-extension://"+new_ext_data.id+"/" + src.replace(/\s+/g, '');
+              }
+              widget_name = new_ext_data.name;
+            }
+
+            if(is_widget === false) {
+              widgets[widget] = {
+                where: [top,left],
+                size: [1,1],
+                isApp: true,
+                name: widget_name,
+                id: widget,
+                img: widget_img,
+                url: appLaunchUrl,
+              };
+            }
+
+            if(is_widget === true) {
+              widgets[widget] = {
+                where: [top,left],
+                size: [height,width],
+                type: "iframe",
+                isApp: false,
+                name: widget_name,
+                id: widget,
+                img: widget_img,
+                path: widget_src,
+              };
+            }
+
+            localStorageSync(true);
+
+          }
+          catch (err) {
+            _e(3);
+          }
+        }
+
+        function removeWidget(widget) {
+          try {
+            delete widgets[widget];
+
+            localStorageSync(false);
+          }
+          catch (err) {
+            _e(4);
+          }
+        }
+
+
+        $("#recently-closed-tabs-menu").live('mouseleave', function() {
+          $(this).css("display", "none");
+        });
+
+        $("#recently-closed-tabs").live('click', function() {
+          $(".close").trigger("click");
+          $("#recently-closed-tabs-menu").toggle();
+        });
+
+        $("#toggleBmb").live("click", function(){
+          if ($(this).is(':checked')) {
+            $("#bookmarksBar").show();
+            localStorage.setItem("showbmb", "yes");
+          } else {
+            $("#bookmarksBar").hide();
+            localStorage.setItem("showbmb", "no");
+          }
+        });
+
+        $("#toggle-grid").live("click", function(){
+          if ($(this).is(':checked')) {
+            $("body").addClass("perm-grid");
+            localStorage.setItem("perm-grid", "yes");
+          } else {
+            $("body").removeClass("perm-grid");
+            localStorage.setItem("perm-grid", "no");
+          }
+        });
+
+        $("#toggle-app-names").live("click", function(){
+          if ($(this).is(':checked')) {
+            $("body").removeClass("hide-app-names");
+            localStorage.setItem("hide-app-names", "no");
+          } else {
+            $("body").addClass("hide-app-names");
+            localStorage.setItem("hide-app-names", "yes");
+          }
+        });
+
+        $("#toggle-shortcut-names").live("click", function(){
+          if ($(this).is(':checked')) {
+            $("body").removeClass("hide-shortcut-names");
+            localStorage.setItem("hide-shortcut-names", "no");
+          } else {
+            $("body").addClass("hide-shortcut-names");
+            localStorage.setItem("hide-shortcut-names", "yes");
+          }
+        });
+
+        $(".close").live("click", function(){
+          $("#app-drawer").fadeOut();
+          $("#widget-drawer").fadeOut();
+          $("#options-ui").fadeOut();
+          $("#recently-closed-tabs-menu").fadeOut();
+
+          $(".edit-shortcut-ui").remove();
+          hscroll = true;
+        });
+
+        $(".url").live("click", function(){
+          window.location = $(this).attr("data-url");
+        });
+
+        $("#app-drawer-button").live("click", function(){
+          $("#app-drawer").fadeToggle();
+
+          $("#widget-drawer").fadeOut();
+          $("#options-ui").fadeOut();
+          $("#recently-closed-tabs-menu").fadeOut();
+
+          $(".edit-shortcut-ui").remove();
+
+        });
+
+        var options_init = true;
+        $("#config-button").live("click", function(){
+          $("#options-ui").fadeToggle();
+
+          if(options_init === true) {
+            options_init = false;
+
+            (function() {
+              var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+              po.src = 'https://apis.google.com/js/plusone.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+
+            (function() {
+              var twitterScriptTag = document.createElement('script');
+              twitterScriptTag.type = 'text/javascript';
+              twitterScriptTag.async = true;
+              twitterScriptTag.src = 'https://platform.twitter.com/widgets.js';
+              var s = document.getElementsByTagName('script')[0];
+              s.parentNode.insertBefore(twitterScriptTag, s);
+            })();
+
+            $("#fb-iframe").html('<iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2FNewTabPage&amp;send=false&amp;layout=button_count&amp;width=130&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:130px; height:21px;" allowTransparency="true"></iframe>');
+          }
+
+          $("#widget-drawer").fadeOut();
+          $("#app-drawer").fadeOut();
+          $("#recently-closed-tabs-menu").fadeOut();
+
+          $(".edit-shortcut-ui").remove();
+        });
+
+        $("#bg-img-css").live('keyup', function() {
+          $("body").css("background", "" );
+          $("body").css("background", $(this).val() );
+
+          if($(this).val() === "") {
+            $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "260930"));
+          }
+
+          localStorage.setItem("bg-img-css", $(this).val() );
+        });
+
+        var widgets_shown = false;
+        $("#widget-drawer-button").live("click", function(){
+          if(widgets_shown === false) {
+            widgets_shown = true;
+            port.postMessage({
+              fn: "setupDrawerWidgets",
+              data: extensions,
+            });
+          }
+          
+          $("#widget-drawer").fadeToggle();
+
+          $("#app-drawer").fadeOut();
+          $("#options-ui").fadeOut();
+          $("#recently-closed-tabs-menu").fadeOut();
+
+          $(".edit-shortcut-ui").remove();        });
+
+        $("#delete").live("click", function(){
+          var to_delete = null;
+          to_delete = $(this).parent().parent();
+          if(to_delete) {
+            removeWidget( $(to_delete).attr("id") );
+
+            $(".edit-shortcut-ui").remove();
+            hscroll = true;
+
+            var tiles = getCovered(to_delete);
+            $(tiles.tiles).each(function(ind, elem){
+                $(elem).addClass("empty");
+            });
+
+            $(to_delete).remove();
+          }
+        });
+
+        $("#uninstall").live("click", function(e){
+          var to_delete = null;
+          var to_delete_name = null;
+          to_delete = $(this).parent().parent().parent();
+          to_delete_name = $(to_delete).find(".app-name").html();
+          console.log(to_delete);
+
+          var r=confirm("Are you sure you want to uninstall " + to_delete_name + "?");
+          if (r==true) {
+            chrome.management.uninstall($(to_delete).attr("id"), reload() );
+          }
+
+          return false;
+        });
+
+        $("#reset-button").live("click", function(){
+          var r=confirm("Are you sure you want to reset widget and app placements, stock widget preferences (notepad, coloring, etc.), and coloring preferences? Any customizations will be irrevocably lost.");
+          if (r==true) {
+            reset();
+            reload();
+          }
+        });
+
+        lock = true;
+        $("#lock-button,#unlock-button").live("click", function() {
+          if(lock === true) {
+            // Unlock
+            lock = false;
+            $("body").addClass("unlocked").removeClass("locked");
+            localStorage.setItem("lock", false );
+            $(".iframe-mask").removeClass("hidden");
+            $("#lock-button").css("display", "inline-block");
+            $("#unlock-button").css("display", "none");
+            $(".tile").addClass("tile-grid");
+          } else {
+            // Lock
+            lock = true;
+
+            $(".edit-shortcut-ui").remove();
+            hscroll = true;
+
+            $("body").addClass("locked").removeClass("unlocked");
+            localStorage.setItem("lock", true );
+            $(".iframe-mask").addClass("hidden");
+            $("#unlock-button").css("display", "inline-block");
+            $("#lock-button").css("display", "none");
+            $(".tile").removeClass("tile-grid");
+          }
+        });
+
+        $(".empty").live({
+          mouseenter: function() {
+            $(this).addClass("add-shortcut");
+          },
+          mouseleave: function() {
+            $(".tile").removeClass("add-shortcut");
+          }
+        });
+
+        function _e(_eNum) {
+          console.log("Error #"+_eNum);
+          _gaq.push(['_trackEvent', 'Error', _eNum]);
+        }
+
+      $(document).ready(function($) {
+        placeWidgets();
+
+        $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "260930"));
+
+        $("#colorselector-bg").ColorPicker({
+          color: '#' + ( localStorage.getItem("color-bg") || 260930) ,
+          onShow: function (colpkr) {
+            $(colpkr).fadeIn(500);
+            return false;
+          },
+          onHide: function (colpkr) {
+            $(colpkr).fadeOut(500);
+            return false;
+          },
+          onChange: function (hsb, hex, rgb) {
+            $('body').css('backgroundColor', '#' + hex);
+            localStorage.setItem("color-bg", hex);
+          }
+        });
+
+        $(".tile").animate({opacity: 0}, 500);
+        chrome.management.getAll( setupDrawerApps );
+
+        setTimeout(function() {
+
+          $.each(stock_widgets, function(id, widget){
+            if(widget.isApp === false && widget.type !== "shortcut") {
+              setupDrawerWidgets({
+                request: {
+                  body: {
+                    height: widget.size[0],
+                    width: widget.size[1],
+                    path: widget.path,
+                    poke: 1
+                  },
+                  head: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback"
+                },
+                sender: {
+                  id: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg",
+                  name: widget.name,
+                  stock: id,
+                  tab: null
+                }
+              });
+            }
+          });
+
+        }, 500);
+
+        // setTimeout(function() {
+        //   port.postMessage({
+        //     fn: "setupDrawerWidgets",
+        //     data: extensions,
+        //   });
+        // }, 1000);
+
+        setTimeout(function() {
+          if(bp) {
+            // if(bp.recently_installed) {
+            //   if(bp.recently_installed.isApp === false) {
+            //     return;
+            //   }
+            //   $('#app-drawer-button').trigger('click');
+            // }
+
+            if(bp.recently_closed) {
+              $("#recently-closed-tabs").css("display", "inline-block");
+
+              $.each(bp.recently_closed, function(id, tab) {
+                $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
+                    <div class="rctm-icon">\
+                      <img src="chrome://favicon/'+tab.url+'">\
+                    </div>\
+                    <div class="rctm-link">'+( ((tab.title).length > 30) ? (tab.title).substr(0, 30)+" ..." : tab.title)+'</div>\
+                    </a>').appendTo("#recently-closed-tabs-menu");
+              });
+            }
+          }
+        }, 750);
+
+        if(localStorage.getItem("showbmb") === null) {
+          localStorage.setItem("showbmb", "no");
+        }
+
+        if(localStorage.getItem("showbmb") === "yes") {
+          $("#toggleBmb").attr('checked', 'checked');
+        } else {
+          $("#bookmarksBar").css("display", "none");
+        }
+
+        if(localStorage.getItem("perm-grid") === null) {
+          localStorage.setItem("perm-grid", "no");
+        }
+
+        if(localStorage.getItem("perm-grid") === "yes") {
+          $("body").addClass("perm-grid");
+          $("#toggle-app-names").attr('checked', 'checked');
+        }
+
+        if(localStorage.getItem("hide-app-names") === null) {
+          localStorage.setItem("hide-app-names", "no");
+        }
+
+        if(localStorage.getItem("hide-app-names") === "yes") {
+          $("body").addClass("hide-app-names");
+        } else {
+          $("#toggle-app-names").attr('checked', 'checked');
+        }
+
+        if(localStorage.getItem("hide-shortcut-names") === null) {
+          localStorage.setItem("hide-shortcut-names", "no");
+        }
+
+        if(localStorage.getItem("hide-shortcut-names") === "yes") {
+          $("body").addClass("hide-shortcut-names");
+        } else {
+          $("#toggle-shortcut-names").attr('checked', 'checked');
+        }
+
+        if(localStorage.getItem("lock") === "false") {
+          $('#unlock-button').trigger('click');
+        } else {
+          $("body").addClass("locked").removeClass("unlocked");
+        }
+
+        if(localStorage.getItem("bg-img-css") && localStorage.getItem("bg-img-css") !== "") {
+          $("body").css("background", localStorage.getItem("bg-img-css") );
+          $("#bg-img-css").val( localStorage.getItem("bg-img-css") );
+        }
+
+        // End .ready
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="scroll-helper">
+      <!-- Fixes an issue where scrolling sometimes didn't work. -->
+    </div>
+    <ul id="bookmarksBar"></ul>
+
+    <div id="widget-holder"></div>
+
+    <div id="top-buttons">
+      <div id="config-button" class="bubble">
+        &nbsp;
+      </div>
+      <div id="app-drawer-button" class="bubble">
+        <script>document.write(chrome.i18n.getMessage("ui_button_apps"));</script>
+      </div>
+      <div id="widget-drawer-button" class="bubble">
+        <script>document.write(chrome.i18n.getMessage("ui_button_widgets"));</script>
+      </div>
+      <div id="reset-button" class="bubble">
+        <script>document.write(chrome.i18n.getMessage("ui_button_reset"));</script>
+      </div>
+      <div id="lock-button" class="bubble hidden">
+        <script>document.write(chrome.i18n.getMessage("ui_button_lock"));</script>
+      </div>
+      <div id="unlock-button" class="bubble">
+        <script>document.write(chrome.i18n.getMessage("ui_button_unlock"));</script>
+      </div>
+    </div>
+
+    <div id="top-right">
+      <div id="recently-closed-tabs" class="bubble hidden">
+        <script>document.write(chrome.i18n.getMessage("ui_button_rct"));</script>
+      </div>
+      <div id="download-widgets" class="bubble url" data-url="https://chrome.google.com/webstore/search/%22Awesome%20New%20Tab%20Page%22?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=antp-download-widgets">
+        <script>document.write(chrome.i18n.getMessage("ui_button_download"));</script>
+      </div>
+    </div>
+
+    <div id="recently-closed-tabs-menu"></div>
+
+    <div id="options-ui">
+      <div class="bubble bubble-grey opaque close">
+        <script>document.write(chrome.i18n.getMessage("ui_button_close"));</script>
+      </div>
+
+      <hr>
+      <h3><script>document.write(chrome.i18n.getMessage("ui_config_general"));</script></h3>
+        <div id="toggleBmb-holder">
+          <input id="toggleBmb" type="checkbox" name="show" value="true" />
+          <p class="inline"><script>document.write(chrome.i18n.getMessage("ui_config_bmb"));</script></p>
+        </div>
+        <p>This bookmark bar isn't as polished as it could be. I'm hoping Chrome's developers
+          hear my begging for an API to use the same in-page bookmark bar that the original NTP uses, but until then...</p>
+
+        <div id="toggle-grid-holder">
+          <input id="toggle-grid" type="checkbox" name="show" value="true" />
+          <p class="inline"><script>document.write(chrome.i18n.getMessage("ui_config_shgrid"));</script></p>
+        </div> 
+
+        <div id="toggle-app-names-holder">
+          <input id="toggle-app-names" type="checkbox" name="show" value="true" />
+          <p class="inline">Show / Hide App Names (On NTP Only)</p>
+        </div>
+
+        <div id="toggle-shortcut-names-holder">
+          <input id="toggle-shortcut-names" type="checkbox" name="show" value="true" />
+          <p class="inline">Show / Hide Shortcut Names + Favicons (On NTP Only)</p>
+        </div> 
+
+      <h3><script>document.write(chrome.i18n.getMessage("ui_config_bg"));</script></h3>
+        <div id="colorselector-bg" class="bubble bubble-grey opaque">
+          <script>document.write(chrome.i18n.getMessage("ui_button_bgc"));</script>
+        </div>
+        <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg1"));</script></p>
+        <div class="p">
+          <input id="bg-img-css" type="text" name="bg-img-css" />
+        </div>
+        <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg2"));</script></p>
+        <pre>url('http://mh.mycdn.co/labs/antp/m.png') repeat right top</pre>
+        <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg3"));</script></p>
+
+      <hr>
+      <h3><script>document.write(chrome.i18n.getMessage("ui_config_share"));</script></h3>
+        <p><script>document.write(chrome.i18n.getMessage("ui_config_share1"));</script></p>
+        <div class="p center">
+          <g:plusone expandTo="top" size="medium"
+          href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></g:plusone>
+<!-- 
+          <g:plusone 
+            expandTo="top"
+            size="medium"
+            href="https://plus.google.com/101062285048075360930">
+          </g:plusone>
+ -->
+          <a href="https://twitter.com/share" class="twitter-share-button" 
+            data-url="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"
+            data-text="Awesome New Tab Page: Making the New Tab Page in Google Chrome awesome."
+            data-count="horizontal" data-via="NewTabPage" data-related="HartMichael:Developer">Tweet</a>
+
+          <div id="fb-iframe" style="display: inline-block;"></div>
+
+          <br />
+
+          <g:plus
+            href="https://plus.google.com/101062285048075360930"
+            size="badge">
+          </g:plus>
+
+        </div>
+
+      <hr>
+      <h3>Donate</h3>
+        <p>
+          Do you like this extension? If so, there are 2 huge ways you can help make it
+          even more awesome.
+        </p>
+        <div class="bubble bubble-grey opaque url" data-url="http://ntp.uservoice.com/">
+          Submit Feedback / Ideas
+        </div>
+        <p>Alternatively, you can help me afford more time to dedicate to this project.</p>
+        <div class="center">
+          <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+          <input type="hidden" name="cmd" value="_s-xclick">
+          <input type="hidden" name="hosted_button_id" value="KTNB7U6DXHMDA">
+          <input type="image" src="core.paypal.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+          <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+          </form>
+        </div>
+        <p>I should point out that I am a scrooge and a homebody, so every dollar really goes
+          a long way. I appreciate however you can contribute greatly.</p>
+
+      <hr>
+      <h3>Developers</h3>
+        <p>Did you know that making a widget for Awesome New Tab Page is as easy as making a website?</p>
+        <p>Learn more here: <u><a href="https://github.com/michaelhart/NTP-Widget-Shell/blob/master/background.html">github.com</a></u>.
+
+      <hr>
+      <h3><script>document.write(chrome.i18n.getMessage("ui_config_contrib"));</script></h3>
+        <p>
+          Below are people that have in some way helped make this extension possible.
+          I can't thank them enough for their help.
+        </p>
+        <p><b>Me:</b> <span class="url" data-url="http://h4r7.me/">Michael Hart
+          (find me on <u>Google Plus</u>)</span>
+        <p><b>Russian Translators: </b> 
+          <u><a href="http://twitter.com/#!/Zerodime">Quintar "Zerodime" Farenor</a></u>
+        </p>
+        <p><b>Russian Translators: </b> 
+          <u>&#1052;&#1080;&#1093;&#1072;&#1080;&#1083; m1 &#1042;&#1086;&#1088;&#1086;&#1073;&#1100;&#1077;&#1074;</u>, 
+          <u>Timur Gaskarov</u>,
+          <u>&#1044;&#1072;&#1085;&#1080;&#1080;&#1083; &#171;Grawl&#187; &#1055;&#1088;&#1086;&#1085;&#1080;&#1085;</u></p>
+        <p>
+          Plus, of course, the amazing people who provide feedback to help make Awesome New
+          Tab Page even more Awesome. Thank you!
+        </p>
+    </div>
+
+    <div id="app-drawer">
+      <div class="bubble bubble-grey opaque close">
+        <script>document.write(chrome.i18n.getMessage("ui_button_close"));</script>
+      </div>
+      <div class="note">
+        <script>document.write(chrome.i18n.getMessage("ui_note_apps"));</script>
+      </div>
+    </div>
+
+    <div id="widget-drawer">
+      <div class="bubble bubble-grey opaque close">
+        <script>document.write(chrome.i18n.getMessage("ui_button_close"));</script>
+      </div>
+      <div class="note">
+        <script>document.write(chrome.i18n.getMessage("ui_note_widgets"));</script>
+      </div>
+    </div>
+
+    <div id="groups">
+
+      <ul id="1" class="group">
+        <li class="tile empty" id="0x0" data-land-top="0" data-land-left="0">&nbsp;</li>
+        <li class="tile empty" id="0x1" data-land-top="0" data-land-left="1">&nbsp;</li>
+        <li class="tile empty" id="0x2" data-land-top="0" data-land-left="2">&nbsp;</li>
+        <li class="tile empty" id="0x3" data-land-top="0" data-land-left="3">&nbsp;</li>
+
+        <li class="tile empty" id="1x0" data-land-top="1" data-land-left="0">&nbsp;</li>
+        <li class="tile empty" id="1x1" data-land-top="1" data-land-left="1">&nbsp;</li>
+        <li class="tile empty" id="1x2" data-land-top="1" data-land-left="2">&nbsp;</li>
+        <li class="tile empty" id="1x3" data-land-top="1" data-land-left="3">&nbsp;</li>
+
+        <li class="tile empty" id="2x0" data-land-top="2" data-land-left="0">&nbsp;</li>
+        <li class="tile empty" id="2x1" data-land-top="2" data-land-left="1">&nbsp;</li>
+        <li class="tile empty" id="2x2" data-land-top="2" data-land-left="2">&nbsp;</li>
+        <li class="tile empty" id="2x3" data-land-top="2" data-land-left="3">&nbsp;</li>
+      </ul>
+
+      <ul id="2" class="group">
+        <li class="tile empty" id="0x4" data-land-top="0" data-land-left="4">&nbsp;</li>
+        <li class="tile empty" id="0x5" data-land-top="0" data-land-left="5">&nbsp;</li>
+        <li class="tile empty" id="0x6" data-land-top="0" data-land-left="6">&nbsp;</li>
+        <li class="tile empty" id="0x7" data-land-top="0" data-land-left="7">&nbsp;</li>
+
+        <li class="tile empty" id="1x4" data-land-top="1" data-land-left="4">&nbsp;</li>
+        <li class="tile empty" id="1x5" data-land-top="1" data-land-left="5">&nbsp;</li>
+        <li class="tile empty" id="1x6" data-land-top="1" data-land-left="6">&nbsp;</li>
+        <li class="tile empty" id="1x7" data-land-top="1" data-land-left="7">&nbsp;</li>
+
+        <li class="tile empty" id="2x4" data-land-top="2" data-land-left="4">&nbsp;</li>
+        <li class="tile empty" id="2x5" data-land-top="2" data-land-left="5">&nbsp;</li>
+        <li class="tile empty" id="2x6" data-land-top="2" data-land-left="6">&nbsp;</li>
+        <li class="tile empty" id="2x7" data-land-top="2" data-land-left="7">&nbsp;</li>
+      </ul>
+
+      <ul id="3" class="group">
+        <li class="tile empty" id="0x8" data-land-top="0" data-land-left="8">&nbsp;</li>
+        <li class="tile empty" id="0x9" data-land-top="0" data-land-left="9">&nbsp;</li>
+        <li class="tile empty" id="0x10" data-land-top="0" data-land-left="10">&nbsp;</li>
+        <li class="tile empty" id="0x11" data-land-top="0" data-land-left="11">&nbsp;</li>
+
+        <li class="tile empty" id="1x8" data-land-top="1" data-land-left="8">&nbsp;</li>
+        <li class="tile empty" id="1x9" data-land-top="1" data-land-left="9">&nbsp;</li>
+        <li class="tile empty" id="1x10" data-land-top="1" data-land-left="10">&nbsp;</li>
+        <li class="tile empty" id="1x11" data-land-top="1" data-land-left="11">&nbsp;</li>
+
+        <li class="tile empty" id="2x8" data-land-top="2" data-land-left="8">&nbsp;</li>
+        <li class="tile empty" id="2x9" data-land-top="2" data-land-left="9">&nbsp;</li>
+        <li class="tile empty" id="2x10" data-land-top="2" data-land-left="10">&nbsp;</li>
+        <li class="tile empty" id="2x11" data-land-top="2" data-land-left="11">&nbsp;</li>
+      </ul>
+
+      <ul id="4" class="group">
+        <li class="tile empty" id="0x12" data-land-top="0" data-land-left="12">&nbsp;</li>
+        <li class="tile empty" id="0x13" data-land-top="0" data-land-left="13">&nbsp;</li>
+        <li class="tile empty" id="0x14" data-land-top="0" data-land-left="14">&nbsp;</li>
+        <li class="tile empty" id="0x15" data-land-top="0" data-land-left="15">&nbsp;</li>
+
+        <li class="tile empty" id="1x12" data-land-top="1" data-land-left="12">&nbsp;</li>
+        <li class="tile empty" id="1x13" data-land-top="1" data-land-left="13">&nbsp;</li>
+        <li class="tile empty" id="1x14" data-land-top="1" data-land-left="14">&nbsp;</li>
+        <li class="tile empty" id="1x15" data-land-top="1" data-land-left="15">&nbsp;</li>
+
+        <li class="tile empty" id="2x12" data-land-top="2" data-land-left="12">&nbsp;</li>
+        <li class="tile empty" id="2x13" data-land-top="2" data-land-left="13">&nbsp;</li>
+        <li class="tile empty" id="2x14" data-land-top="2" data-land-left="14">&nbsp;</li>
+        <li class="tile empty" id="2x15" data-land-top="2" data-land-left="15">&nbsp;</li>
+      </ul>
+
+    </div>
+
+
+    <script type="text/javascript">
+      prepareTiles();
+    </script>
+    <script type="text/javascript" src="/javascript/hscroll.js"></script>
+    <script type="text/javascript" src="/javascript/bookmarkbar.js"></script>
+    <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26076327-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = 'https://ssl.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </body>
+</html>
