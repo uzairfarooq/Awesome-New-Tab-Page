@@ -797,7 +797,7 @@
         $("#uninstall").live("click", function(e){
           var to_delete = null;
           var to_delete_name = null;
-          to_delete = $(this).parent().parent().parent();
+          to_delete = $(this).parent().parent();
           to_delete_name = $(to_delete).find(".app-name").html();
           console.log(to_delete);
 
