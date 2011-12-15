@@ -241,7 +241,7 @@ body {
   top: 0;
   right: 0;
 }
-.widget:active {
+.widget:active.app {
   -webkit-transform: scale(0.95);
 }
 #app-drawer .app-mask,
