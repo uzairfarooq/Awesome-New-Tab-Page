@@ -859,19 +859,6 @@
         }
 
       $(document).ready(function($) {
-
-        function scaleDown() { // to "push" the tile down while clicking
-            $(this).css("-webkit-transform", "scale(0.9)")
-        }
-
-        function scaleUp() { // to make "pop back up" from the aforementioned pushing down of said tile.
-            $(this).css("-webkit-transform", "scale(1)")
-        }
-
-        $(document).on("mousedown", ".widget.app", scaleDown)
-          .on("mouseup", ".widget.app", scaleUp)
-          .on("mouseout", ".widget.app", scaleUp); // To make the scale(Down/Up) functions start
-
         placeWidgets();
 
         $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "260930"));

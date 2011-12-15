@@ -231,18 +231,6 @@ body {
   display: block;
   margin: 0 auto;
   padding-top: 15px;
-  transition: all 250ms linear;
-  -webkit-transition: all 250ms linear;
-  -moz-transition: all 250ms linear;
-  -ms-transition: all 250ms linear;
-  -o-transition: all 250ms linear;
-}
-.app:hover img {
-  transform: scale(1.1);
-  -moz-transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  -o-transform: scale(1.1);
 }
 .app-mask {
   background-color: transparent;
@@ -252,6 +240,9 @@ body {
   position: absolute;
   top: 0;
   right: 0;
+}
+.widget:active {
+  -webkit-transform: scale(0.95);
 }
 #app-drawer .app-mask,
 #widget-drawer .app-mask {
