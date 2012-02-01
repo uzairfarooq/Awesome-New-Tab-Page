@@ -67,11 +67,11 @@ body {
   user-select: none;
   -webkit-user-select: none;
 }
-.url {
+.url, #reset-button {
   cursor: pointer
 }
 #groups {
-  margin-top: 70px;
+  margin-top: 33px;
   margin-left: 34px;
 }
 .group {
@@ -287,12 +287,6 @@ body {
   left: 50%;
   margin: 0 0 0 -400px;
 }
-#config-button {
-  opacity: .75;
-}
-#config-button:hover {
-  opacity: 1;
-}
 #options-ui {
   padding-bottom: 25px;
   position: fixed;
@@ -346,10 +340,11 @@ p.inline {
 #top-buttons {
   position: fixed;
   text-decoration: none;
-  top: 35px;
+  top: 0px;
   left: 0px;
   display: block;
   cursor: pointer;
+  z-index: 900;
 }
 #top-right {
   position: fixed;
@@ -512,10 +507,73 @@ p.inline {
   z-index: 1000
 }
 #config-button {
+  opacity: 1;
+}
+#app-drawer-button,
+#widget-drawer-button,
+#unlock-button,
+#lock-button {
+  margin-top: 2px;
+  margin-bottom: 4px;
+  display: block;
+  opacity: .75;
+}
+#lock-button {
+  display: none;
+  opacity: 1 !important;
+}
+#config-button:hover {
+  opacity: .8;
+}
+#app-drawer-button:hover,
+#widget-drawer-button:hover,
+#unlock-button:hover {
+  opacity: 1;
+}
+
+#config-button {
   background-color: transparent;
   background-image: url("/images/core.config.png");
   width: 24px;
   background-position: 0 -7px;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  border-color: transparent;
+}
+#app-drawer-button {
+  background-color: transparent;
+  background-image: url("/images/ic_menu_smalltiles.png");
+  width: 24px;
+  background-position: 0 -7px;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  border-color: transparent;
+}
+#widget-drawer-button {
+  background-color: transparent;
+  background-image: url("/images/ic_menu_largetiles.png");
+  width: 24px;
+  background-position: 0 -7px;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  border-color: transparent;
+}
+#unlock-button {
+  background-color: transparent;
+  background-image: url("/images/lock.png");
+  width: 24px;
+  height: 25px;
+  background-position: 0 -5px;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  border-color: transparent;
+}
+#lock-button {
+  background-color: transparent;
+  background-image: url("/images/lock_red.png");
+  width: 24px;
+  height: 25px;
+  background-position: 0 -5px;
   background-size: 40px;
   background-repeat: no-repeat;
   border-color: transparent;
@@ -546,4 +604,8 @@ p.inline {
 }
 .center {
   text-align: center;
+}
+
+.qtip.qtip-dark {
+  width: auto !important;
 }

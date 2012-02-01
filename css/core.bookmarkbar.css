@@ -45,6 +45,8 @@
   left: 0; top: 0;
   font-size: 12px;
   font-family: Arial, sans-serif;
+
+  padding-left: 40px;
 }
 #bookmarksBar li {
 	margin: 1px;

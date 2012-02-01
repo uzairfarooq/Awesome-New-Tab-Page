@@ -24,6 +24,8 @@
 
     <script type="text/javascript" src="/javascript/jquery.js"></script>
     <script type="text/javascript" src="/javascript/tilesystem.js"></script>
+    <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
+
     <script>
         var bp = chrome.extension.getBackgroundPage();
         var port = chrome.extension.connect({name: "NTP-Port"});
@@ -736,8 +738,6 @@
               var s = document.getElementsByTagName('script')[0];
               s.parentNode.insertBefore(twitterScriptTag, s);
             })();
-
-            $("#fb-iframe").html('<iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2FNewTabPage&amp;send=false&amp;layout=button_count&amp;width=130&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:130px; height:21px;" allowTransparency="true"></iframe>');
           }
 
           $("#widget-drawer").fadeOut();
@@ -825,7 +825,7 @@
             $("body").addClass("unlocked").removeClass("locked");
             localStorage.setItem("lock", false );
             $(".iframe-mask").removeClass("hidden");
-            $("#lock-button").css("display", "inline-block");
+            $("#lock-button").css("display", "block");
             $("#unlock-button").css("display", "none");
             $(".tile").addClass("tile-grid");
           } else {
@@ -838,7 +838,7 @@
             $("body").addClass("locked").removeClass("unlocked");
             localStorage.setItem("lock", true );
             $(".iframe-mask").addClass("hidden");
-            $("#unlock-button").css("display", "inline-block");
+            $("#unlock-button").css("display", "block");
             $("#lock-button").css("display", "none");
             $(".tile").removeClass("tile-grid");
           }
@@ -860,6 +860,37 @@
 
       $(document).ready(function($) {
         placeWidgets();
+
+      var qtipShared = {
+            show: 'mouseover',
+            hide: 'mouseout',
+            style: {
+              name: 'dark',
+              tip: 'leftMiddle',
+            },
+            position: {
+              corner: {
+                 target: 'rightMiddle',
+                 tooltip: 'leftMiddle'
+              }
+            }
+          }
+
+        $('#config-button').qtip(
+          $.extend({}, qtipShared, { content: 'Configure' })
+        );
+        $('#app-drawer-button').qtip(
+          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_apps") || "Apps" })
+        );
+        $('#widget-drawer-button').qtip(
+          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_widgets") || "Widgets" })
+        );
+        $('#unlock-button').qtip(
+          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_unlock") || "Unlock" })
+        );
+        $('#lock-button').qtip(
+          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_lock") || "Lock to Interact with Apps and Widgets" })
+        );
 
         $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "260930"));
 
@@ -915,29 +946,29 @@
         //   });
         // }, 1000);
 
-        setTimeout(function() {
-          if(bp) {
-            // if(bp.recently_installed) {
-            //   if(bp.recently_installed.isApp === false) {
-            //     return;
-            //   }
-            //   $('#app-drawer-button').trigger('click');
-            // }
+        // setTimeout(function() {
+        //   if(bp) {
+        //     // if(bp.recently_installed) {
+        //     //   if(bp.recently_installed.isApp === false) {
+        //     //     return;
+        //     //   }
+        //     //   $('#app-drawer-button').trigger('click');
+        //     // }
 
-            if(bp.recently_closed) {
-              $("#recently-closed-tabs").css("display", "inline-block");
+        //     if(bp.recently_closed) {
+        //       $("#recently-closed-tabs").css("display", "inline-block");
 
-              $.each(bp.recently_closed, function(id, tab) {
-                $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
-                    <div class="rctm-icon">\
-                      <img src="chrome://favicon/'+tab.url+'">\
-                    </div>\
-                    <div class="rctm-link">'+( ((tab.title).length > 30) ? (tab.title).substr(0, 30)+" ..." : tab.title)+'</div>\
-                    </a>').appendTo("#recently-closed-tabs-menu");
-              });
-            }
-          }
-        }, 750);
+        //       $.each(bp.recently_closed, function(id, tab) {
+        //         $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
+        //             <div class="rctm-icon">\
+        //               <img src="chrome://favicon/'+tab.url+'">\
+        //             </div>\
+        //             <div class="rctm-link">'+( ((tab.title).length > 30) ? (tab.title).substr(0, 30)+" ..." : tab.title)+'</div>\
+        //             </a>').appendTo("#recently-closed-tabs-menu");
+        //       });
+        //     }
+        //   }
+        // }, 750);
 
         if(localStorage.getItem("showbmb") === null) {
           localStorage.setItem("showbmb", "no");
@@ -1007,22 +1038,20 @@
         &nbsp;
       </div>
       <div id="app-drawer-button" class="bubble">
-        <script>document.write(chrome.i18n.getMessage("ui_button_apps"));</script>
+        &nbsp;
       </div>
       <div id="widget-drawer-button" class="bubble">
-        <script>document.write(chrome.i18n.getMessage("ui_button_widgets"));</script>
-      </div>
-      <div id="reset-button" class="bubble">
-        <script>document.write(chrome.i18n.getMessage("ui_button_reset"));</script>
+        &nbsp;
       </div>
       <div id="lock-button" class="bubble hidden">
-        <script>document.write(chrome.i18n.getMessage("ui_button_lock"));</script>
+        &nbsp;
       </div>
       <div id="unlock-button" class="bubble">
-        <script>document.write(chrome.i18n.getMessage("ui_button_unlock"));</script>
+        &nbsp;
       </div>
     </div>
 
+    <!--
     <div id="top-right">
       <div id="recently-closed-tabs" class="bubble hidden">
         <script>document.write(chrome.i18n.getMessage("ui_button_rct"));</script>
@@ -1031,6 +1060,7 @@
         <script>document.write(chrome.i18n.getMessage("ui_button_download"));</script>
       </div>
     </div>
+    -->
 
     <div id="recently-closed-tabs-menu"></div>
 
@@ -1041,11 +1071,21 @@
 
       <hr>
 
-      <a href="https://ntp.uservoice.com/">
+      <a href="https://chrome.google.com/webstore/search/%22Awesome%20New%20Tab%20Page%22?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=antp-download-widgets">
         <div class="bubble bubble-grey opaque">
-          Help
+          <script>document.write(chrome.i18n.getMessage("ui_button_download"));</script>
         </div>
       </a>
+
+      <a href="https://ntp.uservoice.com/">
+        <div class="bubble bubble-grey opaque ib">
+          Help &amp; Feedback
+        </div>
+      </a>
+
+      <div id="reset-button" class="bubble bubble-grey opaque ib">
+        <script>document.write(chrome.i18n.getMessage("ui_button_reset"));</script>
+      </div>
 
       <hr>
 
@@ -1096,40 +1136,12 @@
             data-text="Awesome New Tab Page: Making the New Tab Page in Google Chrome awesome."
             data-count="horizontal" data-via="NewTabPage" data-related="HartMichael:Developer">Tweet</a>
 
-          <div id="fb-iframe" style="display: inline-block;"></div>
 
           <br />
 
-          <g:plus
-            href="https://plus.google.com/101062285048075360930"
-            size="badge">
-          </g:plus>
+          <g:plus href="https://plus.google.com/101062285048075360930" size="smallbadge"></g:plus>
 
         </div>
-
-      <hr>
-      <h3>Donate</h3>
-        <p>
-          Do you like this extension? If so, there are a few ways you can help make it
-          even more awesome.
-        </p>
-        <a href="https://ntp.uservoice.com/">
-          <div class="bubble bubble-grey opaque">
-            Submit Feedback and Ideas
-          </div>
-        </a>
-
-        <p>
-          Share. Use the above sharing buttons to share Awesome New Tab Page with your friends
-          and family. The more popular it gets, the more developer support the project will
-          receive.
-        </p>
-
-        <p>
-          Alternatively, you can help make this project even more awesome by forking it and making it better
-          from the source...
-        </p>
-
 
       <hr>
       <h3>Developers</h3>
@@ -1150,13 +1162,14 @@
         </p>
         <p><b>Me:</b> <span class="url" data-url="http://h4r7.me/">Michael Hart
           (find me on <u>Google Plus</u>)</span>
-        <p><b>Russian Translators: </b> 
-          <u><a href="http://twitter.com/#!/Zerodime">Quintar "Zerodime" Farenor</a></u>
+        <p><b>German Translators: </b> 
+          <a href="http://twitter.com/#!/Zerodime">Quintar "Zerodime" Farenor</a>
         </p>
         <p><b>Russian Translators: </b> 
-          <u>&#1052;&#1080;&#1093;&#1072;&#1080;&#1083; m1 &#1042;&#1086;&#1088;&#1086;&#1073;&#1100;&#1077;&#1074;</u>, 
-          <u>Timur Gaskarov</u>,
-          <u>&#1044;&#1072;&#1085;&#1080;&#1080;&#1083; &#171;Grawl&#187; &#1055;&#1088;&#1086;&#1085;&#1080;&#1085;</u></p>
+          &#1052;&#1080;&#1093;&#1072;&#1080;&#1083; m1 &#1042;&#1086;&#1088;&#1086;&#1073;&#1100;&#1077;&#1074;, 
+          Timur Gaskarov,
+          &#1044;&#1072;&#1085;&#1080;&#1080;&#1083; &#171;Grawl&#187; &#1055;&#1088;&#1086;&#1085;&#1080;&#1085;
+        </p>
         <p>
           Plus, of course, the amazing people who provide feedback to help make Awesome New
           Tab Page even more Awesome. Thank you!
