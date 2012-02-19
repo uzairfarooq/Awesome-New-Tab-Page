@@ -895,6 +895,9 @@
         $('#lock-button').qtip(
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_lock") || "Lock to Interact with Apps and Widgets" })
         );
+        $('#recently-closed-tabs').qtip(
+          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") || "Recently Closed Tabs" })
+        );
 
         $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "260930"));
 
@@ -943,36 +946,36 @@
 
         }, 500);
 
-        // setTimeout(function() {
-        //   port.postMessage({
-        //     fn: "setupDrawerWidgets",
-        //     data: extensions,
-        //   });
-        // }, 1000);
+        setTimeout(function() {
+          port.postMessage({
+            fn: "setupDrawerWidgets",
+            data: extensions,
+          });
+        }, 1000);
 
-        // setTimeout(function() {
-        //   if(bp) {
-        //     // if(bp.recently_installed) {
-        //     //   if(bp.recently_installed.isApp === false) {
-        //     //     return;
-        //     //   }
-        //     //   $('#app-drawer-button').trigger('click');
-        //     // }
+        setTimeout(function() {
+          if(bp) {
+            // if(bp.recently_installed) {
+            //   if(bp.recently_installed.isApp === false) {
+            //     return;
+            //   }
+            //   $('#app-drawer-button').trigger('click');
+            // }
 
-        //     if(bp.recently_closed) {
-        //       $("#recently-closed-tabs").css("display", "inline-block");
+            if(bp.recently_closed) {
+              $("#recently-closed-tabs").css("display", "block");
 
-        //       $.each(bp.recently_closed, function(id, tab) {
-        //         $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
-        //             <div class="rctm-icon">\
-        //               <img src="chrome://favicon/'+tab.url+'">\
-        //             </div>\
-        //             <div class="rctm-link">'+( ((tab.title).length > 30) ? (tab.title).substr(0, 30)+" ..." : tab.title)+'</div>\
-        //             </a>').appendTo("#recently-closed-tabs-menu");
-        //       });
-        //     }
-        //   }
-        // }, 750);
+              $.each(bp.recently_closed, function(id, tab) {
+                $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
+                    <div class="rctm-icon">\
+                      <img src="chrome://favicon/'+tab.url+'">\
+                    </div>\
+                    <div class="rctm-link">'+( ((tab.title).length > 30) ? (tab.title).substr(0, 30)+" ..." : tab.title)+'</div>\
+                    </a>').appendTo("#recently-closed-tabs-menu");
+              });
+            }
+          }
+        }, 750);
 
         if(localStorage.getItem("showbmb") === null) {
           localStorage.setItem("showbmb", "no");
@@ -1045,6 +1048,9 @@
         &nbsp;
       </div>
       <div id="widget-drawer-button" class="bubble">
+        &nbsp;
+      </div>
+      <div id="recently-closed-tabs" class="bubble hidden">
         &nbsp;
       </div>
       <div id="lock-button" class="bubble hidden">

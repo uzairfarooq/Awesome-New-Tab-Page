@@ -434,8 +434,8 @@ p.inline {
 }
 #recently-closed-tabs-menu {
   position: fixed;
-  right: 192px;
-  top: 40px;
+  left: 41px;
+  top: 71px;
   margin-top: 35px;
   z-index: 1100;
   min-width: 280px;
@@ -512,7 +512,8 @@ p.inline {
 #app-drawer-button,
 #widget-drawer-button,
 #unlock-button,
-#lock-button {
+#lock-button,
+#recently-closed-tabs {
   margin-top: 2px;
   margin-bottom: 4px;
   display: block;
@@ -527,7 +528,8 @@ p.inline {
 }
 #app-drawer-button:hover,
 #widget-drawer-button:hover,
-#unlock-button:hover {
+#unlock-button:hover,
+#recently-closed-tabs:hover {
   opacity: 1;
 }
 
@@ -571,6 +573,16 @@ p.inline {
 #lock-button {
   background-color: transparent;
   background-image: url("/images/lock_red.png");
+  width: 24px;
+  height: 25px;
+  background-position: 0 -5px;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  border-color: transparent;
+}
+#recently-closed-tabs {
+  background-color: transparent;
+  background-image: url("/images/ic_menu_clock.png");
   width: 24px;
   height: 25px;
   background-position: 0 -5px;

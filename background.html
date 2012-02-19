@@ -14,40 +14,40 @@
 window.setTimeout(' window.location = window.location; ', 2*60*60*1000);
 
 
-// var recently_closed = JSON.parse(localStorage.getItem("recently_closed")) || [];
-// chrome.tabs.onRemoved.addListener( onRemoved );
+var recently_closed = JSON.parse(localStorage.getItem("recently_closed")) || [];
+chrome.tabs.onRemoved.addListener( onRemoved );
 
-// function onRemoved(tabId) {
-//   var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
+function onRemoved(tabId) {
+  var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
 
-//   if(!tab || tab.incognito === true) {
-//     return;
-//   }
+  if(!tab || tab.incognito === true) {
+    return;
+  }
 
-//   if(tab.title === "") {
-//     return;
-//   }
+  if(tab.title === "") {
+    return;
+  }
 
-//   recently_closed.unshift({title: tab.title, url: tab.url});
+  recently_closed.unshift({title: tab.title, url: tab.url});
 
-//   if(recently_closed.length > 15) {
-//     recently_closed.pop();
-//   }
+  if(recently_closed.length > 15) {
+    recently_closed.pop();
+  }
 
-//   localStorage.setItem("recently_closed", JSON.stringify( recently_closed ))
-//   getAllTabs();
-// }
+  localStorage.setItem("recently_closed", JSON.stringify( recently_closed ))
+  getAllTabs();
+}
 
-// chrome.tabs.onCreated.addListener( getAllTabs );
+chrome.tabs.onCreated.addListener( getAllTabs );
 
-// var tabs = null;
-// function getAllTabs() {
-//   chrome.tabs.getAllInWindow(null, getAllTabs_callback);
-// }
-// function getAllTabs_callback(data) {
-//   tabs = data;
-// }
-// chrome.tabs.getAllInWindow(null, getAllTabs);
+var tabs = null;
+function getAllTabs() {
+  chrome.tabs.getAllInWindow(null, getAllTabs_callback);
+}
+function getAllTabs_callback(data) {
+  tabs = data;
+}
+chrome.tabs.getAllInWindow(null, getAllTabs);
 
 var recently_installed = null;
 chrome.management.onInstalled.addListener( onInstalled );
