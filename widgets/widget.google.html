@@ -29,15 +29,80 @@
         height: 100%;
         background-image:url('widget.google.png');
         background-repeat:no-repeat;
-        background-position:center center;
+        background-position:center 35px;
+        z-index: 5;
       }
       a {
         text-decoration: none;
+      }
+      #services {
+        position: absolute;
+        height: 35px;
+        background-color: white;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        text-align: center;
+        padding-top: 2px;
+        padding-bottom: 0px;
+      }
+      .SVC {
+        display: inline-block;
+        background: url(widget.google.services.png) no-repeat -35px 0;
+        height: 35px;
+        width: 35px;
+        opacity: .7;
+      }
+      .SVC:hover {
+        opacity: 1 !important;
+      }
+      #PLUS {
+        background: url(widget.google.plus.png) no-repeat 0 0;
+        background-position: 6px 6px;
+      }
+      #GWS {
+        background-position: 0 -1925px;
+      }
+      #IMG {
+        background-position: 0 -805px;
+      }
+      #GMAIL {
+        background-position: 0 -595px;
+      }
+      #VOICE {
+        background-position: 0 -1890px;
+      }
+      #YT {
+        background-position: 0 -1995px;
+      }
+      #DOCS {
+        background-position: 0 -455px;
+      }
+      #CAL {
+        background-position: 0 -140px;
+      }
+      #MAPS {
+        background-position: 0 -910px;
+      }
+      #READER {
+        background-position: 0 -1400px;
       }
     </style>
   </head>
 
   <body>
     <a href="http://www.google.com/" target="_parent"><div id="google">&nbsp;</div></a>
+    <div id="services">
+      <a class="SVC" id="PLUS" href="https://plus.google.com/">&nbsp;</a>
+      <a class="SVC" id="GWS" href="https://www.google.com/">&nbsp;</a>
+      <a class="SVC" id="IMG" href="https://www.google.com/imghp">&nbsp;</a>
+      <a class="SVC" id="GMAIL" href="https://mail.google.com/">&nbsp;</a>
+      <a class="SVC" id="VOICE" href="https://www.google.com/voice/">&nbsp;</a>
+      <a class="SVC" id="YT" href="https://www.youtube.com/">&nbsp;</a>
+      <a class="SVC" id="DOCS" href="https://docs.google.com/">&nbsp;</a>
+      <a class="SVC" id="CAL" href="https://www.google.com/calendar/">&nbsp;</a>
+      <a class="SVC" id="MAPS" href="https://www.google.com/maps">&nbsp;</a>
+      <a class="SVC" id="READER" href="https://reader.google.com/">&nbsp;</a>
+    </div>
   </body>
 </html>
