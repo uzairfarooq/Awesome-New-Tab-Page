@@ -756,7 +756,7 @@
           $("body").css("background", $(this).val() );
 
           if($(this).val() === "") {
-            $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "260930"));
+            $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
           }
 
           localStorage.setItem("bg-img-css", $(this).val() );
@@ -899,10 +899,10 @@
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") || "Recently Closed Tabs" })
         );
 
-        $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "260930"));
+        $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
 
         $("#colorselector-bg").ColorPicker({
-          color: '#' + ( localStorage.getItem("color-bg") || 260930) ,
+          color: '#' + ( localStorage.getItem("color-bg") || "221f20") ,
           onShow: function (colpkr) {
             $(colpkr).fadeIn(500);
             return false;
