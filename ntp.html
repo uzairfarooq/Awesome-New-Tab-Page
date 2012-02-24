@@ -540,16 +540,18 @@
 
         function addShortcut(widget, top, left) {
           try {
-              widgets[widget] = {
-                where: [top,left],
-                size: [1,1],
-                type: "shortcut",
-                isApp: false,
-                name: "Google",
-                id: widget,
-                img: "core.shortcut.blank2.png",
-                appLaunchUrl: "http://www.google.com/",
-              };
+            widgets = JSON.parse(localStorage.getItem("widgets"));
+
+            widgets[widget] = {
+              where: [top,left],
+              size: [1,1],
+              type: "shortcut",
+              isApp: false,
+              name: "Google",
+              id: widget,
+              img: "core.shortcut.blank2.png",
+              appLaunchUrl: "http://www.google.com/",
+            };
 
             localStorageSync(false);
           }
@@ -560,10 +562,13 @@
 
         function updateWidget(widget, top, left) {
           try {
-            if(!widgets[widget]) return;
             widgets = JSON.parse(localStorage.getItem("widgets"));
+            if(!widgets[widget]) return;
+            console.log(widgets);
 
             widgets[widget].where = [top, left];
+
+            console.log(widgets);
 
             localStorageSync();
           }
