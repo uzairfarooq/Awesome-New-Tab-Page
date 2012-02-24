@@ -592,7 +592,7 @@ p.inline {
 }
 .perm-grid .tile {
   background-color: rgba(0, 0, 0, .2);
-  opacity: 1;
+  opacity: 1 !important;
 }
 .hide-app-names #widget-holder .app:not(.shortcut) .app-name {
   display:none;
