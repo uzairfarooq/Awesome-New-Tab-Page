@@ -715,7 +715,7 @@
         });
 
         $(".close,.ui-2.x").live("click", function(){
-          $(".ui-2").fadeOut();
+          $("body > .ui-2").fadeOut();
           $("#recently-closed-tabs-menu").fadeOut();
 
           $(".edit-shortcut-ui").remove();
