@@ -256,7 +256,7 @@
             stitch += 'data-tile-height="' + height + '" ';
             stitch += 'data-tile-width="' + width + '" ';
           } else if (type === "app-drawer") {
-            stitch += '<div class="widget drawer-app ui-2 ilb"';
+            stitch += '<div class="widget app drawer-app ui-2 ilb"';
             stitch += 'id="' + id + '" data-app-source="from-drawer" ';
             stitch += 'data-tile-height="1" data-tile-width="1" ';
           } else {
@@ -722,7 +722,7 @@
           hscroll = true;
         });
 
-        $(".url").live("mousedown", function(e){
+        $(".url").live("mouseup", function(e){
           if(lock === false && $(this).parent().parent().parent().is("#apps")) {
             return;
           }
@@ -738,7 +738,6 @@
                   // do nothing
               break;
           }
-          return true;// to allow the browser to know that we handled it.
         });
 
         $("#app-drawer-button").live("click", function(){
@@ -1054,12 +1053,14 @@
               $("#recently-closed-tabs").css("display", "block");
 
               $.each(bp.recently_closed, function(id, tab) {
-                $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
-                    <div class="rctm-icon">\
-                      <img src="chrome://favicon/'+tab.url+'">\
-                    </div>\
-                    <div class="rctm-link">'+( ((tab.title).length > 30) ? (tab.title).substr(0, 30)+" ..." : tab.title)+'</div>\
-                    </a>').appendTo("#recently-closed-tabs-menu");
+                if ( (tab.url).indexOf("chrome://") < 0 ) {
+                  $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
+                      <div class="rctm-icon">\
+                        <img src="chrome://favicon/'+tab.url+'">\
+                      </div>\
+                      <div class="rctm-link">'+ tab.title +'</div>\
+                      </a>').appendTo("#recently-closed-tabs-menu");
+                }
               });
             }
           }
@@ -1210,6 +1211,18 @@
           <p>Did you know that making a widget for Awesome New Tab Page is as easy as making a website?</p>
           <p>Learn more here:
             <u><a href="https://github.com/michaelhart/NTP-Widget-Shell/blob/master/background.html">github.com</a></u>.
+          </p>
+        </div>
+
+        <div id="about-rate" class="ui-2">
+          <h3>Rate</h3>
+          <p class="ilb">
+            <a href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg/reviews" class="bubble">
+              <img src="/images/ui-2/stars.png">
+            </a>
+          </p>
+          <p class="ilb">
+            Rate this extension
           </p>
         </div>
 
