@@ -8,7 +8,7 @@
  */
 
 var hscroll = true;
-$("#widget-drawer,#app-drawer,.edit-shortcut-ui,#options-ui").live({
+$("#widget-drawer,#app-drawer,.edit-shortcut-ui,#options-ui,.ui-2").live({
   mouseenter: function() {
     hscroll = false;
   },
