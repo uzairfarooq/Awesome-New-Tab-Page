@@ -15,7 +15,7 @@
 window.setTimeout(' window.location = window.location; ', 2*60*60*1000);
 
 
-var recently_closed = JSON.parse(localStorage.getItem("recently_closed")) || [], background_colors = JSON.parse(localStorage.getItem("background_colors")) || {};
+var recently_closed = JSON.parse(localStorage.getItem("recently_closed")) || [], background_colors = JSON.parse(localStorage.getItem("background_colors")) || {"empty": true};
 
 chrome.tabs.onRemoved.addListener( onRemoved );
 
@@ -131,18 +131,20 @@ function onMessage(msg) {
 }
 
 function cacheIconColor(ExtensionInfo) {
-  if (ExtensionInfo && ExtensionInfo.isApp) {
-    var img = new Image();
-	img.src = "chrome://extension-icon/" + ExtensionInfo.id + "/128/0"
-	img.onerror = function() {
-	  console.warn("Can't get icon for " + ExtensionInfo.id);
-	  return;
-	};
-	img.onload = function() {
-	  var output = background_colors[ExtensionInfo.id] = getAverageRGB(img);
-	  localStorage.setItem("background_colors", JSON.stringify(background_colors));
-	  console.log(ExtensionInfo.id, output);
-	};
+  try {
+    if (ExtensionInfo && ExtensionInfo.isApp) {
+      var img = new Image();
+	  img.onerror = function() {
+	    console.warn("Can't get icon for " + ExtensionInfo.id);
+	  };
+	  img.onload = function() {
+        var output = background_colors[ExtensionInfo.id] = getAverageRGB(img);
+	    localStorage.setItem("background_colors", JSON.stringify(background_colors));
+	  };
+	  img.src = "chrome://extension-icon/" + ExtensionInfo.id + "/128/0"
+    }
+  } catch(e) {
+    console.warn("Can't get icon for " + ExtensionInfo.id, e);
   }
 }
 
@@ -182,15 +184,10 @@ function getAverageRGB(imgEl) {
   return rgb;
 }
 
-window.onload = function() {
-  if(background_colors.length == 0) {
-    setTimeout(function() {
-      chrome.management.getAll(function(results){
-        for(var i = 0; i < results.length; i++) {
-	      cacheIconColor(results[i]);
-        }
-      });
-    },100);
+if (!localStorage.getItem("background_colors")) localStorage.setItem("background_colors", "{}");
+chrome.management.getAll(function(results) {
+  for(var i = 0; i < results.length; i++) {
+    cacheIconColor(results[i]);
   }
-};
+});
 </script>
