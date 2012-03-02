@@ -230,7 +230,7 @@
           if(!url) {
             if(id === "webstore") {
               url = "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage";
-			  background_color = {r:251,g:203,b:12};
+              background_color = {r:251,g:203,b:12};
             } else {
               return [false, "Not webstore & no URL"];
             }
@@ -241,14 +241,16 @@
           if(img === "id") {
             // if( type === ( "app" || "app-drawer" || "widget-drawer" ) ) {
               img = "chrome://extension-icon/" + id + "/128/0";
-			  background_color = chrome.extension.getBackgroundPage().background_color[id] || {r:0,g:0,b:0};
+			  if(id !== "webstore" && type === "app") {
+			    background_color = chrome.extension.getBackgroundPage().background_colors[id] || {r:0,g:0,b:0};
+              }
             // }
           }
 
           if(type === "app") {
             stitch += '<div class="widget app" style="position:absolute;';
 			if(background_color != {r:0,g:0,b:0}) {
-				stitch += 'background:rgb('+background_color.r+','+background_color.g+','+background_color.b+';';
+				stitch += 'background:rgba('+background_color.r+','+background_color.g+','+background_color.b+',0.9);';
 			}
 			stitch += '" ';
           } else if (type === "iframe") {
