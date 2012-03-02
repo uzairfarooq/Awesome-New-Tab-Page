@@ -128,6 +128,16 @@ body {
   cursor: pointer;
   display: none;
 }
+#shortcut-edit {
+  width: 48px;
+  height: 48px;
+  background-image: url("/images/core.edit.png");
+  cursor: pointer;
+  display: none;
+}
+#shortcut-edit:hover {
+  background-image: url("/images/core.edit_h.png")
+}
 #delete:hover,
 .locked #uninstall:hover {
   background-image: url("/images/core.delete_h.png")
