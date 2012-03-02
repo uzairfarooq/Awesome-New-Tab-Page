@@ -54,8 +54,6 @@ chrome.management.onInstalled.addListener( onInstalled );
 
 function onInstalled(ExtensionInfo) {
 
-  console.log(ExtensionInfo);
-
   recently_installed = ExtensionInfo;
 
   if (ExtensionInfo.isApp) {

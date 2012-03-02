@@ -138,9 +138,9 @@ function setStuff(){
         $(this).css("top", $(this).offset().top);
         $(this).css("position", "absolute");
         $(this).prependTo("body");
-        $("#app-drawer").css("display", "none");
-        $("#widget-drawer").css("display", "none");
-        $(".o1x1,.o1x2,.o1x3,.o2x1,.o2x2,.o2x3,.o3x1,.o3x2,.o3x3").css("opacity", "0");
+        $(".ui-2#apps").css("display", "none");
+        $(".ui-2#widgets").css("display", "none");
+        // $(".o1x1,.o1x2,.o1x3,.o2x1,.o2x2,.o2x3,.o3x1,.o3x2,.o3x3").css("opacity", "0");
       } else {
         var tiles = getCovered(this);
         $(tiles.tiles).each(function(ind, elem){
@@ -162,7 +162,7 @@ function setStuff(){
       $(".tile").removeClass("tile-red");
       $(".tile").css("z-index", "0");
 
-      $(".o1x1,.o1x2,.o1x3,.o2x1,.o2x2,.o2x3,.o3x1,.o3x2,.o3x3").css("opacity", "1");
+      // $(".o1x1,.o1x2,.o1x3,.o2x1,.o2x2,.o2x3,.o3x1,.o3x2,.o3x3").css("opacity", "1");
 
       $(this).removeClass("widget-drag");
 
@@ -229,9 +229,9 @@ function setStuff(){
       if( $(this).attr("data-app-source") === "from-drawer") {
         $(this).css("position", "static");
         if( $(this).attr("data-widget") === "true") {
-          $(this).prependTo("#widget-drawer");
+          $(this).prependTo(".ui-2#widgets > .contents");
         } else {
-          $(this).prependTo("#app-drawer");
+          $(this).prependTo(".ui-2#apps > .contents");
         }
       }
 

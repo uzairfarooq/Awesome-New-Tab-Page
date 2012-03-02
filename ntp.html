@@ -30,6 +30,7 @@
     <script type="text/javascript" src="/javascript/jquery.js"></script>
     <script type="text/javascript" src="/javascript/tilesystem.js"></script>
     <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
+    <script type="text/javascript" src="/javascript/center.js"></script>
 
     <script>
         var bp = chrome.extension.getBackgroundPage();
@@ -174,7 +175,7 @@
                     /*  Top: int                                          */  null,
                     /*  Left: int                                         */  null,
                     /*  Poke: int                                         */  null
-                  )).appendTo("#app-drawer");
+                  )).appendTo(".ui-2#apps > .contents");
               
                 }
               });
@@ -255,14 +256,14 @@
           } else if (type === "shortcut") {
             stitch += '<div class="widget app shortcut" style="position:absolute;" ';
           } else if (type === "widget-drawer") {
-            stitch += '<div class="widget app widget-drawer-app" ';
+            stitch += '<div class="widget app drawer-app ui-2 ilb" ';
             stitch += 'data-app-source="from-drawer" data-widget="true" data-stock="'+id+'" ';
             stitch += 'data-poke="' + poke + '" ';
             stitch += 'data-widget-src="' + url + '" ';
             stitch += 'data-tile-height="' + height + '" ';
             stitch += 'data-tile-width="' + width + '" ';
           } else if (type === "app-drawer") {
-            stitch += '<div class="widget app app-drawer-app" ';
+            stitch += '<div class="widget app drawer-app ui-2 ilb"';
             stitch += 'id="' + id + '" data-app-source="from-drawer" ';
             stitch += 'data-tile-height="1" data-tile-width="1" ';
           } else {
@@ -297,19 +298,26 @@
             stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
 
           } else if (type === "widget-drawer") {
-            stitch += '<img src="' + img + '"> ';
-            stitch += '<div class="app-name">' + name + '</div> ';
-            stitch += '<div class="app-mask">&nbsp;</div> ';
-            stitch += '<div class="iframe-mask o'+width+'x'+height+'"  ';
-            stitch += 'style="display: block !important;">&nbsp;</div> ';
+            stitch += '<img class="ui-2 ilb" src="' + img + '"> ';
+            stitch += '<div class="ui-2 drawer-app-name ilb">' + name + '</div> ';
+            // stitch += '<div class="app-mask">&nbsp;</div> ';
+            // stitch += '<div class="iframe-mask o'+width+'x'+height+'"  ';
+            // stitch += 'style="display: block !important;">&nbsp;</div> ';
+            stitch += '<div class="ui-2 drawer-app-wh ilb">'+width+' Wide, '+height+' Tall</div>';
+            if(id !== "webstore" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
+              stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
+            }
           } else if (type === "app-drawer") {
-            stitch += '<img src="' + img + '"> ';
-            stitch += '<div class="app-name">' + name + '</div> ';
+            stitch += '<img class="ui-2 ilb url" src="' + img + '" data-url="' + url + '">';
+            stitch += '<div class="ui-2 drawer-app-name ilb url"  data-url="' + url + '">' + name + '</div> ';
             // stitch += '<a href="' + url + '"><div class="app-mask"><div id="uninstall">&nbsp;</div></div></a> ';
-            stitch += '<div class="iframe-mask url" data-url="' + url + '"><div id="uninstall">&nbsp;</div></div> ';
+            // stitch += '<div class="iframe-mask url" data-url="' + url + '"><div id="uninstall">&nbsp;</div></div> ';
+            if(id !== "webstore" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
+              stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
+            }
           }
 
-          stitch += '<div>';
+          stitch += '</div>';
           // console.log(stitch);
           return stitch;
         }
@@ -493,7 +501,7 @@
             }
 
           var shortcut_ui = '<div class="edit-shortcut-ui ' + shortcut_id + '">';
-              shortcut_ui += '<div class="bubble bubble-grey opaque close">'
+              shortcut_ui += '<div class="bubble close">'
                 + chrome.i18n.getMessage("ui_button_close") + '</div>';
               shortcut_ui += '<p>'+chrome.i18n.getMessage("ui_shortcut_name")+'</p> <input id="shortcut_name" class="sid-i" type="text" data-sid="'
                 + $(shortcut_parent).attr("id") + '" value="'+$("#"+shortcut_id+" .app-name").html()+'" />';
@@ -669,7 +677,7 @@
         });
 
         $("#recently-closed-tabs").live('click', function() {
-          $(".close").trigger("click");
+          $(".close,.ui-2.x").trigger("click");
           $("#recently-closed-tabs-menu").toggle();
         });
 
@@ -713,34 +721,58 @@
           }
         });
 
-        $(".close").live("click", function(){
-          $("#app-drawer").fadeOut();
-          $("#widget-drawer").fadeOut();
-          $("#options-ui").fadeOut();
+        $(".close,.ui-2.x").live("click", function(){
+          $("body > .ui-2").fadeOut();
           $("#recently-closed-tabs-menu").fadeOut();
 
           $(".edit-shortcut-ui").remove();
           hscroll = true;
         });
 
-        $(".url").live("click", function(){
-          window.location = $(this).attr("data-url");
+        $(".url").live("mouseup", function(e){
+          if(lock === false && $(this).parent().parent().parent().is("#apps")) {
+            return;
+          }
+          switch(e.which)
+          {
+              case 1:
+                window.location = $(this).attr("data-url");
+              break;
+              case 2:
+                window.open($(this).attr("data-url"));
+              break;
+              case 3:
+                  // do nothing
+              break;
+          }
         });
 
         $("#app-drawer-button").live("click", function(){
-          $("#app-drawer").fadeToggle();
+          $(".ui-2#apps").fadeToggle();
 
-          $("#widget-drawer").fadeOut();
-          $("#options-ui").fadeOut();
+          $(".ui-2#widgets").fadeOut();
+          $(".ui-2#config").fadeOut();
           $("#recently-closed-tabs-menu").fadeOut();
+          $(".ui-2#about").fadeOut();
 
           $(".edit-shortcut-ui").remove();
 
         });
 
         var options_init = true;
-        $("#config-button").live("click", function(){
-          $("#options-ui").fadeToggle();
+        $("#config-button, .ui-2.config").live("click", function(){
+          $(".ui-2#config").fadeToggle();
+
+          $(".ui-2#widgets").fadeOut();
+          $(".ui-2#apps").fadeOut();
+          $("#recently-closed-tabs-menu").fadeOut();
+          $(".ui-2#about").fadeOut();
+
+          $(".edit-shortcut-ui").remove();
+        });
+
+        $("#logo-button, .ui-2.logo").live("click", function(){
+          $(".ui-2#about").fadeToggle();
 
           if(options_init === true) {
             options_init = false;
@@ -761,19 +793,20 @@
             })();
           }
 
-          $("#widget-drawer").fadeOut();
-          $("#app-drawer").fadeOut();
+          $(".ui-2#widgets").fadeOut();
+          $(".ui-2#apps").fadeOut();
           $("#recently-closed-tabs-menu").fadeOut();
+          $(".ui-2#config").fadeOut();
 
           $(".edit-shortcut-ui").remove();
         });
 
         $("#bg-img-css").live('keyup', function() {
-          $("body").css("background", "" );
-          $("body").css("background", $(this).val() );
+          $(".bg-color").css("background", "" );
+          $(".bg-color").css("background", $(this).val() );
 
           if($(this).val() === "") {
-            $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
+            $(".bg-color").css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
           }
 
           localStorage.setItem("bg-img-css", $(this).val() );
@@ -789,13 +822,15 @@
             });
           }
           
-          $("#widget-drawer").fadeToggle();
+          $(".ui-2#widgets").fadeToggle();
 
-          $("#app-drawer").fadeOut();
-          $("#options-ui").fadeOut();
+          $(".ui-2#apps").fadeOut();
+          $(".ui-2#config").fadeOut();
           $("#recently-closed-tabs-menu").fadeOut();
+          $(".ui-2#about").fadeOut();
 
-          $(".edit-shortcut-ui").remove();        });
+          $(".edit-shortcut-ui").remove();
+        });
 
         $("#delete").live("click", function(){
           var to_delete = null;
@@ -815,12 +850,11 @@
           }
         });
 
-        $("#uninstall").live("click", function(e){
+        $(".ui-2 .drawer-app-uninstall").live("click", function(e){
           var to_delete = null;
           var to_delete_name = null;
-          to_delete = $(this).parent().parent();
-          to_delete_name = $(to_delete).find(".app-name").html();
-          console.log(to_delete);
+          to_delete = $(this).parent();
+          to_delete_name = $(to_delete).find(".drawer-app-name").html();
 
           var r=confirm("Are you sure you want to uninstall " + to_delete_name + "?");
           if (r==true) {
@@ -883,40 +917,77 @@
         placeWidgets();
 
       var qtipShared = {
-            show: 'mouseover',
-            hide: 'mouseout',
-            style: {
-              name: 'dark',
-              tip: 'leftMiddle',
-            },
-            position: {
-              corner: {
-                 target: 'rightMiddle',
-                 tooltip: 'leftMiddle'
-              }
-            }
+        show: 'mouseover',
+        hide: 'mouseout',
+        style: {
+          name: 'dark',
+          tip: 'leftMiddle',
+        },
+        position: {
+          corner: {
+             target: 'rightMiddle',
+             tooltip: 'leftMiddle'
           }
+        }
+      }
 
-        $('#config-button').qtip(
-          $.extend({}, qtipShared, { content: 'Configure' })
+      var qtipUI2 = {
+        show: 'mouseover',
+        hide: 'mouseout',
+        style: {
+          name: 'dark',
+          tip: 'topMiddle',
+        },
+        position: {
+          corner: {
+             target: 'bottomMiddle',
+             tooltip: 'topMiddle'
+          },
+          adjust: {
+            screen: true
+          }
+        }
+      }
+
+        $(".ui-2.x").qtip(
+          $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_close") || "Close" })
         );
-        $('#app-drawer-button').qtip(
+        $(".ui-2.help").qtip(
+          $.extend({}, qtipUI2, { content: "Help" })
+        );
+
+        $(".ui-2.config").qtip(
+          $.extend({}, qtipUI2, { content: "Configure" })
+        );
+
+        $(".ui-2#apps .download").qtip(
+          $.extend({}, qtipUI2, { content: "Download Apps" })
+        );
+
+        $(".ui-2#widgets .download").qtip(
+          $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_download") || "Download Widgets" })
+        );
+
+        $("#config-button").qtip(
+          $.extend({}, qtipShared, { content: "Configure" })
+        );
+        $("#app-drawer-button").qtip(
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_apps") || "Apps" })
         );
-        $('#widget-drawer-button').qtip(
+        $("#widget-drawer-button").qtip(
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_widgets") || "Widgets" })
         );
-        $('#unlock-button').qtip(
+        $("#unlock-button").qtip(
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_unlock") || "Unlock" })
         );
-        $('#lock-button').qtip(
+        $("#lock-button").qtip(
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_lock") || "Lock to Interact with Apps and Widgets" })
         );
-        $('#recently-closed-tabs').qtip(
+        $("#recently-closed-tabs").qtip(
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") || "Recently Closed Tabs" })
         );
 
-        $('body').css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
+        $(".bg-color").css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
 
         $("#colorselector-bg").ColorPicker({
           color: '#' + ( localStorage.getItem("color-bg") || "221f20") ,
@@ -929,13 +1000,19 @@
             return false;
           },
           onChange: function (hsb, hex, rgb) {
-            $('body').css('backgroundColor', '#' + hex);
+            $(".bg-color").css('backgroundColor', '#' + hex);
             localStorage.setItem("color-bg", hex);
           }
         });
 
         $(".tile").animate({opacity: 0}, 500);
         chrome.management.getAll( setupDrawerApps );
+
+        $(".ui-2.container").center();
+
+        $(window).bind('resize scroll', function() {
+          $(".ui-2.container").center();
+        });
 
         setTimeout(function() {
 
@@ -983,12 +1060,14 @@
               $("#recently-closed-tabs").css("display", "block");
 
               $.each(bp.recently_closed, function(id, tab) {
-                $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
-                    <div class="rctm-icon">\
-                      <img src="chrome://favicon/'+tab.url+'">\
-                    </div>\
-                    <div class="rctm-link">'+( ((tab.title).length > 30) ? (tab.title).substr(0, 30)+" ..." : tab.title)+'</div>\
-                    </a>').appendTo("#recently-closed-tabs-menu");
+                if ( (tab.url).indexOf("chrome://") < 0 ) {
+                  $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
+                      <div class="rctm-icon">\
+                        <img src="chrome://favicon/'+tab.url+'">\
+                      </div>\
+                      <div class="rctm-link">'+ tab.title +'</div>\
+                      </a>').appendTo("#recently-closed-tabs-menu");
+                }
               });
             }
           }
@@ -1049,7 +1128,7 @@
     </script>
   </head>
 
-  <body>
+  <body class="bg-color">
     <div class="scroll-helper">
       <!-- Fixes an issue where scrolling sometimes didn't work. -->
     </div>
@@ -1058,103 +1137,105 @@
     <div id="widget-holder"></div>
 
     <div id="top-buttons">
-      <div id="config-button" class="bubble">
+      <div id="logo-button" class="side-button">
         &nbsp;
       </div>
-      <div id="app-drawer-button" class="bubble">
+      <div id="config-button" class="side-button">
         &nbsp;
       </div>
-      <div id="widget-drawer-button" class="bubble">
+      <div id="app-drawer-button" class="side-button">
         &nbsp;
       </div>
-      <div id="recently-closed-tabs" class="bubble hidden">
+      <div id="widget-drawer-button" class="side-button">
         &nbsp;
       </div>
-      <div id="lock-button" class="bubble hidden">
+      <div id="recently-closed-tabs" class="side-button hidden">
         &nbsp;
       </div>
-      <div id="unlock-button" class="bubble">
+      <div id="lock-button" class="side-button hidden">
+        &nbsp;
+      </div>
+      <div id="unlock-button" class="side-button">
         &nbsp;
       </div>
     </div>
-
-    <!--
-    <div id="top-right">
-      <div id="recently-closed-tabs" class="bubble hidden">
-        <script>document.write(chrome.i18n.getMessage("ui_button_rct"));</script>
-      </div>
-      <div id="download-widgets" class="bubble url" data-url="https://chrome.google.com/webstore/search/%22Awesome%20New%20Tab%20Page%22?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=antp-download-widgets">
-        <script>document.write(chrome.i18n.getMessage("ui_button_download"));</script>
-      </div>
-    </div>
-    -->
 
     <div id="recently-closed-tabs-menu"></div>
 
-    <div id="options-ui">
-      <div class="bubble bubble-grey opaque close">
-        <script>document.write(chrome.i18n.getMessage("ui_button_close"));</script>
+    <div id="about" class="ui-2 container">
+      <div class="ui-2 header">
+        <div class="ui-2 left">
+          <div class="ui-2 logo"></div>
+          <div class="ui-2 name">
+            Awesome New Tab Page
+            <span class="ui-2 crumb">&nbsp;</span>
+            <span class="ui-2 subname">About</span>
+          </div>
+        </div>
+        <div class="ui-2 right">
+          <div class="ui-2 config"></div>
+          <div class="ui-2 help url" data-url="https://ntp.uservoice.com/"></div>
+          <div class="ui-2 vr"></div>
+          <div class="ui-2 x"></div>
+        </div>
       </div>
 
-      <hr>
-
-      <a href="https://chrome.google.com/webstore/search/%22Awesome%20New%20Tab%20Page%22?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=antp-download-widgets">
-        <div class="bubble bubble-grey opaque">
-          <script>document.write(chrome.i18n.getMessage("ui_button_download"));</script>
-        </div>
-      </a>
-
-      <a href="https://ntp.uservoice.com/">
-        <div class="bubble bubble-grey opaque ib">
-          Help &amp; Feedback
-        </div>
-      </a>
-
-      <div id="reset-button" class="bubble bubble-grey opaque ib">
-        <script>document.write(chrome.i18n.getMessage("ui_button_reset"));</script>
-      </div>
-
-      <hr>
-
-      <h3><script>document.write(chrome.i18n.getMessage("ui_config_general"));</script></h3>
-        <div id="toggleBmb-holder">
-          <input id="toggleBmb" type="checkbox" name="show" value="true" />
-          <p class="inline"><script>document.write(chrome.i18n.getMessage("ui_config_bmb"));</script></p>
-        </div>
-        <p>This bookmark bar isn't as polished as it could be. I'm hoping Chrome's developers
-          hear my begging for an API to use the same in-page bookmark bar that the original NTP uses, but until then...</p>
-
-        <div id="toggle-grid-holder">
-          <input id="toggle-grid" type="checkbox" name="show" value="true" />
-          <p class="inline"><script>document.write(chrome.i18n.getMessage("ui_config_shgrid"));</script></p>
-        </div> 
-
-        <div id="toggle-app-names-holder">
-          <input id="toggle-app-names" type="checkbox" name="show" value="true" />
-          <p class="inline">Show / Hide App Names (On NTP Only)</p>
+      <div class="ui-2 contents">
+        <div id="about-contrib" class="ui-2">
+          <h3><script>document.write(chrome.i18n.getMessage("ui_config_contrib"));</script></h3>
+          <p>
+            This project wouldn't exist without the hard work, feedback, ideas, translations, and support by all of you.
+          </p>
+          <p class="ilb">
+            <a href="https://github.com/michaelhart/Awesome-New-Tab-Page/contributors" class="bubble">
+              Developers
+            </a>
+          </p>
+          <p class="ilb">
+            <a href="http://crowdin.net/project/antp" class="bubble">
+              Translators
+            </a>
+          </p>
+          <p class="ilb">
+            <a href="https://ntp.uservoice.com/forums/136895-feedback" class="bubble">
+              Users
+            </a>
+          </p>
+          <p>
+            Click the links above to see these awesome people in action!
+          </p>
         </div>
 
-        <div id="toggle-shortcut-names-holder">
-          <input id="toggle-shortcut-names" type="checkbox" name="show" value="true" />
-          <p class="inline">Show / Hide Shortcut Names + Favicons (On NTP Only)</p>
-        </div> 
+        <div id="about-dev" class="ui-2">
+          <h3>Developers</h3>
 
-      <h3><script>document.write(chrome.i18n.getMessage("ui_config_bg"));</script></h3>
-        <div id="colorselector-bg" class="bubble bubble-grey opaque">
-          <script>document.write(chrome.i18n.getMessage("ui_button_bgc"));</script>
-        </div>
-        <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg1"));</script></p>
-        <div class="p">
-          <input id="bg-img-css" type="text" name="bg-img-css" />
-        </div>
-        <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg2"));</script></p>
-        <pre>url('http://mh.mycdn.co/labs/antp/m.png') repeat right top</pre>
-        <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg3"));</script></p>
+          <p class="ilb">
+            <a href="https://github.com/michaelhart/Awesome-New-Tab-Page" class="bubble">
+              Fork Awesome New Tab Page
+            </a>
+          </p>
 
-      <hr>
-      <h3><script>document.write(chrome.i18n.getMessage("ui_config_share"));</script></h3>
-        <p><script>document.write(chrome.i18n.getMessage("ui_config_share1"));</script></p>
-        <div class="p center">
+          <p>Did you know that making a widget for Awesome New Tab Page is as easy as making a website?</p>
+          <p>Learn more here:
+            <u><a href="https://github.com/michaelhart/NTP-Widget-Shell/blob/master/background.html">github.com</a></u>.
+          </p>
+        </div>
+
+        <div id="about-rate" class="ui-2">
+          <h3>Rate</h3>
+          <p class="ilb">
+            <a href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg/reviews" class="bubble">
+              <img src="/images/ui-2/stars.png">
+            </a>
+          </p>
+          <p class="ilb">
+            Rate this extension
+          </p>
+        </div>
+
+        <div id="about-share" class="ui-2">
+          <h3><script>document.write(chrome.i18n.getMessage("ui_config_share"));</script></h3>
+          <p><script>document.write(chrome.i18n.getMessage("ui_config_share1"));</script></p>
           <g:plusone expandTo="top" size="medium"
           href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></g:plusone>
 
@@ -1167,59 +1248,142 @@
           <br />
 
           <g:plus href="https://plus.google.com/101062285048075360930" width="300" height="131" theme="light"></g:plus>
+        </div>
+      </div>
+    </div>
 
+    <div id="config" class="ui-2 container">
+      <div class="ui-2 header">
+        <div class="ui-2 left">
+          <div class="ui-2 logo"></div>
+          <div class="ui-2 name">
+            Awesome New Tab Page
+            <span class="ui-2 crumb">&nbsp;</span>
+            <span class="ui-2 subname">Configure</span>
+          </div>
+        </div>
+        <div class="ui-2 right">
+          <div class="ui-2 config"></div>
+          <div class="ui-2 help url" data-url="https://ntp.uservoice.com/"></div>
+          <div class="ui-2 vr"></div>
+          <div class="ui-2 x"></div>
+        </div>
+      </div>
+
+      <div class="ui-2 contents">
+        <div id="config-general" class="ui-2">
+          <h3><script>document.write(chrome.i18n.getMessage("ui_config_general"));</script></h3>
+          <div id="toggleBmb-holder">
+            <input id="toggleBmb" type="checkbox" name="show" value="true" />
+            <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_bmb"));</script></p>
+          </div>
+          <p>This bookmark bar isn't as polished as it could be. I'm hoping Chrome's developers
+            hear my begging for an API to use the same in-page bookmark bar that the original NTP uses, but until then...</p>
+
+          <div id="toggle-grid-holder">
+            <input id="toggle-grid" type="checkbox" name="show" value="true" />
+            <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_shgrid"));</script></p>
+          </div> 
+
+          <div id="toggle-app-names-holder">
+            <input id="toggle-app-names" type="checkbox" name="show" value="true" />
+            <p class="ilb">Show / Hide App Names (On NTP Only)</p>
+          </div>
+
+          <div id="toggle-shortcut-names-holder">
+            <input id="toggle-shortcut-names" type="checkbox" name="show" value="true" />
+            <p class="ilb">Show / Hide Shortcut Names + Favicons (On NTP Only)</p>
+          </div>
+
+          <div id="reset-button" class="bubble ilb">
+            <script>document.write(chrome.i18n.getMessage("ui_button_reset"));</script>
+          </div>
+          <p class="ilb">
+            This button will allow you to undo all changes you've made to Awesome New Tab Page.
+          </p>
         </div>
 
-      <hr>
-      <h3>Developers</h3>
-        <a href="https://github.com/michaelhart/Awesome-New-Tab-Page">
-          <div class="bubble bubble-grey opaque">
-            Fork - Awesome New Tab Page is Open Source (GPLv3)
+        <div id="config-background" class="ui-2">
+          <h3><script>document.write(chrome.i18n.getMessage("ui_config_bg"));</script></h3>
+
+          <div class="bubble ilb bg-color">
+            &nbsp;&nbsp;&nbsp;&nbsp;
           </div>
-        </a>
-
-        <p>Did you know that making a widget for Awesome New Tab Page is as easy as making a website?</p>
-        <p>Learn more here: <u><a href="https://github.com/michaelhart/NTP-Widget-Shell/blob/master/background.html">github.com</a></u>.
-
-      <hr>
-      <h3><script>document.write(chrome.i18n.getMessage("ui_config_contrib"));</script></h3>
-        <p>
-          Below are people that have in some way helped make this extension possible.
-          I can't thank them enough for their help.
-        </p>
-        <p><b>Me:</b> <span class="url" data-url="http://h4r7.me/">Michael Hart
-          (find me on <u>Google Plus</u>)</span>
-        <p><b>German Translators: </b> 
-          <a href="http://twitter.com/#!/Zerodime">Quintar "Zerodime" Farenor</a>
-        </p>
-        <p><b>Russian Translators: </b> 
-          &#1052;&#1080;&#1093;&#1072;&#1080;&#1083; m1 &#1042;&#1086;&#1088;&#1086;&#1073;&#1100;&#1077;&#1074;, 
-          Timur Gaskarov,
-          &#1044;&#1072;&#1085;&#1080;&#1080;&#1083; &#171;Grawl&#187; &#1055;&#1088;&#1086;&#1085;&#1080;&#1085;
-        </p>
-        <p>
-          Plus, of course, the amazing people who provide feedback to help make Awesome New
-          Tab Page even more Awesome. Thank you!
-        </p>
-    </div>
-
-    <div id="app-drawer">
-      <div class="bubble bubble-grey opaque close">
-        <script>document.write(chrome.i18n.getMessage("ui_button_close"));</script>
-      </div>
-      <div class="note">
-        <script>document.write(chrome.i18n.getMessage("ui_note_apps"));</script>
+          <div id="colorselector-bg" class="bubble ilb">
+            <script>document.write(chrome.i18n.getMessage("ui_button_bgc"));</script>
+          </div>
+          <p>
+            <script>document.write(chrome.i18n.getMessage("ui_config_bgimg1"));</script>
+            <a href="http://www.w3schools.com/css/tryit.asp?filename=trycss_background_shorthand2">
+              <u>Learn More</u>.
+            </a>
+          </p>
+          <p>
+            <input id="bg-img-css" type="text" name="bg-img-css" />
+          </p>
+          <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg2"));</script></p>
+          <pre>url('http://mh.mycdn.co/labs/antp/m.png') repeat right top</pre>
+          <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg3"));</script></p>
+        </div>
       </div>
     </div>
 
-    <div id="widget-drawer">
-      <div class="bubble bubble-grey opaque close">
+    <div id="apps" class="ui-2 container">
+      <div class="ui-2 header">
+        <div class="ui-2 left">
+          <div class="ui-2 logo"></div>
+          <div class="ui-2 name">
+            Awesome New Tab Page
+            <span class="ui-2 crumb">&nbsp;</span>
+            <span class="ui-2 subname">
+              <script>document.write(chrome.i18n.getMessage("ui_button_apps"));</script>
+            </span>
+          </div>
+        </div>
+        <div class="ui-2 right">
+          <div class="ui-2 download url" data-url="https://chrome.google.com/webstore/?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=antp-download-apps"></div>
+          <div class="ui-2 config"></div>
+          <div class="ui-2 help url" data-url="https://ntp.uservoice.com/"></div>
+          <div class="ui-2 vr"></div>
+          <div class="ui-2 x"></div>
+        </div>
+      </div>
+
+      <div class="ui-2 contents"></div>
+    </div>
+
+    <div id="widgets" class="ui-2 container">
+      <div class="ui-2 header">
+        <div class="ui-2 left">
+          <div class="ui-2 logo"></div>
+          <div class="ui-2 name">
+            Awesome New Tab Page
+            <span class="ui-2 crumb">&nbsp;</span>
+            <span class="ui-2 subname">
+              <script>document.write(chrome.i18n.getMessage("ui_button_widgets"));</script>
+            </span>
+          </div>
+        </div>
+        <div class="ui-2 right">
+          <div class="ui-2 download url" data-url="https://chrome.google.com/webstore/search/%22Awesome New Tab Page%22?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=antp-download-widgets"></div>
+          <div class="ui-2 config"></div>
+          <div class="ui-2 help url" data-url="https://ntp.uservoice.com/"></div>
+          <div class="ui-2 vr"></div>
+          <div class="ui-2 x"></div>
+        </div>
+      </div>
+
+      <div class="ui-2 contents"id="widget-drawer"></div>
+    </div>
+
+<!--     <div id="widget-drawer">
+      <div class="bubble close">
         <script>document.write(chrome.i18n.getMessage("ui_button_close"));</script>
       </div>
       <div class="note">
         <script>document.write(chrome.i18n.getMessage("ui_note_widgets"));</script>
       </div>
-    </div>
+    </div> -->
 
     <div id="groups">
 
