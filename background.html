@@ -58,6 +58,13 @@ function onInstalled(ExtensionInfo) {
 
   recently_installed = ExtensionInfo;
 
+  if (ExtensionInfo.isApp) {
+    var icons = JSON.parse(localStorage["appicons"] || "[]"), img = new Image();
+	img.src = "chrome://extension-icon/" + ExtensionInfo.id + "/128/0"
+	icons[ExtensionInfo.id] = getAverageRGB(img);
+	localStorage["appicons"] = JSON.stringify(icons);
+  }
+  
   setTimeout(function() {
     recently_installed = null;
   }, 5000);
@@ -126,5 +133,40 @@ function onMessage(msg) {
     return false;
   }
 
+}
+
+// From http://stackoverflow.com/a/2541680/709376
+function getAverageRGB(imgEl) {
+  var blockSize = 5,
+  defaultRGB = {r:0,g:0,b:0},
+  canvas = document.createElement('canvas'),
+  context = canvas.getContext && canvas.getContext('2d'),
+  data, width, height,
+  i = -4,
+  len,
+  rgb = {r:0,g:0,b:0},
+  count = 0;
+  if (!context) {
+    return defaultRGB;
+  }
+  height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
+  width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+  context.drawImage(imgEl, 0, 0);
+  try {
+    data = context.getImageData(0, 0, width, height);
+  } catch(e) {
+    return defaultRGB;
+  }
+  len = data.data.length;
+  while ( (i += blockSize * 4) < len ) {
+    ++count;
+    rgb.r += data.data[i];
+    rgb.g += data.data[i+1];
+    rgb.b += data.data[i+2];
+  }
+  rgb.r = ~~(rgb.r/count);
+  rgb.g = ~~(rgb.g/count);
+  rgb.b = ~~(rgb.b/count);
+  return rgb;
 }
 </script>
