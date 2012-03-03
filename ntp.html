@@ -537,6 +537,7 @@
           $(".ui-2#editor").attr("active-edit-type", shortcut_type);
 
           $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+"), " + gradient);
+          $(".ui-2#editor #preview-tile").css("background-color", widgets[id].color);
           $(".ui-2#editor #img_url").val( widgets[id].img );
           $(".ui-2#editor #editor-name").html( widgets[id].name );
           $(".ui-2#editor #preview-tile .app-name").html( widgets[id].name );
