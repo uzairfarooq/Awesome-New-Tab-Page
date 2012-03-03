@@ -250,6 +250,12 @@
               widgets[id].color = palette[Math.floor(Math.random() * palette.length)];
               localStorageSync(false);
             }
+
+            if(widgets[id].name_show === false) {
+              name_show = "opacity-0";
+            } else {
+              name_show = "";
+            }
           }
 
           if(height > 3 || width > 3) return [false, "Too big"];
@@ -305,7 +311,7 @@
 
           if(type === "app") {
             // stitch += '<img src="' + img + '" class="opacity-0"> ';
-            stitch += '<div class="app-name">' + name + '</div> ';
+            stitch += '<div class="app-name '+name_show+'">' + name + '</div> ';
             stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
             stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
           } else if (type === "iframe") {
@@ -315,7 +321,7 @@
           } else if (type === "shortcut") {
 
             // stitch += '<img src="' + img + '" class="opacity-0"> ';
-            stitch += '<div class="app-name">' + name + '</div> ';
+            stitch += '<div class="app-name '+name_show+'">' + name + '</div> ';
             stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
             stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
 

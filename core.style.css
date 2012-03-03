@@ -10,15 +10,6 @@
  *   http://www.gnu.org/licenses/gpl-3.0.txt
  *
  */
-.ilb {
-  display: inline-block;
-}
-.display-none {
-  display: none !important;
-}
-.opacity-0 {
-  opacity: 0 !important;
-}
 /*body > canvas {
   opacity: 0;
 }*/
@@ -778,4 +769,15 @@ body > .widget-drawer-app {
 }
 .ui-2#editor #shortcut_colorpicker {
   cursor: pointer;
+}
+
+
+.ilb {
+  display: inline-block;
+}
+.display-none {
+  display: none !important;
+}
+.opacity-0 {
+  opacity: 0;
 }
