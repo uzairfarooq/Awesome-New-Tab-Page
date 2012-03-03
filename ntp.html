@@ -31,6 +31,7 @@
     <script type="text/javascript" src="/javascript/tilesystem.js"></script>
     <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
     <script type="text/javascript" src="/javascript/center.js"></script>
+    <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
 
     <script>
         var bp = chrome.extension.getBackgroundPage();
@@ -130,6 +131,20 @@
           }
         };
 
+        var palette = 
+        [
+          "rgba(51, 153, 51, .5)",
+          "rgba(229, 20, 0, .5)",
+          "rgba(27, 161, 226, .5)",
+          "rgba(240, 150, 9, .5)",
+          "rgba(230, 113, 184, .5)",
+          "rgba(153, 102, 0, .5)",
+          "rgba(139, 207, 38, .5)",
+          "rgba(255, 0, 151, .5)",
+          "rgba(162, 0, 225, .5)",
+          "rgba(0, 171, 169, .5)"
+        ];
+
         if(JSON.parse(localStorage.getItem("widgets")) === null) {
           localStorage.setItem("widgets", JSON.stringify( stock_widgets ));
         }
@@ -209,23 +224,14 @@
         /*  Top: int                                            */
         /*  Left: int                                           */
         /*  Poke: int                                           */
+        var gradient = "-webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .05)), color-stop(0, rgba(255, 255, 255, 0.45)) )";
         function stitch(type, destination, id, name, url, img, height, width, top, left, poke) {
+          widgets = JSON.parse(localStorage.getItem("widgets"));
           var stitch = "";
-          var img_favicon = false;
-          var img_favicon_temp = false;
-		  var background_color = {r:0,g:0,b:0};
 
           if(!type || !destination || !height || !width) {
             return false;
           }
-
-          // if(destination === "home") {
-          //   if(!top || !left && top !== 0 && left !== 0) return false;
-          // }
-
-          // if( type === ( "app" || "app-drawer" || "widget-drawer" ) ) {
-          //   if(!name || !img) return false;
-          // }
 
           if(!url) {
             if(id === "webstore") {
@@ -236,27 +242,41 @@
             }
           }
 
+          if(type === "app" || type === "shortcut") {
+            if(widgets[id].color) {
+              background_color = widgets[id].color;
+            } else {
+              background_color = palette[Math.floor(Math.random() * palette.length)];
+              widgets[id].color = palette[Math.floor(Math.random() * palette.length)];
+              localStorageSync(false);
+            }
+          }
+
           if(height > 3 || width > 3) return [false, "Too big"];
 
           if(img === "id") {
             // if( type === ( "app" || "app-drawer" || "widget-drawer" ) ) {
               img = "chrome://extension-icon/" + id + "/128/0";
-			  if(id !== "webstore" && type === "app") {
-			    background_color = chrome.extension.getBackgroundPage().background_colors[id] || {r:0,g:0,b:0};
-              }
+              // if(id !== "webstore") {
+              //   if(type === "app" || type === "shortcut") {
+              //     background_color = chrome.extension.getBackgroundPage().background_colors[id] || {r:0,g:0,b:0};
+              //   }
+              // }
             // }
           }
 
           if(type === "app") {
-            stitch += '<div class="widget app" style="position:absolute;';
-			if(background_color != {r:0,g:0,b:0}) {
-				stitch += 'background:rgba('+background_color.r+','+background_color.g+','+background_color.b+',0.9);';
-			}
-			stitch += '" ';
+            stitch += '<div class="widget app" style="position:absolute; background-image: url('+encodeURI(img)+'), '+gradient+'; ';
+            stitch += 'background-color: ' + background_color + ';"';
+            // if(background_color != {r:0,g:0,b:0}) {
+            //   stitch += 'background-color: rgba('+background_color.r+','+background_color.g+','+background_color.b+',0.9);';
+            // }
+            stitch += '" ';
           } else if (type === "iframe") {
             stitch += '<div class="widget" style="position:absolute;" ';
           } else if (type === "shortcut") {
-            stitch += '<div class="widget app shortcut" style="position:absolute;" ';
+            stitch += '<div class="widget app shortcut" style="position:absolute; background-image: url('+encodeURI(img)+'), '+gradient+'; ';
+            stitch += 'background-color: ' + background_color + ';"';
           } else if (type === "widget-drawer") {
             stitch += '<div class="widget app drawer-app ui-2 ilb" ';
             stitch += 'data-app-source="from-drawer" data-widget="true" data-stock="'+id+'" ';
@@ -284,18 +304,18 @@
           stitch += '>\n';
 
           if(type === "app") {
-            stitch += '<img src="' + img + '"> ';
+            // stitch += '<img src="' + img + '" class="opacity-0"> ';
             stitch += '<div class="app-name">' + name + '</div> ';
             stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
-            stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div></div>\n ';
+            stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
           } else if (type === "iframe") {
             stitch += '<iframe src="' + url + '" scrolling="no" frameborder="0" ';
             stitch += 'align="center" height="100%" width="100%"></iframe> ';
             stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div></div>\n ';
           } else if (type === "shortcut") {
 
-            stitch += '<img src="' + img + '"> ';
-            stitch += '<div class="app-name" style="background-image: url(chrome://favicon/'+url+'); ">' + name + '</div> ';
+            // stitch += '<img src="' + img + '" class="opacity-0"> ';
+            stitch += '<div class="app-name">' + name + '</div> ';
             stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
             stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
 
@@ -484,69 +504,111 @@
           $(this).removeClass("add-shortcut").removeClass("empty");
         });
 
-        $("#shortcut-edit").live("click", function(){
-          var shortcut_parent = $(this).parent().parent()[0];
-
-          if( $(".edit-shortcut-ui").hasClass( $(shortcut_parent).attr("id") ) ) {
-            $(".edit-shortcut-ui").remove();
-            hscroll = true;
-            return;
-          }
-          $(".edit-shortcut-ui").remove();
-
-          if(!shortcut_parent) { return; }
-          var shortcut_id = $(shortcut_parent).attr("id");
-
-          var img_src = $("#"+shortcut_id+" img").attr("src");
-            if(img_src === "core.shortcut.blank2.png") {
-              img_src = "";
-            }
-
-          var shortcut_ui = '<div class="edit-shortcut-ui ' + shortcut_id + '">';
-              shortcut_ui += '<div class="bubble close">'
-                + chrome.i18n.getMessage("ui_button_close") + '</div>';
-              shortcut_ui += '<p>'+chrome.i18n.getMessage("ui_shortcut_name")+'</p> <input id="shortcut_name" class="sid-i" type="text" data-sid="'
-                + $(shortcut_parent).attr("id") + '" value="'+$("#"+shortcut_id+" .app-name").html()+'" />';
-              shortcut_ui += '<p>URL</p> <input id="shortcut_url" class="sid-i" type="text" data-sid="'
-              + $(shortcut_parent).attr("id") + '" value="'+$("#"+shortcut_id+" a").attr("href")+'" />';
-              shortcut_ui += '<p>'+chrome.i18n.getMessage("ui_shortcut_img")+'</p> <input id="img_url" class="sid-i" type="text" \
-                data-sid="' + $(shortcut_parent).attr("id") + '" value="'+img_src+'" />';
-              shortcut_ui += '<p>'+chrome.i18n.getMessage("ui_shortcut_img1")+'</p>';
-              shortcut_ui += '</div>';
-      
-          $(shortcut_ui).prependTo("body").css({
-            "left": $(shortcut_parent).position().left + 0 + 3,
-            "top": $(shortcut_parent).position().top + 3,
-            "display": "block"
-          })
+        $("#delete,#shortcut-edit").live("mousedown", function(e) {
+          e.stopPropagation();
+          e.preventDefault();
         });
 
-        $(".sid-i").live('keyup', updateShortcut);
+        $("#shortcut-edit").live("click", function(e){
+          var shortcut_parent = $(this).parent().parent()[0];
+          if(!shortcut_parent) { console.warn("!shortcut_parent", this, shortcut_parent); return; }
+
+          widgets = JSON.parse(localStorage.getItem("widgets"));
+          id = $(shortcut_parent)[0].id;
+          if(!widgets[id]) { console.warn("!widgets[id]", shortcut_parent, widgets); return; }
+
+          if(widgets[id].type && widgets[id].type === "shortcut") {
+            shortcut_type = "shortcut";
+            $(".hide-if-app").show();
+          } else {
+            shortcut_type = "app";
+            $(".hide-if-app").hide();
+          }
+
+          $(".ui-2#editor").fadeIn();
+
+          $(".ui-2#editor").attr("active-edit-id", id);
+          $(".ui-2#editor").attr("active-edit-type", shortcut_type);
+
+          $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+"), " + gradient);
+          $(".ui-2#editor #img_url").val( widgets[id].img );
+          $(".ui-2#editor #editor-name").html( widgets[id].name );
+          $(".ui-2#editor #preview-tile .app-name").html( widgets[id].name );
+          $(".ui-2#editor #shortcut_name").val( widgets[id].name );
+
+          if(widgets[id].name_show && widgets[id].name_show === false) {
+            $(".ui-2#editor #shortcut_name_show").prop("checked", false);
+            $(".ui-2#editor .app-name").css("opacity", 0);
+          } else {
+            $(".ui-2#editor #shortcut_name_show").prop("checked", true);
+            $(".ui-2#editor .app-name").css("opacity", 1);
+          }
+
+          $(".ui-2#editor #img_url").val( widgets[id].img );
+
+          $(".ui-2#editor #shortcut_url").val( widgets[id].url || widgets[id].appLaunchUrl );
+
+          $(".ui-2#editor #shortcut_colorpicker").ColorPicker({
+            color: '#' + ( widgets[$(".ui-2#editor").attr("active-edit-id")].color || "309492") ,
+            onShow: function (colpkr) {
+              widgets  = JSON.parse(localStorage.getItem("widgets"));
+              $(colpkr).fadeIn(500);
+              return false;
+            },
+            onHide: function (colpkr) {
+              $(colpkr).fadeOut(500);
+              return false;
+            },
+            onChange: function (hsb, hex, rgb) {
+              widgets  = JSON.parse(localStorage.getItem("widgets"));
+              var id = $(".ui-2#editor").attr("active-edit-id");
+              $("#"+id).css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.5)" );
+              $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.5)" );
+              widgets[id].color = "rgba("+rgb.r+","+rgb.g+","+rgb.b+", .5)";
+              localStorageSync(false);
+            }
+          });
+        });
+
+
+        $(".ui-2#editor input").live('keyup change', updateShortcut);
 
         function updateShortcut(e) {
           try {
-            var id   = $("#shortcut_name").attr("data-sid");
-            var name = $("#shortcut_name").val();
-            var url  = $("#shortcut_url").val();
-            var img  = $("#img_url").val();
+            console.log(e);
+            widgets  = JSON.parse(localStorage.getItem("widgets"));
+            var id   = $(".ui-2#editor").attr("active-edit-id");
+            var type = $(".ui-2#editor").attr("active-edit-type")
+            var name = $(".ui-2#editor #shortcut_name").val();
+            var url  = $(".ui-2#editor #shortcut_url").val();
+            var img  = $(".ui-2#editor #img_url").val();
+            var name_show  = $(".ui-2#editor #shortcut_name_show").is(':checked');
 
-            if(img === "") {
-              img = "core.shortcut.blank2.png";
+            widgets[id].name_show = name_show;
+            if(name_show === false) {
+              $(".ui-2#editor #shortcut_name_show").prop("checked", false);
+              $(".ui-2#editor .app-name").css("opacity", 0);
+              $("#"+id+" .app-name").css("opacity", 0);
+            } else {
+              $(".ui-2#editor #shortcut_name_show").prop("checked", true);
+              $(".ui-2#editor .app-name").css("opacity", 1);
+              $("#"+id+" .app-name").css("opacity", 1);
             }
 
-            if(name === "") {
-              name = "Please enter a name";
+            if(type === "shortcut") {
+              widgets[id].img = img;
+              $("#" + id).css("background-image", "url("+img+"), " + gradient);
+              $(".ui-2#editor #preview-tile").css("background-image", "url("+img+"), " + gradient);
+
+              $("#" + id + " a").attr("href", url);
+              widgets[id].appLaunchUrl = url;
+              widgets[id].url = url;
             }
-
-            $("#" + id + " img").attr("src", img);
-            widgets[id].img = img;
-
-            $("#" + id + " a").attr("href", url);
-            $("#" + id + " .app-name").css("background-image", "url(chrome://favicon/"+url+")");
-            widgets[id].appLaunchUrl = url;
 
             $("#" + id + " .app-name").html(name);
             widgets[id].name = name;
+            $(".ui-2#editor #editor-name").html( name );
+            $(".ui-2#editor #preview-tile .app-name").html( name );
 
             localStorageSync(false);
           }
@@ -581,11 +643,8 @@
           try {
             widgets = JSON.parse(localStorage.getItem("widgets"));
             if(!widgets[widget]) return;
-            console.log(widgets);
 
             widgets[widget].where = [top, left];
-
-            console.log(widgets);
 
             localStorageSync();
           }
@@ -732,9 +791,13 @@
         });
 
         $(".url").live("mouseup", function(e){
-          if(lock === false && $(this).parent().parent().parent().is("#apps")) {
-            return;
+          if(lock === false) {
+            if(  $(this).parent().is("body")
+              || $(this).parent().parent().is("body")) {
+              return;
+            }
           }
+
           switch(e.which)
           {
               case 1:
@@ -747,6 +810,8 @@
                   // do nothing
               break;
           }
+
+          e.preventDefault();
         });
 
         $("#app-drawer-button").live("click", function(){
@@ -757,6 +822,7 @@
           $("#recently-closed-tabs-menu").fadeOut();
           $(".ui-2#about").fadeOut();
 
+          $(".ui-2#editor").fadeOut();
           $(".edit-shortcut-ui").remove();
 
         });
@@ -770,6 +836,7 @@
           $("#recently-closed-tabs-menu").fadeOut();
           $(".ui-2#about").fadeOut();
 
+          $(".ui-2#editor").fadeOut();
           $(".edit-shortcut-ui").remove();
         });
 
@@ -800,6 +867,7 @@
           $("#recently-closed-tabs-menu").fadeOut();
           $(".ui-2#config").fadeOut();
 
+          $(".ui-2#editor").fadeOut();
           $(".edit-shortcut-ui").remove();
         });
 
@@ -831,6 +899,7 @@
           $("#recently-closed-tabs-menu").fadeOut();
           $(".ui-2#about").fadeOut();
 
+          $(".ui-2#editor").fadeOut();
           $(".edit-shortcut-ui").remove();
         });
 
@@ -918,38 +987,38 @@
       $(document).ready(function($) {
         placeWidgets();
 
-      var qtipShared = {
-        show: 'mouseover',
-        hide: 'mouseout',
-        style: {
-          name: 'dark',
-          tip: 'leftMiddle',
-        },
-        position: {
-          corner: {
-             target: 'rightMiddle',
-             tooltip: 'leftMiddle'
-          }
-        }
-      }
-
-      var qtipUI2 = {
-        show: 'mouseover',
-        hide: 'mouseout',
-        style: {
-          name: 'dark',
-          tip: 'topMiddle',
-        },
-        position: {
-          corner: {
-             target: 'bottomMiddle',
-             tooltip: 'topMiddle'
+        var qtipShared = {
+          show: 'mouseover',
+          hide: 'mouseout',
+          style: {
+            name: 'dark',
+            tip: 'leftMiddle',
           },
-          adjust: {
-            screen: true
+          position: {
+            corner: {
+               target: 'rightMiddle',
+               tooltip: 'leftMiddle'
+            }
           }
         }
-      }
+
+        var qtipUI2 = {
+          show: 'mouseover',
+          hide: 'mouseout',
+          style: {
+            name: 'dark',
+            tip: 'topMiddle',
+          },
+          position: {
+            corner: {
+               target: 'bottomMiddle',
+               tooltip: 'topMiddle'
+            },
+            adjust: {
+              screen: true
+            }
+          }
+        }
 
         $(".ui-2.x").qtip(
           $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_close") || "Close" })
@@ -988,6 +1057,30 @@
         $("#recently-closed-tabs").qtip(
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") || "Recently Closed Tabs" })
         );
+
+
+        $("#widget-holder > .shortcut > a").live('mouseup', function(e) {
+          console.log((this.href).indexOf("file://") != -1);
+          if( (this.href).indexOf("file://") != -1 ) {
+            console.log(e.which);
+            switch(e.which)
+            {
+                case 1:
+                  chrome.tabs.update(null, {url: (this.href)});
+                break;
+                case 2:
+                  chrome.tabs.create({url: (this.href)});
+                break;
+            }
+          }
+        });
+        $("#widget-holder > .shortcut > a").live('click', function(e) {
+          console.log(e);
+          if( (this.href).indexOf("file://") != -1 ) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        });
 
         $(".bg-color").css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
 
@@ -1091,7 +1184,7 @@
 
         if(localStorage.getItem("perm-grid") === "yes") {
           $("body").addClass("perm-grid");
-          $("#toggle-app-names").attr('checked', 'checked');
+          $("#toggle-grid").attr('checked', 'checked');
         }
 
         if(localStorage.getItem("hide-app-names") === null) {
@@ -1375,17 +1468,87 @@
         </div>
       </div>
 
-      <div class="ui-2 contents"id="widget-drawer"></div>
+      <div class="ui-2 contents" id="widget-drawer"></div>
     </div>
 
-<!--     <div id="widget-drawer">
-      <div class="bubble close">
-        <script>document.write(chrome.i18n.getMessage("ui_button_close"));</script>
+    <div id="editor" class="ui-2 container">
+      <div class="ui-2 header">
+        <div class="ui-2 left">
+          <div class="ui-2 logo"></div>
+          <div class="ui-2 name">
+            Awesome New Tab Page
+            <span class="ui-2 crumb">&nbsp;</span>
+            <span class="ui-2 subname">
+              Tile Editor
+            </span>
+            <span class="ui-2 crumb">&nbsp;</span>
+            <span class="ui-2 subname" id="editor-name">
+              &nbsp;
+            </span>
+          </div>
+        </div>
+        <div class="ui-2 right">
+          <div class="ui-2 config"></div>
+          <div class="ui-2 help url" data-url="https://ntp.uservoice.com/"></div>
+          <div class="ui-2 vr"></div>
+          <div class="ui-2 x"></div>
+        </div>
       </div>
-      <div class="note">
-        <script>document.write(chrome.i18n.getMessage("ui_note_widgets"));</script>
+
+      <div class="ui-2 contents">
+        <div id="tile-editor-right">
+            <h3>Name</h3>
+            <p>What do you want to call it?</p>
+            <input id="shortcut_name" type="text" />
+            <p>
+              <input id="shortcut_name_show" type="checkbox" />
+              Show / Hide Name
+            </p>
+
+            <h3>Color</h3>
+            <div id="shortcut_colorpicker" class="bubble ilb">
+              Change background color
+            </div>
+          <div class="hide-if-app">
+            <h3>URL</h3>
+            <p>Enter the URL you'd like to link to, such as http://www.google.com/</p>
+            <input id="shortcut_url" type="text" />
+            <p class="tip">
+              Note: This option is not available for installed apps.
+            </p>
+          </div>
+          <div class="hide-if-app">
+            <h3>Icon</h3>
+            <p>Enter a URL to an image to change the icon. 128px by 128px is recommended.</p>
+            <input id="img_url" type="text" />
+            <p class="tip">
+              Note: This option is not available for installed apps.
+            </p>
+            <p class="tip">
+              Advanced: Hide the name and use an image that's 200px by 200px to completely
+              customize the tile.
+            </p>
+          </div>
+
+        </div>
+        <div id="fake-tile-wrapper">
+          <h3>Preview</h3>
+          <div id="fake-tile-background" class="bg-color">
+            <div class="fake-tile" id="preview-tile">
+              <div class="app-name"></div>
+            </div>
+            <div class="fake-tile" id="ft1"></div>
+            <div class="fake-tile" id="ft2"></div>
+            <div class="fake-tile" id="ft3"></div>
+            <div class="fake-tile" id="ft4"></div>
+            <div class="fake-tile" id="ft5"></div>
+            <div class="fake-tile" id="ft6"></div>
+            <div class="fake-tile" id="ft7"></div>
+            <div class="fake-tile" id="ft8"></div>
+          </div>
+        </div>
       </div>
-    </div> -->
+    </div>
 
     <div id="groups">
 
@@ -1465,11 +1628,12 @@
     </script>
     <script type="text/javascript" src="/javascript/hscroll.js"></script>
     <script type="text/javascript" src="/javascript/bookmarkbar.js"></script>
-    <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-26076327-1']);
       _gaq.push(['_trackPageview']);
+
+      _gaq.push(['_trackEvent', 'Version', chrome.app.getDetails().version]);
 
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;

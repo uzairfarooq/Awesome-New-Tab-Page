@@ -13,6 +13,15 @@
 .ilb {
   display: inline-block;
 }
+.display-none {
+  display: none !important;
+}
+.opacity-0 {
+  opacity: 0 !important;
+}
+/*body > canvas {
+  opacity: 0;
+}*/
 a:link,
 a:visited,
 a:hover,
@@ -148,19 +157,12 @@ body {
   display: block
 }
 #widget-holder > .app,
-#widget-holder > .shortcut {
-  text-align: center
-}
-#widget-holder > .app img {
-  display: block;
-  margin: 0 auto;
-  padding-top: 15px;
-}
-#widget-holder > .shortcut .app-name {
-  padding-left: 25px;
+.ui-2#editor .fake-tile#preview-tile {
+  background-position: center center;
   background-repeat: no-repeat;
-  background-position: 4px 6px;
-  max-width: 150px;
+}
+#widget-holder .app-name {
+  background: transparent;
 }
 .app-mask {
   background-color: transparent;
@@ -175,19 +177,11 @@ body {
   -webkit-transform: scale(0.95);
 }
 .app-name {
-  max-height: 31px;
-  max-width: 175px;
-  overflow: hidden;
-  display: inline-block;
-  padding: 5px;
-  border-radius: 3px;
-  background-color: rgba(255,255,255,0.90);
-  border: 2px solid rgba(255,255,255,0.99);
-  margin-top: 7px;
-}
-.app:hover .app-name {
-  background-color: rgba(240,240,240,0.90);
-  border: 2px solid rgba(240,240,240,0.99);
+  position: absolute;
+  bottom: 5px;
+  left: 7px;
+  color: white;
+  word-wrap: break-word;
 }
 .note {
   position: absolute;
@@ -312,11 +306,6 @@ body {
   margin-left: 10px;
   margin-top: 10px;
   position: static;
-}
-.sid-i {
-  margin-left: 10px;
-  margin-right: 10px;
-  width: 161px;
 }
 .edit-shortcut-ui p {
   -webkit-margin-before: 10px;
@@ -687,7 +676,6 @@ body > .widget-drawer-app {
   word-wrap:break-word;
 
   overflow: hidden;
-  cursor: ;
 }
 .ui-2#apps .drawer-app-uninstall,
 .ui-2#widgets .drawer-app-uninstall {
@@ -710,4 +698,84 @@ body > .widget-drawer-app {
   height: 15px;
   cursor: pointer;
   margin: 0;
+}
+/* UI-2 Tile Editor */
+.ui-2#editor {
+  display: none;
+}
+.ui-2#editor #tile-editor-right {
+  width: 325px;
+
+  position: absolute;
+  left: 55px;
+}
+.ui-2#editor #fake-tile-wrapper {
+  width: 325px;
+
+  position: absolute;
+  right: 55px;
+}
+.ui-2#editor #fake-tile-background {
+  width: 325px;
+  height: 325px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 10px;
+}
+.ui-2#editor .fake-tile {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  opacity: 1 !important;
+  background-color: rgba(0, 0, 0, .2);
+}
+.ui-2#editor .fake-tile#preview-tile {
+  top: 62px;
+  right: 62px;
+  cursor: default;
+}
+.ui-2#editor .fake-tile#ft1 {
+  top: -144px;
+  left: -144px;
+}
+.ui-2#editor .fake-tile#ft2 {
+  top: -144px;
+  right: 62px;
+}
+.ui-2#editor .fake-tile#ft3 {
+  top: -144px;
+  right: -144px;
+}
+.ui-2#editor .fake-tile#ft4 {
+  top: 62px;
+  left: -144px;
+}
+.ui-2#editor .fake-tile#ft5 {
+  top: 62px;
+  right: -144px;
+}
+.ui-2#editor .fake-tile#ft6 {
+  top: 268px;
+  left: -144px;
+}
+.ui-2#editor .fake-tile#ft7 {
+  top: 268px;
+  right: 62px;
+}
+.ui-2#editor .fake-tile#ft8 {
+  top: 268px;
+  right: -144px;
+}
+.ui-2#editor input[type=input] {
+  margin-right: 10px;
+  width: 170px;
+}
+.ui-2#editor .tip {
+  font-style: italic;
+  border-left: 4px solid #E2E1DF;
+  padding-left: 5px;
+  font-size: 13px;
+}
+.ui-2#editor #shortcut_colorpicker {
+  cursor: pointer;
 }
