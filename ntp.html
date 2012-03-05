@@ -618,6 +618,9 @@
             var name_show  = $(".ui-2#editor #shortcut_name_show").is(':checked');
             var shortcut_background_transparent  = $(".ui-2#editor #shortcut_background_transparent").is(':checked');
 
+            if(id === "webstore") {
+              widgets[id].img = "/app.webstore.png";
+            }
 
             widgets[id].name_show = name_show;
             if(name_show === false) {
