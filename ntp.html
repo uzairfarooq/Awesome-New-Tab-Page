@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="/colorpicker/css/colorpicker.css" type="text/css" media="screen">
     <link rel="shortcut icon" href="/images/favicon-20111025.png">
 
-    <link rel="stylesheet" href="core.style.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="core.style.css?nocache=1" type="text/css" media="screen">
 
     <script type="text/javascript" src="/javascript/jquery.js"></script>
     <script type="text/javascript" src="/javascript/tilesystem.js"></script>
@@ -224,9 +224,10 @@
         /*  Top: int                                            */
         /*  Left: int                                           */
         /*  Poke: int                                           */
-        var gradient = "-webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .05)), color-stop(0, rgba(255, 255, 255, 0.45)) )";
+        var gradient = ", -webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .05)), color-stop(0, rgba(255, 255, 255, 0.45)) )";
         function stitch(type, destination, id, name, url, img, height, width, top, left, poke) {
           widgets = JSON.parse(localStorage.getItem("widgets"));
+
           var stitch = "";
 
           if(!type || !destination || !height || !width) {
@@ -246,8 +247,9 @@
             if(widgets[id].color) {
               background_color = widgets[id].color;
             } else {
-              background_color = palette[Math.floor(Math.random() * palette.length)];
-              widgets[id].color = palette[Math.floor(Math.random() * palette.length)];
+              new_background_color = palette[Math.floor(Math.random() * palette.length)];
+              background_color = new_background_color;
+              widgets[id].color = new_background_color;
               localStorageSync(false);
             }
 
@@ -255,6 +257,13 @@
               name_show = "opacity-0";
             } else {
               name_show = "";
+            }
+
+            if(widgets[id].shortcut_background_transparent && widgets[id].shortcut_background_transparent === true) {
+              background_color = "transparent";
+              use_gradient = "";
+            } else {
+              use_gradient = gradient;
             }
           }
 
@@ -272,7 +281,7 @@
           }
 
           if(type === "app") {
-            stitch += '<div class="widget app" style="position:absolute; background-image: url('+encodeURI(img)+'), '+gradient+'; ';
+            stitch += '<div class="widget app" style="position:absolute; background-image: url('+encodeURI(img)+')'+use_gradient+'; ';
             stitch += 'background-color: ' + background_color + ';"';
             // if(background_color != {r:0,g:0,b:0}) {
             //   stitch += 'background-color: rgba('+background_color.r+','+background_color.g+','+background_color.b+',0.9);';
@@ -281,7 +290,7 @@
           } else if (type === "iframe") {
             stitch += '<div class="widget" style="position:absolute;" ';
           } else if (type === "shortcut") {
-            stitch += '<div class="widget app shortcut" style="position:absolute; background-image: url('+encodeURI(img)+'), '+gradient+'; ';
+            stitch += '<div class="widget app shortcut" style="position:absolute; background-image: url('+encodeURI(img)+')'+use_gradient+'; ';
             stitch += 'background-color: ' + background_color + ';"';
           } else if (type === "widget-drawer") {
             stitch += '<div class="widget app drawer-app ui-2 ilb" ';
@@ -531,13 +540,25 @@
             $(".hide-if-app").hide();
           }
 
+          if(id === "webstore") {
+            widgets[id].img = "/app.webstore.png";
+          }
+
           $(".ui-2#editor").fadeIn();
 
           $(".ui-2#editor").attr("active-edit-id", id);
           $(".ui-2#editor").attr("active-edit-type", shortcut_type);
 
-          $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+"), " + gradient);
-          $(".ui-2#editor #preview-tile").css("background-color", widgets[id].color);
+          if(widgets[id].shortcut_background_transparent && widgets[id].shortcut_background_transparent === true) {
+            $(".ui-2#editor #shortcut_background_transparent").prop("checked", true);
+            $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+")");
+            $(".ui-2#editor #preview-tile").css("background-color", "transparent");
+          } else {
+            $(".ui-2#editor #shortcut_background_transparent").prop("checked", false);
+            $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+")" + gradient);
+            $(".ui-2#editor #preview-tile").css("background-color", widgets[id].color);
+          }
+
           $(".ui-2#editor #img_url").val( widgets[id].img );
           $(".ui-2#editor #editor-name").html( widgets[id].name );
           $(".ui-2#editor #preview-tile .app-name").html( widgets[id].name );
@@ -555,8 +576,11 @@
 
           $(".ui-2#editor #shortcut_url").val( widgets[id].url || widgets[id].appLaunchUrl );
 
+          var rgb = [];
+          rgb = (widgets[$(".ui-2#editor").attr("active-edit-id")].color).match(/(rgba?)|(\d+(\.\d+)?%?)|(\.\d+)/g);
+
           $(".ui-2#editor #shortcut_colorpicker").ColorPicker({
-            color: '#' + ( widgets[$(".ui-2#editor").attr("active-edit-id")].color || "309492") ,
+            color: ( ({ r: rgb[1], g: rgb[2], b: rgb[3] }) || "#309492") ,
             onShow: function (colpkr) {
               widgets  = JSON.parse(localStorage.getItem("widgets"));
               $(colpkr).fadeIn(500);
@@ -575,6 +599,8 @@
               localStorageSync(false);
             }
           });
+
+          $(".ui-2#editor #shortcut_colorpicker").ColorPickerSetColor( ({ r: rgb[1], g: rgb[2], b: rgb[3] }) );
         });
 
 
@@ -590,22 +616,37 @@
             var url  = $(".ui-2#editor #shortcut_url").val();
             var img  = $(".ui-2#editor #img_url").val();
             var name_show  = $(".ui-2#editor #shortcut_name_show").is(':checked');
+            var shortcut_background_transparent  = $(".ui-2#editor #shortcut_background_transparent").is(':checked');
+
 
             widgets[id].name_show = name_show;
             if(name_show === false) {
               $(".ui-2#editor #shortcut_name_show").prop("checked", false);
               $(".ui-2#editor .app-name").css("opacity", 0);
-              $("#"+id+" .app-name").css("opacity", 0);
+              $("#widget-holder #"+id+" .app-name").css("opacity", 0);
             } else {
               $(".ui-2#editor #shortcut_name_show").prop("checked", true);
               $(".ui-2#editor .app-name").css("opacity", 1);
-              $("#"+id+" .app-name").css("opacity", 1);
+              $("#widget-holder #"+id+" .app-name").css("opacity", 1);
+            }
+
+            widgets[id].shortcut_background_transparent = shortcut_background_transparent;
+            if(widgets[id].shortcut_background_transparent && widgets[id].shortcut_background_transparent === true) {
+              $("#widget-holder #"+id).css("background-image", "url("+widgets[id].img+")");
+              $("#widget-holder #"+id).css("background-color", "transparent");
+              $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+")");
+              $(".ui-2#editor #preview-tile").css("background-color", "transparent");
+            } else {
+              $("#widget-holder #"+id).css("background-image", "url("+widgets[id].img+")" + gradient);
+              $("#widget-holder #"+id).css("background-color", widgets[id].color);
+              $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+")" + gradient);
+              $(".ui-2#editor #preview-tile").css("background-color", widgets[id].color);
             }
 
             if(type === "shortcut") {
               widgets[id].img = img;
-              $("#" + id).css("background-image", "url("+img+"), " + gradient);
-              $(".ui-2#editor #preview-tile").css("background-image", "url("+img+"), " + gradient);
+              $("#" + id).css("background-image", "url("+img+")" + gradient);
+              $(".ui-2#editor #preview-tile").css("background-image", "url("+img+")" + gradient);
 
               $("#" + id + " a").attr("href", url);
               widgets[id].appLaunchUrl = url;
@@ -798,12 +839,12 @@
         });
 
         $(".url").live("mouseup", function(e){
-          if(lock === false) {
-            if(  $(this).parent().is("body")
-              || $(this).parent().parent().is("body")) {
-              return;
-            }
-          }
+          // if(lock === false) {
+          //   if(  $(this).parent().is("body")
+          //     || $(this).parent().parent().is("body")) {
+          //     return;
+          //   }
+          // }
 
           switch(e.which)
           {
@@ -818,7 +859,7 @@
               break;
           }
 
-          e.preventDefault();
+          // e.preventDefault();
         });
 
         $("#app-drawer-button").live("click", function(){
@@ -961,6 +1002,12 @@
             $("#lock-button").css("display", "block");
             $("#unlock-button").css("display", "none");
             $(".tile").addClass("tile-grid");
+
+            $(".ui-2#apps .drawer-app .url").removeClass("url").addClass("disabled-url");
+            setTimeout(function() {
+              $(".ui-2#apps .drawer-app .url").removeClass("url").addClass("disabled-url");
+            }, 200);
+
           } else {
             // Lock
             lock = true;
@@ -974,6 +1021,11 @@
             $("#unlock-button").css("display", "block");
             $("#lock-button").css("display", "none");
             $(".tile").removeClass("tile-grid");
+
+            $(".ui-2#apps .drawer-app .url").removeClass("disabled-url").addClass("url");
+            setTimeout(function() {
+              $(".ui-2#apps .drawer-app .url").removeClass("disabled-url").addClass("url");
+            }, 250);
           }
         });
 
@@ -1536,14 +1588,27 @@
               customize the tile.
             </p>
           </div>
+        </div>
+
+        <div id="tile-editor-left">
+          <h3>Completely Transparent Background</h3>
+          <p>
+            <input id="shortcut_background_transparent" type="checkbox" />
+            Disable this tile's background
+          </p>
+          <p class="tip">
+            Tip: If you check this box, you may also want to hide the name.
+          </p>
 
         </div>
+
         <div id="fake-tile-wrapper">
           <h3>Preview</h3>
           <div id="fake-tile-background" class="bg-color">
             <div class="fake-tile" id="preview-tile">
               <div class="app-name"></div>
             </div>
+            <div class="fake-tile" id="ft0"></div>
             <div class="fake-tile" id="ft1"></div>
             <div class="fake-tile" id="ft2"></div>
             <div class="fake-tile" id="ft3"></div>

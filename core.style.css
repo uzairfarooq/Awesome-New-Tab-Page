@@ -700,6 +700,13 @@ body > .widget-drawer-app {
   position: absolute;
   left: 55px;
 }
+.ui-2#editor #tile-editor-left {
+  width: 325px;
+
+  position: absolute;
+  right: 55px;
+  top: 320px;
+}
 .ui-2#editor #fake-tile-wrapper {
   width: 325px;
 
@@ -708,7 +715,7 @@ body > .widget-drawer-app {
 }
 .ui-2#editor #fake-tile-background {
   width: 325px;
-  height: 325px;
+  height: 275px;
   overflow: hidden;
   position: relative;
   margin-top: 10px;
@@ -721,40 +728,45 @@ body > .widget-drawer-app {
   background-color: rgba(0, 0, 0, .2);
 }
 .ui-2#editor .fake-tile#preview-tile {
-  top: 62px;
+  top: 37px;
+  right: 62px;
+  cursor: default;
+}
+.ui-2#editor .fake-tile#ft0 {
+  top: 37px;
   right: 62px;
   cursor: default;
 }
 .ui-2#editor .fake-tile#ft1 {
-  top: -144px;
+  top: -169px;
   left: -144px;
 }
 .ui-2#editor .fake-tile#ft2 {
-  top: -144px;
+  top: -169px;
   right: 62px;
 }
 .ui-2#editor .fake-tile#ft3 {
-  top: -144px;
+  top: -169px;
   right: -144px;
 }
 .ui-2#editor .fake-tile#ft4 {
-  top: 62px;
+  top: 37px;
   left: -144px;
 }
 .ui-2#editor .fake-tile#ft5 {
-  top: 62px;
+  top: 37px;
   right: -144px;
 }
 .ui-2#editor .fake-tile#ft6 {
-  top: 268px;
+  top: 243px;
   left: -144px;
 }
 .ui-2#editor .fake-tile#ft7 {
-  top: 268px;
+  top: 243px;
   right: 62px;
 }
 .ui-2#editor .fake-tile#ft8 {
-  top: 268px;
+  top: 243px;
   right: -144px;
 }
 .ui-2#editor input[type=input] {
