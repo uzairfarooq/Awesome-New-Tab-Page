@@ -608,7 +608,6 @@
 
         function updateShortcut(e) {
           try {
-            console.log(e);
             widgets  = JSON.parse(localStorage.getItem("widgets"));
             var id   = $(".ui-2#editor").attr("active-edit-id");
             var type = $(".ui-2#editor").attr("active-edit-type")
@@ -632,6 +631,15 @@
             }
 
             widgets[id].shortcut_background_transparent = shortcut_background_transparent;
+
+            if(type === "shortcut") {
+              widgets[id].img = img;
+
+              $("#" + id + " a").attr("href", url);
+              widgets[id].appLaunchUrl = url;
+              widgets[id].url = url;
+            }
+
             if(widgets[id].shortcut_background_transparent && widgets[id].shortcut_background_transparent === true) {
               $(".ui-2#editor #preview-tile, #widget-holder #"+id)
                 .css("background-image", "url("+widgets[id].img+")")
@@ -640,12 +648,6 @@
               $(".ui-2#editor #preview-tile, #widget-holder #"+id)
                 .css("background-image", "url("+widgets[id].img+")" + gradient)
                 .css("background-color", widgets[id].color);
-            }
-
-            if(type === "shortcut") {
-              $("#" + id + " a").attr("href", url);
-              widgets[id].appLaunchUrl = url;
-              widgets[id].url = url;
             }
 
             $("#" + id + " .app-name, .ui-2#editor #editor-name, .ui-2#editor #preview-tile .app-name").html(name);
