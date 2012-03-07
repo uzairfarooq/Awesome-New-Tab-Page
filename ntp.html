@@ -54,6 +54,7 @@
             isApp: true,
             enabled: true,
             name: "Chrome Web Store",
+            color: "rgba(0, 16, 186, 0.5)",
             id: "webstore",
             stock: true,
             img: "app.webstore.png",
@@ -102,12 +103,15 @@
           fandango: {
             where: [2,1],
             size: [1,1],
-            type: "iframe",
-            isApp: false,
+            type: "app",
+            isApp: true,
             stock: true,
             name: "Fandango (Stock)",
+            name_show: false,
+            color: "rgba(10, 58, 148, .5)",
+            img: "/widgets/widget.fandango.png",
+            url: "http://gan.doubleclick.net/gan_click?lid=41000000032569141&amp;pubid=21000000000503246",
             id: "fandango",
-            path: "widgets/widget.fandango.html",
           },
           amazon: {
             where: [2,2],
@@ -131,6 +135,10 @@
           }
         };
 
+        if(JSON.parse(localStorage.getItem("widgets")) === null) {
+          localStorage.setItem("widgets", JSON.stringify( stock_widgets ));
+        }
+
         var palette = 
         [
           "rgba(51, 153, 51, .5)",
@@ -145,10 +153,6 @@
           "rgba(0, 171, 169, .5)"
         ];
 
-        if(JSON.parse(localStorage.getItem("widgets")) === null) {
-          localStorage.setItem("widgets", JSON.stringify( stock_widgets ));
-        }
-
         function localStorageSync(re) {
           localStorage.setItem("widgets", JSON.stringify( widgets ));
 
@@ -160,46 +164,36 @@
         widgets = JSON.parse(localStorage.getItem("widgets"));
 
         function setupDrawerApps(_extensions) {
-          // try {
-            if($.isArray( _extensions )) {
+          if($.isArray( _extensions )) {
 
-              extensions = _extensions;
-              _extensions.push(stock_widgets.webstore);
+            extensions = _extensions;
+            _extensions.push(stock_widgets.webstore);
+            _extensions.push(stock_widgets.fandango);
 
-              $.each(_extensions, function(index, value) {
-                if(value.isApp === true && value.enabled === true) {
-                  // console.log(value.name, value);
-
-                  // $('<a href="' + value.appLaunchUrl + '" id="' + value.id + '" class="app-drawer-app widget"><img src="chrome://extension-icon/' + value.id + '/128/0" height="128">' + value.name + '</a>').prependTo("#app-drawer");
-
-                  if(value.stock === true) {
-                    var app_img_url = value.img;
-                  } else {
-                    var app_img_url = "chrome://extension-icon/" + value.id + "/128/0";
-                  }
-
-                  $(stitch(
-                    /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "app-drawer",
-                    /*  Destination: str [home, app-drawer, widget-drawer]*/  "app-drawer",
-                    /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  value.id,
-                    /*  Ext. Name: str [Awesome New Tab Page]             */  value.name,
-                    /*  URL: str, can be iframe or app url                */  value.appLaunchUrl,
-                    /*  Img: str, full path or [id]                       */  ( app_img_url ),
-                    /*  Height: int [1, 2, 3]                             */  1,
-                    /*  Width: int [1, 2, 3]                              */  1,
-                    /*  Top: int                                          */  null,
-                    /*  Left: int                                         */  null,
-                    /*  Poke: int                                         */  null
-                  )).appendTo(".ui-2#apps > .contents");
-              
+            $.each(_extensions, function(index, value) {
+              if(value.isApp === true && value.enabled === true) {
+                if(value.stock === true) {
+                  var app_img_url = value.img;
+                } else {
+                  var app_img_url = "chrome://extension-icon/" + value.id + "/128/0";
                 }
-              });
 
-            }
-          // }
-          // catch (err) {
-          //   _e(1);
-          // }
+                $(stitch(
+                  /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "app-drawer",
+                  /*  Destination: str [home, app-drawer, widget-drawer]*/  "app-drawer",
+                  /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  value.id,
+                  /*  Ext. Name: str [Awesome New Tab Page]             */  value.name,
+                  /*  URL: str, can be iframe or app url                */  value.appLaunchUrl,
+                  /*  Img: str, full path or [id]                       */  ( app_img_url ),
+                  /*  Height: int [1, 2, 3]                             */  1,
+                  /*  Width: int [1, 2, 3]                              */  1,
+                  /*  Top: int                                          */  null,
+                  /*  Left: int                                         */  null,
+                  /*  Poke: int                                         */  null
+                )).appendTo(".ui-2#apps > .contents");
+              }
+            });
+          }
         }
 
         // Listen to background.html
@@ -224,7 +218,7 @@
         /*  Top: int                                            */
         /*  Left: int                                           */
         /*  Poke: int                                           */
-        var gradient = ", -webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .05)), color-stop(0, rgba(255, 255, 255, 0.45)) )";
+        var gradient = ", -webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .04)), color-stop(0, rgba(255, 255, 255, 0.35)) )";
         function stitch(type, destination, id, name, url, img, height, width, top, left, poke) {
           widgets = JSON.parse(localStorage.getItem("widgets"));
 
@@ -237,7 +231,6 @@
           if(!url) {
             if(id === "webstore") {
               url = "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage";
-              background_color = {r:251,g:203,b:12};
             } else {
               return [false, "Not webstore & no URL"];
             }
@@ -270,14 +263,15 @@
           if(height > 3 || width > 3) return [false, "Too big"];
 
           if(img === "id") {
-            // if( type === ( "app" || "app-drawer" || "widget-drawer" ) ) {
+            if(type === "app" || type === "shortcut") {
+              if(widgets[id].stock === true && widgets[id].type === "app") {
+                img = widgets[id].img;
+              } else {
+                img = "chrome://extension-icon/" + id + "/128/0";
+              }
+            } else {
               img = "chrome://extension-icon/" + id + "/128/0";
-              // if(id !== "webstore") {
-              //   if(type === "app" || type === "shortcut") {
-              //     background_color = chrome.extension.getBackgroundPage().background_colors[id] || {r:0,g:0,b:0};
-              //   }
-              // }
-            // }
+            }
           }
 
           if(type === "app") {
@@ -361,7 +355,7 @@
 
         // Only handles 1 at a time; widget
         function setupDrawerWidgets(_widget) {
-          try {
+          // try {
             if(!_widget.request || !_widget.sender) {
               return false;
             }
@@ -405,10 +399,10 @@
 
               return;
             }
-          }
-          catch (err) {
-            _e(5);
-          }
+          // }
+          // catch (err) {
+          //   _e(5);
+          // }
         }
 
         function placeWidgets() {
@@ -564,7 +558,7 @@
           $(".ui-2#editor #editor-name, .ui-2#editor #preview-tile .app-name").html( widgets[id].name );
           $(".ui-2#editor #shortcut_name").val( widgets[id].name );
 
-          if(widgets[id].name_show && widgets[id].name_show === false) {
+          if(typeof( widgets[id] ) != "undefined" && widgets[id].name_show === false) {
             $(".ui-2#editor #shortcut_name_show").prop("checked", false);
             $(".ui-2#editor .app-name").css("opacity", 0);
           } else {
@@ -597,6 +591,7 @@
               $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.5)" );
               widgets[id].color = "rgba("+rgb.r+","+rgb.g+","+rgb.b+", .5)";
               localStorageSync(false);
+              updateShortcut();
             }
           });
 
@@ -833,13 +828,6 @@
         });
 
         $(".url").live("mouseup", function(e){
-          // if(lock === false) {
-          //   if(  $(this).parent().is("body")
-          //     || $(this).parent().parent().is("body")) {
-          //     return;
-          //   }
-          // }
-
           switch(e.which)
           {
               case 1:
@@ -852,8 +840,6 @@
                   // do nothing
               break;
           }
-
-          // e.preventDefault();
         });
 
         $("#app-drawer-button").live("click", function(){
@@ -926,13 +912,13 @@
 
         var widgets_shown = false;
         $("#widget-drawer-button").live("click", function(){
-          if(widgets_shown === false) {
-            widgets_shown = true;
-            port.postMessage({
-              fn: "setupDrawerWidgets",
-              data: extensions,
-            });
-          }
+          // if(widgets_shown === false) {
+          //   widgets_shown = true;
+          //   port.postMessage({
+          //     fn: "setupDrawerWidgets",
+          //     data: extensions,
+          //   });
+          // }
           
           $(".ui-2#widgets").fadeToggle();
 
@@ -1016,9 +1002,9 @@
             $("#lock-button").css("display", "none");
             $(".tile").removeClass("tile-grid");
 
-            $(".ui-2#apps .drawer-app .url").removeClass("disabled-url").addClass("url");
+            $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
             setTimeout(function() {
-              $(".ui-2#apps .drawer-app .url").removeClass("disabled-url").addClass("url");
+              $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
             }, 250);
           }
         });
@@ -1162,14 +1148,14 @@
         setTimeout(function() {
 
           $.each(stock_widgets, function(id, widget){
-            if(widget.isApp === false && widget.type !== "shortcut") {
+            if(widget.isApp === false && widget.type !== "shortcut" && widget.type !== "app") {
               setupDrawerWidgets({
                 request: {
                   body: {
                     height: widget.size[0],
                     width: widget.size[1],
                     path: widget.path,
-                    poke: 1
+                    poke: 1,
                   },
                   head: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback"
                 },
@@ -1177,7 +1163,7 @@
                   id: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg",
                   name: widget.name,
                   stock: id,
-                  tab: null
+                  tab: null,
                 }
               });
             }
