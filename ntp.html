@@ -519,7 +519,7 @@
           $(this).removeClass("add-shortcut").removeClass("empty");
         });
 
-        $("#delete,#shortcut-edit").live("mousedown", function(e) {
+        $("#delete,#shortcut-edit").live("mousedown mouseup move", function(e) {
           e.stopPropagation();
           e.preventDefault();
         });
@@ -529,8 +529,8 @@
           if(!shortcut_parent) { console.warn("!shortcut_parent", this, shortcut_parent); return; }
 
           widgets = JSON.parse(localStorage.getItem("widgets"));
-          id = $(shortcut_parent)[0].id;
-          if(!widgets[id]) { console.warn("!widgets[id]", shortcut_parent, widgets); return; }
+          var id = $(shortcut_parent)[0].id;
+          if(!widgets[id]) { console.warn("!widgets["+id+"]", shortcut_parent, widgets); return; }
 
           if(widgets[id].type && widgets[id].type === "shortcut") {
             shortcut_type = "shortcut";
@@ -544,24 +544,24 @@
             widgets[id].img = "/app.webstore.png";
           }
 
-          $(".ui-2#editor").fadeIn();
-
-          $(".ui-2#editor").attr("active-edit-id", id);
-          $(".ui-2#editor").attr("active-edit-type", shortcut_type);
+          $(".ui-2#editor")
+            .fadeIn()
+            .attr("active-edit-id", id)
+            .attr("active-edit-type", shortcut_type);
 
           if(widgets[id].shortcut_background_transparent && widgets[id].shortcut_background_transparent === true) {
             $(".ui-2#editor #shortcut_background_transparent").prop("checked", true);
-            $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+")");
-            $(".ui-2#editor #preview-tile").css("background-color", "transparent");
+            $(".ui-2#editor #preview-tile")
+              .css("background-image", "url("+widgets[id].img+")")
+              .css("background-color", "transparent");
           } else {
             $(".ui-2#editor #shortcut_background_transparent").prop("checked", false);
-            $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+")" + gradient);
-            $(".ui-2#editor #preview-tile").css("background-color", widgets[id].color);
+            $(".ui-2#editor #preview-tile")
+              .css("background-image", "url("+widgets[id].img+")" + gradient)
+              .css("background-color", widgets[id].color);
           }
 
-          $(".ui-2#editor #img_url").val( widgets[id].img );
-          $(".ui-2#editor #editor-name").html( widgets[id].name );
-          $(".ui-2#editor #preview-tile .app-name").html( widgets[id].name );
+          $(".ui-2#editor #editor-name, .ui-2#editor #preview-tile .app-name").html( widgets[id].name );
           $(".ui-2#editor #shortcut_name").val( widgets[id].name );
 
           if(widgets[id].name_show && widgets[id].name_show === false) {
@@ -625,41 +625,30 @@
             widgets[id].name_show = name_show;
             if(name_show === false) {
               $(".ui-2#editor #shortcut_name_show").prop("checked", false);
-              $(".ui-2#editor .app-name").css("opacity", 0);
-              $("#widget-holder #"+id+" .app-name").css("opacity", 0);
+              $(".ui-2#editor .app-name, #widget-holder #"+id+" .app-name").css("opacity", 0);
             } else {
               $(".ui-2#editor #shortcut_name_show").prop("checked", true);
-              $(".ui-2#editor .app-name").css("opacity", 1);
-              $("#widget-holder #"+id+" .app-name").css("opacity", 1);
+              $(".ui-2#editor .app-name, #widget-holder #"+id+" .app-name").css("opacity", 1);
             }
 
             widgets[id].shortcut_background_transparent = shortcut_background_transparent;
             if(widgets[id].shortcut_background_transparent && widgets[id].shortcut_background_transparent === true) {
-              $("#widget-holder #"+id).css("background-image", "url("+widgets[id].img+")");
-              $("#widget-holder #"+id).css("background-color", "transparent");
-              $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+")");
-              $(".ui-2#editor #preview-tile").css("background-color", "transparent");
+              $(".ui-2#editor #preview-tile, #widget-holder #"+id)
+                .css("background-image", "url("+widgets[id].img+")")
+                .css("background-color", "transparent");
             } else {
-              $("#widget-holder #"+id).css("background-image", "url("+widgets[id].img+")" + gradient);
-              $("#widget-holder #"+id).css("background-color", widgets[id].color);
-              $(".ui-2#editor #preview-tile").css("background-image", "url("+widgets[id].img+")" + gradient);
-              $(".ui-2#editor #preview-tile").css("background-color", widgets[id].color);
+              $(".ui-2#editor #preview-tile, #widget-holder #"+id)
+                .css("background-image", "url("+widgets[id].img+")" + gradient)
+                .css("background-color", widgets[id].color);
             }
 
             if(type === "shortcut") {
-              widgets[id].img = img;
-              $("#" + id).css("background-image", "url("+img+")" + gradient);
-              $(".ui-2#editor #preview-tile").css("background-image", "url("+img+")" + gradient);
-
               $("#" + id + " a").attr("href", url);
               widgets[id].appLaunchUrl = url;
               widgets[id].url = url;
             }
 
-            $("#" + id + " .app-name").html(name);
-            widgets[id].name = name;
-            $(".ui-2#editor #editor-name").html( name );
-            $(".ui-2#editor #preview-tile .app-name").html( name );
+            $("#" + id + " .app-name, .ui-2#editor #editor-name, .ui-2#editor #preview-tile .app-name").html(name);
 
             localStorageSync(false);
           }
@@ -1122,9 +1111,7 @@
 
 
         $("#widget-holder > .shortcut > a").live('mouseup', function(e) {
-          console.log((this.href).indexOf("file://") != -1);
           if( (this.href).indexOf("file://") != -1 ) {
-            console.log(e.which);
             switch(e.which)
             {
                 case 1:
@@ -1137,7 +1124,6 @@
           }
         });
         $("#widget-holder > .shortcut > a").live('click', function(e) {
-          console.log(e);
           if( (this.href).indexOf("file://") != -1 ) {
             e.preventDefault();
             e.stopPropagation();
