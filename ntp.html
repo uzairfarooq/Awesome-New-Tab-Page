@@ -14,27 +14,29 @@
      -
      -->
     <title>New Tab</title>
+    <link rel="canonical" href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg" />
+    <link rel="publisher" href="https://plus.google.com/101062285048075360930" />
+    <link rel="shortcut icon" href="/images/favicon-20111025.png">
 
     <link
       href='http://fonts.googleapis.com/css?family=Droid+Sans&subset=latin'
       rel='stylesheet' type='text/css'>
 
-    <link rel="canonical" href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg" />
-    <link rel="publisher" href="https://plus.google.com/101062285048075360930" />
+
     <link rel="stylesheet" href="/css/core.bookmarkbar.css" type="text/css" media="screen">
     <link rel="stylesheet" href="/colorpicker/css/colorpicker.css" type="text/css" media="screen">
-    <link rel="shortcut icon" href="/images/favicon-20111025.png">
 
-    <link rel="stylesheet" href="core.style.css?nocache=1" type="text/css" media="screen">
+    <link rel="stylesheet" href="core.style.css?nocache=2" type="text/css" media="screen">
 
     <script type="text/javascript" src="/javascript/jquery.js"></script>
     <script type="text/javascript" src="/javascript/tilesystem.js"></script>
+
     <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
     <script type="text/javascript" src="/javascript/center.js"></script>
     <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
 
     <script>
-        var bp = chrome.extension.getBackgroundPage();
+        // var bp = chrome.extension.getBackgroundPage();
         var port = chrome.extension.connect({name: "NTP-Port"});
         var extensions = {};
         var widgets = {};
@@ -47,7 +49,7 @@
           window.location.reload( false );
         }
 
-        stock_widgets = {
+        var stock_widgets = {
           webstore: {
             where: [2,3],
             size: [1,1],
@@ -105,12 +107,13 @@
             size: [1,1],
             type: "app",
             isApp: true,
+            enabled: true,
             stock: true,
             name: "Fandango (Stock)",
             name_show: false,
             color: "rgba(10, 58, 148, .5)",
             img: "/widgets/widget.fandango.png",
-            url: "http://gan.doubleclick.net/gan_click?lid=41000000032569141&amp;pubid=21000000000503246",
+            appLaunchUrl: "http://gan.doubleclick.net/gan_click?lid=41000000032569141&amp;pubid=21000000000503246",
             id: "fandango",
           },
           amazon: {
@@ -229,10 +232,10 @@
           }
 
           if(!url) {
-            if(id === "webstore") {
-              url = "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage";
+            if( typeof(stock_widgets[id] !== undefined ) ) {
+              url = stock_widgets[id].appLaunchUrl;
             } else {
-              return [false, "Not webstore & no URL"];
+              console.warn( [false, "Not stock & no URL"] );
             }
           }
 
@@ -258,29 +261,21 @@
             } else {
               use_gradient = gradient;
             }
+
+            if(type === "app" && typeof(stock_widgets[id] !== undefined ) ) {
+              img = stock_widgets[id].img;
+            }
           }
 
           if(height > 3 || width > 3) return [false, "Too big"];
 
           if(img === "id") {
-            if(type === "app" || type === "shortcut") {
-              if(widgets[id].stock === true && widgets[id].type === "app") {
-                img = widgets[id].img;
-              } else {
-                img = "chrome://extension-icon/" + id + "/128/0";
-              }
-            } else {
-              img = "chrome://extension-icon/" + id + "/128/0";
-            }
+            img = "chrome://extension-icon/" + id + "/128/0";
           }
 
           if(type === "app") {
             stitch += '<div class="widget app" style="position:absolute; background-image: url('+encodeURI(img)+')'+use_gradient+'; ';
-            stitch += 'background-color: ' + background_color + ';"';
-            // if(background_color != {r:0,g:0,b:0}) {
-            //   stitch += 'background-color: rgba('+background_color.r+','+background_color.g+','+background_color.b+',0.9);';
-            // }
-            stitch += '" ';
+            stitch += 'background-color: ' + background_color + ';" ';
           } else if (type === "iframe") {
             stitch += '<div class="widget" style="position:absolute;" ';
           } else if (type === "shortcut") {
@@ -313,7 +308,6 @@
           stitch += '>\n';
 
           if(type === "app") {
-            // stitch += '<img src="' + img + '" class="opacity-0"> ';
             stitch += '<div class="app-name '+name_show+'">' + name + '</div> ';
             stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
             stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
@@ -322,18 +316,12 @@
             stitch += 'align="center" height="100%" width="100%"></iframe> ';
             stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div></div>\n ';
           } else if (type === "shortcut") {
-
-            // stitch += '<img src="' + img + '" class="opacity-0"> ';
             stitch += '<div class="app-name '+name_show+'">' + name + '</div> ';
             stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
             stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
-
           } else if (type === "widget-drawer") {
             stitch += '<img class="ui-2 ilb" src="' + img + '"> ';
             stitch += '<div class="ui-2 drawer-app-name ilb">' + name + '</div> ';
-            // stitch += '<div class="app-mask">&nbsp;</div> ';
-            // stitch += '<div class="iframe-mask o'+width+'x'+height+'"  ';
-            // stitch += 'style="display: block !important;">&nbsp;</div> ';
             stitch += '<div class="ui-2 drawer-app-wh ilb">'+width+' Wide, '+height+' Tall</div>';
             if(id !== "webstore" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
               stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
@@ -341,9 +329,7 @@
           } else if (type === "app-drawer") {
             stitch += '<img class="ui-2 ilb url" src="' + img + '" data-url="' + url + '">';
             stitch += '<div class="ui-2 drawer-app-name ilb url"  data-url="' + url + '">' + name + '</div> ';
-            // stitch += '<a href="' + url + '"><div class="app-mask"><div id="uninstall">&nbsp;</div></div></a> ';
-            // stitch += '<div class="iframe-mask url" data-url="' + url + '"><div id="uninstall">&nbsp;</div></div> ';
-            if(id !== "webstore" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
+            if(id !== "webstore" && id !== "fandango" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
               stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
             }
           }
@@ -734,6 +720,7 @@
                 id: widget,
                 img: widget_img,
                 url: appLaunchUrl,
+                appLaunchUrl: appLaunchUrl,
               };
             }
 
@@ -878,6 +865,14 @@
               var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
               po.src = 'https://apis.google.com/js/plusone.js';
               var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+
+            (function() {
+                var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+                t.parentNode.insertBefore(s, t);
             })();
 
             (function() {
@@ -1178,32 +1173,6 @@
           });
         }, 1000);
 
-        setTimeout(function() {
-          if(bp) {
-            // if(bp.recently_installed) {
-            //   if(bp.recently_installed.isApp === false) {
-            //     return;
-            //   }
-            //   $('#app-drawer-button').trigger('click');
-            // }
-
-            if(bp.recently_closed) {
-              $("#recently-closed-tabs").css("display", "block");
-
-              $.each(bp.recently_closed, function(id, tab) {
-                if ( (tab.url).indexOf("chrome://") < 0 ) {
-                  $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
-                      <div class="rctm-icon">\
-                        <img src="chrome://favicon/'+tab.url+'">\
-                      </div>\
-                      <div class="rctm-link">'+ tab.title +'</div>\
-                      </a>').appendTo("#recently-closed-tabs-menu");
-                }
-              });
-            }
-          }
-        }, 750);
-
         if(localStorage.getItem("showbmb") === null) {
           localStorage.setItem("showbmb", "no");
         }
@@ -1352,14 +1321,24 @@
           </p>
         </div>
 
+        <div id="about-flattr" class="ui-2">
+          <h3>Flattr</h3>
+          <p class="ilb">
+            Support Awesome New Tab Page with a flattr donation.
+          </p>
+          <p class="ilb">
+            <a class="FlattrButton" style="display:none;" href="http://antp.co"></a>
+          </p>
+        </div>
+
         <div id="about-rate" class="ui-2">
           <h3>Rate</h3>
-          <p class="ilb">
+          <p>
             <a href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg/reviews" class="bubble">
               <img src="/images/ui-2/stars.png">
             </a>
           </p>
-          <p class="ilb">
+          <p>
             Rate this extension
           </p>
         </div>
