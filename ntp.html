@@ -910,13 +910,13 @@
 
         var widgets_shown = false;
         $("#widget-drawer-button").live("click", function(){
-          // if(widgets_shown === false) {
-          //   widgets_shown = true;
-          //   port.postMessage({
-          //     fn: "setupDrawerWidgets",
-          //     data: extensions,
-          //   });
-          // }
+          if(widgets_shown === false) {
+            widgets_shown = true;
+            port.postMessage({
+              fn: "setupDrawerWidgets",
+              data: extensions,
+            });
+          }
           
           $(".ui-2#widgets").fadeToggle();
 
@@ -1169,12 +1169,12 @@
 
         }, 500);
 
-        setTimeout(function() {
-          port.postMessage({
-            fn: "setupDrawerWidgets",
-            data: extensions,
-          });
-        }, 1000);
+        // setTimeout(function() {
+        //   port.postMessage({
+        //     fn: "setupDrawerWidgets",
+        //     data: extensions,
+        //   });
+        // }, 1000);
 
         if(localStorage.getItem("showbmb") === null) {
           localStorage.setItem("showbmb", "no");
