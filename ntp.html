@@ -634,6 +634,7 @@
             }
 
             $("#" + id + " .app-name, .ui-2#editor #editor-name, .ui-2#editor #preview-tile .app-name").html(name);
+            widgets[id].name = name;
 
             localStorageSync(false);
           }
