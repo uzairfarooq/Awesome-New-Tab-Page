@@ -15,7 +15,7 @@
 window.setTimeout(' window.location = window.location; ', 2*60*60*1000);
 
 
-var recently_closed = JSON.parse(localStorage.getItem("recently_closed")) || [], background_colors = JSON.parse(localStorage.getItem("background_colors")) || {"empty": true};
+var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
 
 chrome.tabs.onRemoved.addListener( onRemoved );
 
