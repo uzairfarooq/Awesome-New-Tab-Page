@@ -85,7 +85,7 @@
             path: "widgets/widget.clock.html",
           },
           notepad: {
-            where: [1,2],
+            where: [2,2],
             size: [1,1],
             type: "iframe",
             isApp: false,
@@ -113,14 +113,14 @@
             stock: true,
             name: "Fandango (Stock)",
             name_show: false,
-            color: "rgba(10, 58, 148, .7)",
+            color: "rgba(255, 51, 0, .7)",
             img: "/widgets/widget.fandango.png",
             simg: "/widgets/widget.fandango.png",
             appLaunchUrl: "http://gan.doubleclick.net/gan_click?lid=41000000032569141&amp;pubid=21000000000503246",
             id: "fandango",
           },
           amazon: {
-            where: [2,2],
+            where: [1,2],
             size: [1,1],
             type: "app",
             isApp: true,
@@ -133,6 +133,36 @@
             simg: "/widgets/widget.amazon.png",
             appLaunchUrl: "http://www.amazon.com/?tag=sntp-20",
             id: "amazon",
+          },
+          facebook: {
+            where: [0,4],
+            size: [1,1],
+            type: "app",
+            isApp: true,
+            enabled: true,
+            stock: true,
+            name: "Facebook (Stock)",
+            name_show: false,
+            color: "rgba(8, 0, 250, .7)",
+            img: "/widgets/widget.facebook.png",
+            simg: "/widgets/widget.facebook.png",
+            appLaunchUrl: "http://www.facebook.com/",
+            id: "facebook",
+          },
+          twitter: {
+            where: [1,4],
+            size: [1,1],
+            type: "app",
+            isApp: true,
+            enabled: true,
+            stock: true,
+            name: "Twitter (Stock)",
+            name_show: false,
+            color: "rgba(51, 204, 255, .7)",
+            img: "/widgets/widget.twitter.png",
+            simg: "/widgets/widget.twitter.png",
+            appLaunchUrl: "http://www.twitter.com/",
+            id: "twitter",
           },
           tv: {
             where: [2,0],
@@ -181,6 +211,8 @@
             _extensions.push(stock_widgets.webstore);
             _extensions.push(stock_widgets.fandango);
             _extensions.push(stock_widgets.amazon);
+            _extensions.push(stock_widgets.facebook);
+            _extensions.push(stock_widgets.twitter);
 
             $.each(_extensions, function(index, value) {
               if(value.isApp === true && value.enabled === true) {
@@ -341,14 +373,18 @@
             }
           } else if (type === "app-drawer") {
             if( url && (url).match(amazon_regex) ) {
-              if(localStorage["amazon-locale"] !== null && localStorage["amazon-locale"] !== "") {
-                url = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
+              if (localStorage["amazon-locale"] !== null
+                && localStorage["amazon-locale"] !== ""
+                && typeof(localStorage["amazon-locale"]) !== "undefined") {
+                this.href = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
+              } else {
+                $(this).attr("data-url", "http://www.amazon.com/?tag=sntp-20");
               }
             }
 
             stitch += '<img class="ui-2 ilb url" src="' + img + '" data-url="' + url + '">';
             stitch += '<div class="ui-2 drawer-app-name ilb url"  data-url="' + url + '">' + name + '</div> ';
-            if(id !== "webstore" && id !== "fandango" && id !== "amazon" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
+            if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter", "mgmiemnjjchgkmgbeljfocdjjnpjnmcg"]) === -1 ) {
               stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
             }
           }
@@ -539,7 +575,7 @@
             $(".hide-if-app").hide();
           }
 
-          if ( $.inArray(id, ["webstore", "amazon", "fandango"]) !== -1 ) {
+          if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter"]) !== -1 ) {
             widgets[id].img = stock_widgets[id].simg;
             console.log(stock_widgets[id].simg);
           }
@@ -618,7 +654,7 @@
             var name_show  = $(".ui-2#editor #shortcut_name_show").is(':checked');
             var shortcut_background_transparent  = $(".ui-2#editor #shortcut_background_transparent").is(':checked');
 
-            if ( $.inArray(id, ["webstore", "amazon", "fandango"]) !== -1 ) {
+            if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter"]) !== -1 ) {
               widgets[id].img = stock_widgets[id].simg;
               console.log(stock_widgets[id].simg);
             }
@@ -1116,8 +1152,12 @@
 
         $("#widget-holder > .app > a").live('mouseup', function(e) {
           if( (this.href).match(amazon_regex) ) {
-            if(localStorage["amazon-locale"] !== null && localStorage["amazon-locale"] !== "") {
+            if (localStorage["amazon-locale"] !== null
+              && localStorage["amazon-locale"] !== ""
+              && typeof(localStorage["amazon-locale"]) !== "undefined") {
               this.href = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
+            } else {
+              $(this).attr("data-url", "http://www.amazon.com/?tag=sntp-20");
             }
           }
 
@@ -1212,16 +1252,19 @@
 
           $("#recently-closed-tabs").css("display", "block");
 
-          $.each(recently_closed, function(id, tab) {
-            if ( (tab.url).indexOf("chrome://") < 0 ) {
-              $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
-                  <div class="rctm-icon">\
-                    <img src="chrome://favicon/'+tab.url+'">\
-                  </div>\
-                  <div class="rctm-link">'+ tab.title +'</div>\
-                  </a>').appendTo("#recently-closed-tabs-menu");
-            }
-          });
+          if(recently_closed !== null) {
+            $.each(recently_closed, function(id, tab) {
+              console.log( (tab.url).indexOf("chrome://")  )
+              if ( (tab.url).indexOf("chrome://") < 0 ) {
+                $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
+                    <div class="rctm-icon">\
+                      <img src="chrome://favicon/'+tab.url+'">\
+                    </div>\
+                    <div class="rctm-link">'+ tab.title +'</div>\
+                    </a>').appendTo("#recently-closed-tabs-menu");
+              }
+            });
+          }
         }, 750);
 
 

@@ -30,6 +30,10 @@ function onRemoved(tabId) {
     return;
   }
 
+  if (recently_closed === null) {
+    recently_closed = [];
+  }
+
   recently_closed.unshift({title: tab.title, url: tab.url});
 
   if(recently_closed.length > 15) {
