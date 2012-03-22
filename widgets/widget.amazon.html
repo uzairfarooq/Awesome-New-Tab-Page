@@ -34,10 +34,26 @@
       a {
         text-decoration: none;
       }
+      #msg {
+        position: absolute; bottom: 0;
+        margin-left: 7px; margin-right: 7px;
+        text-align: center;
+        opacity: .25;
+        font-family: Arial, "MS Trebuchet", sans-serif;
+        font-size: 10px;
+        cursor: help;
+      }
+      #msg:hover {
+        opacity: 1;
+      }
     </style>
   </head>
 
   <body>
-  <a href="http://www.amazon.com/?tag=sntp-20" target="_parent"><div id="amazon">&nbsp;</div></a>
+    <a href="http://www.amazon.com/?tag=sntp-20" target="_parent"><div id="amazon">&nbsp;</div></a>
+
+    <div id="msg">
+      This is an out-dated widget. To take advantage of new settings in the config menu (Amazon country TLD) or color options, please add the new version of this from the Apps window.
+    </div>
   </body>
 </html>

@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="/css/core.bookmarkbar.css" type="text/css" media="screen">
     <link rel="stylesheet" href="/colorpicker/css/colorpicker.css" type="text/css" media="screen">
 
-    <link rel="stylesheet" href="core.style.css?nocache=2" type="text/css" media="screen">
+    <link rel="stylesheet" href="core.style.css?nocache=3" type="text/css" media="screen">
 
     <script type="text/javascript" src="/javascript/jquery.js"></script>
     <script type="text/javascript" src="/javascript/tilesystem.js"></script>
@@ -57,10 +57,11 @@
             isApp: true,
             enabled: true,
             name: "Chrome Web Store",
-            color: "rgba(0, 16, 186, 0.5)",
+            color: "rgba(0, 16, 186, 0.7)",
             id: "webstore",
             stock: true,
             img: "app.webstore.png",
+            simg: "app.webstore.png",
             appLaunchUrl: "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage",
           },
           tutorial: {
@@ -112,20 +113,26 @@
             stock: true,
             name: "Fandango (Stock)",
             name_show: false,
-            color: "rgba(10, 58, 148, .5)",
+            color: "rgba(10, 58, 148, .7)",
             img: "/widgets/widget.fandango.png",
+            simg: "/widgets/widget.fandango.png",
             appLaunchUrl: "http://gan.doubleclick.net/gan_click?lid=41000000032569141&amp;pubid=21000000000503246",
             id: "fandango",
           },
           amazon: {
             where: [2,2],
             size: [1,1],
-            type: "iframe",
-            isApp: false,
+            type: "app",
+            isApp: true,
+            enabled: true,
             stock: true,
             name: "Amazon (Stock)",
+            name_show: false,
+            color: "rgba(168, 84, 0, .7)",
+            img: "/widgets/widget.amazon.png",
+            simg: "/widgets/widget.amazon.png",
+            appLaunchUrl: "http://www.amazon.com/?tag=sntp-20",
             id: "amazon",
-            path: "widgets/widget.amazon.html",
           },
           tv: {
             where: [2,0],
@@ -145,16 +152,16 @@
 
         var palette = 
         [
-          "rgba(51, 153, 51, .5)",
-          "rgba(229, 20, 0, .5)",
-          "rgba(27, 161, 226, .5)",
-          "rgba(240, 150, 9, .5)",
-          "rgba(230, 113, 184, .5)",
-          "rgba(153, 102, 0, .5)",
-          "rgba(139, 207, 38, .5)",
-          "rgba(255, 0, 151, .5)",
-          "rgba(162, 0, 225, .5)",
-          "rgba(0, 171, 169, .5)"
+          "rgba(51,   153,  51,   .7)",
+          "rgba(229,  20,   0,    .7)",
+          "rgba(27,   161,  226,  .7)",
+          "rgba(240,  150,  9,    .7)",
+          "rgba(230,  113,  184,  .7)",
+          "rgba(153,  102,  0,    .7)",
+          "rgba(139,  207,  38,   .7)",
+          "rgba(255,  0,    151,  .7)",
+          "rgba(162,  0,    225,  .7)",
+          "rgba(0,    171,  169,  .7)"
         ];
 
         function localStorageSync(re) {
@@ -173,6 +180,7 @@
             extensions = _extensions;
             _extensions.push(stock_widgets.webstore);
             _extensions.push(stock_widgets.fandango);
+            _extensions.push(stock_widgets.amazon);
 
             $.each(_extensions, function(index, value) {
               if(value.isApp === true && value.enabled === true) {
@@ -223,6 +231,8 @@
         /*  Left: int                                           */
         /*  Poke: int                                           */
         var gradient = ", -webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .04)), color-stop(0, rgba(255, 255, 255, 0.35)) )";
+        var amazon_regex = new RegExp("amazon\.(com|cn|co\.uk|at|fr|de|it|co\.jp|es)[/]{0,1}[\?]{0,1}");
+
         function stitch(type, destination, id, name, url, img, height, width, top, left, poke) {
           widgets = JSON.parse(localStorage.getItem("widgets"));
 
@@ -330,9 +340,15 @@
               stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
             }
           } else if (type === "app-drawer") {
+            if( url && (url).match(amazon_regex) ) {
+              if(localStorage["amazon-locale"] !== null && localStorage["amazon-locale"] !== "") {
+                url = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
+              }
+            }
+
             stitch += '<img class="ui-2 ilb url" src="' + img + '" data-url="' + url + '">';
             stitch += '<div class="ui-2 drawer-app-name ilb url"  data-url="' + url + '">' + name + '</div> ';
-            if(id !== "webstore" && id !== "fandango" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
+            if(id !== "webstore" && id !== "fandango" && id !== "amazon" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
               stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
             }
           }
@@ -523,8 +539,9 @@
             $(".hide-if-app").hide();
           }
 
-          if(id === "webstore") {
-            widgets[id].img = "/app.webstore.png";
+          if ( $.inArray(id, ["webstore", "amazon", "fandango"]) !== -1 ) {
+            widgets[id].img = stock_widgets[id].simg;
+            console.log(stock_widgets[id].simg);
           }
 
           $(".ui-2#editor")
@@ -576,9 +593,9 @@
             onChange: function (hsb, hex, rgb) {
               widgets  = JSON.parse(localStorage.getItem("widgets"));
               var id = $(".ui-2#editor").attr("active-edit-id");
-              $("#"+id).css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.5)" );
-              $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.5)" );
-              widgets[id].color = "rgba("+rgb.r+","+rgb.g+","+rgb.b+", .5)";
+              $("#"+id).css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.7)" );
+              $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.7)" );
+              widgets[id].color = "rgba("+rgb.r+","+rgb.g+","+rgb.b+", .7)";
               localStorageSync(false);
               updateShortcut();
             }
@@ -601,8 +618,9 @@
             var name_show  = $(".ui-2#editor #shortcut_name_show").is(':checked');
             var shortcut_background_transparent  = $(".ui-2#editor #shortcut_background_transparent").is(':checked');
 
-            if(id === "webstore") {
-              widgets[id].img = "/app.webstore.png";
+            if ( $.inArray(id, ["webstore", "amazon", "fandango"]) !== -1 ) {
+              widgets[id].img = stock_widgets[id].simg;
+              console.log(stock_widgets[id].simg);
             }
 
             widgets[id].name_show = name_show;
@@ -1096,24 +1114,31 @@
           $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") || "Recently Closed Tabs" })
         );
 
+        $("#widget-holder > .app > a").live('mouseup', function(e) {
+          if( (this.href).match(amazon_regex) ) {
+            if(localStorage["amazon-locale"] !== null && localStorage["amazon-locale"] !== "") {
+              this.href = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
+            }
+          }
 
-        $("#widget-holder > .shortcut > a").live('mouseup', function(e) {
           if( (this.href).indexOf("file://") != -1 ) {
             switch(e.which)
             {
-                case 1:
-                  chrome.tabs.update(null, {url: (this.href)});
-                break;
-                case 2:
-                  chrome.tabs.create({url: (this.href)});
-                break;
+              case 1:
+                chrome.tabs.update(null, {url: (this.href)});
+                return false;
+              break;
+              case 2:
+                chrome.tabs.create({url: (this.href)});
+                return false;
+              break;
             }
           }
-        });
-        $("#widget-holder > .shortcut > a").live('click', function(e) {
+        }).live('click', function(e) {
           if( (this.href).indexOf("file://") != -1 ) {
             e.preventDefault();
             e.stopPropagation();
+            return false;
           }
         });
 
@@ -1133,6 +1158,11 @@
             $(".bg-color").css('backgroundColor', '#' + hex);
             localStorage.setItem("color-bg", hex);
           }
+        });
+
+        $("#amazon-locale-selection").val(localStorage.getItem("amazon-locale") || "amazon.com");
+        $("#amazon-locale-selection").change(function() {
+          localStorage.setItem("amazon-locale", $(this).val());
         });
 
         $(".tile").animate({opacity: 0}, 500);
@@ -1433,6 +1463,25 @@
           <p class="ilb">
             This button will allow you to undo all changes you've made to Awesome New Tab Page.
           </p>
+
+          <div id="amazon-locale">
+            <select id="amazon-locale-selection">
+              <option value="amazon.com">United States (Amazon.com)</option>
+              <option value="amazon.ca">Canada (Amazon.ca)</option>
+              <option value="amazon.co.uk">United Kingdom (Amazon.co.uk)</option>
+              <option value="amazon.at">Austria (Amazon.at)</option>
+              <option value="amazon.cn">China (Amazon.cn)</option>
+              <option value="amazon.fr">France (Amazon.fr)</option>
+              <option value="amazon.de">Germany (Amazon.de)</option>
+              <option value="amazon.it">Italy (Amazon.it)</option>
+              <option value="amazon.co.jp">Japan (Amazon.co.jp)</option>
+              <option value="amazon.es">Spain (Amazon.es)</option>
+            </select>
+            <p class="ilb">
+              For the <i>stock</i> Amazon shortcut, select your country.
+              <a href="http://www.amazon.com/gp/feature.html?docId=487250&tag=sntp-20"><u>Learn more</u></a>.
+            </p>
+          </div>
         </div>
 
         <div id="config-background" class="ui-2">

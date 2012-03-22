@@ -686,6 +686,10 @@ body > .widget-drawer-app {
   right: 5px;
   margin: 0;
 }
+.unlocked .ui-2#apps .drawer-app-uninstall,
+.unlocked .ui-2#widgets .drawer-app-uninstall {
+  display: none;
+}
 .ui-2#widgets .drawer-app-wh {
   position: absolute;
   top: 58px;

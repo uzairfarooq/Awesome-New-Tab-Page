@@ -227,7 +227,7 @@ function setStuff(){
       }
       
       if( $(this).attr("data-app-source") === "from-drawer") {
-        $(this).css("position", "static");
+        $(this).css("position", "").css("left", "").css("top", "");
         if( $(this).attr("data-widget") === "true") {
           $(this).prependTo(".ui-2#widgets > .contents");
         } else {
