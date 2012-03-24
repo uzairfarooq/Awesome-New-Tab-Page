@@ -29,15 +29,20 @@ function placeGrid() {
   var width = GRID_MIN_WIDTH;
 
   if ( typeof(window.innerHeight) !== "undefined"
+    && typeof(window.innerWidth) !== "undefined"
     && typeof(screen.width) !== "undefined" ) {
     var res_height = Math.floor( ( window.innerHeight - GRID_MARGIN_TOP ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
-    var res_width  = Math.floor( ( screen.width - GRID_MARGIN_LEFT ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
+    var res_width  = Math.floor( ( window.innerWidth - GRID_MARGIN_LEFT ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
+    var res_width2  = Math.floor( ( screen.width - GRID_MARGIN_LEFT ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
 
     if(res_height > height) {
       height = res_height;
     }
     if(res_width > width) {
       width = res_width;
+    }
+    if(res_width2 > width) {
+      width = res_width2;
     }
   }
 
