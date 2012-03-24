@@ -92,6 +92,21 @@ body {
 .tile-green {
   background-color: rgba(0, 255, 0, .4) !important;
 }
+#widget-holder,#grid-holder {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#top-buttons {
+  position: fixed;
+  top: -2px;
+  left: -2px;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 900;
+  width: 35px;
+  height: 200px;
+}
 #widget-holder > .widget {
   margin: 3px;
   padding: 0px;
@@ -142,6 +157,7 @@ body {
 }
 #widget-holder .app-name {
   background: transparent;
+  text-shadow: -1px 1px 0px #000;
 }
 .app-mask {
   background-color: transparent;
@@ -167,15 +183,6 @@ body {
   top: 17px;
   width: 700px;
   left: 100px;
-}
-#top-buttons {
-  position: fixed;
-  text-decoration: none;
-  top: 0px;
-  left: 0px;
-  display: block;
-  cursor: pointer;
-  z-index: 900;
 }
 #top-right {
   position: fixed;
@@ -300,7 +307,8 @@ body {
   width: 30px;
   height: 30px;
   background-position: -5px -4px;
-
+  position: absolute;
+  -webkit-transition: left 1s ease-in-out, top 1s ease-in-out;
 }
 #logo-button,
 #config-button,
@@ -331,6 +339,7 @@ body {
   opacity: 1;
 }
 #logo-button {
+  top: 0;
   background-color: transparent;
   background-image: url("/images/antp.png");
   background-size: 40px;
@@ -338,6 +347,7 @@ body {
   border-color: transparent;
 }
 #config-button {
+  top: 32px;
   background-color: transparent;
   background-image: url("/images/core.config.png");
   background-size: 40px;
@@ -345,6 +355,7 @@ body {
   border-color: transparent;
 }
 #app-drawer-button {
+  top: 64px;
   background-color: transparent;
   background-image: url("/images/ic_menu_smalltiles.png");
   background-size: 40px;
@@ -352,6 +363,7 @@ body {
   border-color: transparent;
 }
 #widget-drawer-button {
+  top: 96px;
   background-color: transparent;
   background-image: url("/images/ic_menu_largetiles.png");
   background-size: 40px;
@@ -359,6 +371,7 @@ body {
   border-color: transparent;
 }
 #unlock-button {
+  top: 160px;
   background-color: transparent;
   background-image: url("/images/lock.png");
   background-size: 40px;
@@ -367,6 +380,7 @@ body {
   height: 32px;
 }
 #lock-button {
+  top: 160px;
   background-color: transparent;
   background-image: url("/images/lock_red.png");
   background-size: 40px;
@@ -375,6 +389,7 @@ body {
   height: 32px;
 }
 #recently-closed-tabs {
+  top: 128px;
   background-color: transparent;
   background-image: url("/images/ic_menu_clock.png");
   background-size: 40px;
@@ -546,6 +561,12 @@ body {
   position: absolute;
   right: 0px;
   top: 36px;
+}
+.ui-2 .tip {
+  font-style: italic;
+  border-left: 4px solid #E2E1DF;
+  padding-left: 5px;
+  font-size: 13px;
 }
 
 /* UI-2 About */
@@ -775,12 +796,6 @@ body > .widget-drawer-app img {
 .ui-2#editor input[type=input] {
   margin-right: 10px;
   width: 170px;
-}
-.ui-2#editor .tip {
-  font-style: italic;
-  border-left: 4px solid #E2E1DF;
-  padding-left: 5px;
-  font-size: 13px;
 }
 .ui-2#editor #shortcut_colorpicker {
   cursor: pointer;

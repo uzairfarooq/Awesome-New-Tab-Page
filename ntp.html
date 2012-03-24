@@ -26,16 +26,16 @@
     <link rel="stylesheet" href="/css/core.bookmarkbar.css" type="text/css" media="screen">
     <link rel="stylesheet" href="/colorpicker/css/colorpicker.css" type="text/css" media="screen">
 
-    <link rel="stylesheet" href="core.style.css?nocache=4" type="text/css" media="screen">
+    <link rel="stylesheet" href="core.style.css?nocache=5" type="text/css" media="screen">
 
     <script type="text/javascript" src="/javascript/jquery.js"></script>
-    <script type="text/javascript" src="/javascript/tilesystem.js?nocache=4"></script>
+    <script type="text/javascript" src="/javascript/tilesystem.js?nocache=5"></script>
 
     <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
     <script type="text/javascript" src="/javascript/center.js"></script>
     <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
 
-    <script type="text/javascript" src="/javascript/ui.js"></script>
+    <script type="text/javascript" src="/javascript/ui.js?nocache=5"></script>
 
     <script>
         // var bp = chrome.extension.getBackgroundPage();
@@ -827,11 +827,11 @@
           if ($(this).is(':checked')) {
             $("#bookmarksBar").show();
             localStorage.setItem("showbmb", "yes");
-            localStorageSync(true);
+            moveGrid({ "animate_top": true });
           } else {
             $("#bookmarksBar").hide();
             localStorage.setItem("showbmb", "no");
-            localStorageSync(true);
+            moveGrid({ "animate_top": true });
           }
         });
 
@@ -1246,6 +1246,8 @@
     </div>
     <ul id="bookmarksBar"></ul>
 
+    <div id="grid-holder"></div>
+
     <div id="widget-holder"></div>
 
     <div id="top-buttons">
@@ -1399,8 +1401,16 @@
             <input id="toggleBmb" type="checkbox" name="show" value="true" />
             <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_bmb"));</script></p>
           </div>
-          <p>This bookmark bar isn't as polished as it could be. I'm hoping Chrome's developers
+          <p class="tip">This bookmark bar isn't as polished as it could be. I'm hoping Chrome's developers
             hear my begging for an API to use the same in-page bookmark bar that the original NTP uses, but until then...</p>
+
+          <div id="hideLeftButtons-holder">
+            <input id="hideLeftButtons" type="checkbox" name="show" value="true" />
+            <p class="ilb">Show top left buttons only on area-hover</p>
+          </div>
+
+          <p class="tip">Using this option, it can be easy to forget when ANTP is unlocked. Always remember to lock ANTP when you're
+            done customizing your grid.</p>
 
           <div id="toggle-grid-holder">
             <input id="toggle-grid" type="checkbox" name="show" value="true" />
@@ -1607,10 +1617,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div id="grid-holder" style="position: absolute; left: 0; top: 0;">
-
     </div>
 
     <script type="text/javascript" src="/javascript/hscroll.js"></script>

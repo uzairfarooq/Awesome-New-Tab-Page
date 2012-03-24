@@ -17,12 +17,31 @@
 
 var GRID_MIN_HEIGHT   = 3,
     GRID_MIN_WIDTH    = 7,
-    GRID_MARGIN_TOP   = localStorage.getItem("showbmb") === "yes" ? 27 : 0,
-    GRID_MARGIN_LEFT  = 32,
+    GRID_MARGIN_TOP   = function() { return localStorage.getItem("showbmb") === "yes" ? 27 : 0; },
+    GRID_MARGIN_LEFT  = 27,
     GRID_TILE_SIZE    = 200,  /* NEVER CHANGE */
     GRID_TILE_PADDING = 3;    /* NEVER CHANGE */
 
+function moveGrid(pref) {
+  if ( pref.animate_top === false ) {
+    $("#widget-holder,#grid-holder").css({
+      "-webkit-transition": "left .77s ease-in-out"
+    });
+  } else {
+    $("#widget-holder,#grid-holder").css({
+      "-webkit-transition": "left .77s ease-in-out, top .77s ease-in-out"
+    });
+  }
+
+  $("#widget-holder,#grid-holder").css({
+    "top" : GRID_MARGIN_TOP(),
+    "left": GRID_MARGIN_LEFT 
+  });
+
+}
+
 function placeGrid() {
+  moveGrid({ "animate_top": false });
   var tile_template = '<li class="tile empty">&nbsp;</li>';
 
   var height = GRID_MIN_HEIGHT;
@@ -31,7 +50,7 @@ function placeGrid() {
   if ( typeof(window.innerHeight) !== "undefined"
     && typeof(window.innerWidth) !== "undefined"
     && typeof(screen.width) !== "undefined" ) {
-    var res_height = Math.floor( ( window.innerHeight - GRID_MARGIN_TOP ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
+    var res_height = Math.floor( ( window.innerHeight - GRID_MARGIN_TOP() ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
     var res_width  = Math.floor( ( window.innerWidth - GRID_MARGIN_LEFT ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
     var res_width2  = Math.floor( ( screen.width - GRID_MARGIN_LEFT ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
 
@@ -70,8 +89,8 @@ function placeGrid() {
     for (var gy = 0; gy < width; gy++) {
       $(tile_template).appendTo("#grid-holder").css({
         "position": "absolute",
-        "top" : GRID_MARGIN_TOP  + ( gx * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gx + 1 ) ),
-        "left": GRID_MARGIN_LEFT + ( gy * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gy + 1 ) )
+        "top" : ( gx * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gx + 1 ) ),
+        "left": ( gy * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gy + 1 ) )
       }).attr({
         "id": gx + "x" + gy,
         "data-land-top": gx,

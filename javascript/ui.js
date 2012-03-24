@@ -1,3 +1,45 @@
+
+/* START :: Top Left Buttons */
+
+function moveLeftButtons() {
+  if ( localStorage.getItem("hideLeftButtons") === "yes" ) {
+    $(".side-button").css("left", "-50px");
+    $("#hideLeftButtons").attr('checked', 'checked');
+  } else {
+    $(".side-button").css("left", "0px");
+  }
+}
+
+$(document).ready(function($) {
+  moveLeftButtons();
+});
+
+$("#hideLeftButtons").live("click", function(){
+  if ($(this).is(':checked')) {
+    localStorage.setItem("hideLeftButtons", "yes");
+    moveLeftButtons();
+  } else {
+    localStorage.setItem("hideLeftButtons", "no");
+    moveLeftButtons();
+  }
+});
+
+$("#top-buttons").live({
+  mouseenter: function() {
+    if ( localStorage.getItem("hideLeftButtons") === "yes" )
+      $(".side-button").css("left", "0px");
+  },
+  mouseleave: function() {
+    if ( localStorage.getItem("hideLeftButtons") === "yes" )
+      $(".side-button").css("left", "-50px");
+  }
+});
+
+/*  END  :: Top Left Buttons */
+
+
+/* Tooltips */
+
 $(document).ready(function($) {
   var qtipShared = {
     show: 'mouseover',
@@ -51,6 +93,9 @@ $(document).ready(function($) {
     $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_download") || "Download Widgets" })
   );
 
+  $("#logo-button").qtip(
+    $.extend({}, qtipShared, { content: "About Awesome New Tab Page" })
+  );
   $("#config-button").qtip(
     $.extend({}, qtipShared, { content: "Configure" })
   );
