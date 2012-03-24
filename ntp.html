@@ -26,14 +26,16 @@
     <link rel="stylesheet" href="/css/core.bookmarkbar.css" type="text/css" media="screen">
     <link rel="stylesheet" href="/colorpicker/css/colorpicker.css" type="text/css" media="screen">
 
-    <link rel="stylesheet" href="core.style.css?nocache=3" type="text/css" media="screen">
+    <link rel="stylesheet" href="core.style.css?nocache=4" type="text/css" media="screen">
 
     <script type="text/javascript" src="/javascript/jquery.js"></script>
-    <script type="text/javascript" src="/javascript/tilesystem.js"></script>
+    <script type="text/javascript" src="/javascript/tilesystem.js?nocache=4"></script>
 
     <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
     <script type="text/javascript" src="/javascript/center.js"></script>
     <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
+
+    <script type="text/javascript" src="/javascript/ui.js"></script>
 
     <script>
         // var bp = chrome.extension.getBackgroundPage();
@@ -143,7 +145,7 @@
             stock: true,
             name: "Facebook (Stock)",
             name_show: false,
-            color: "rgba(8, 0, 250, .7)",
+            color: "rgba(19, 54, 131, .7)",
             img: "/widgets/widget.facebook.png",
             simg: "/widgets/widget.facebook.png",
             appLaunchUrl: "http://www.facebook.com/",
@@ -390,7 +392,6 @@
           }
 
           stitch += '</div>';
-          // console.log(stitch);
           return stitch;
         }
 
@@ -577,7 +578,6 @@
 
           if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter"]) !== -1 ) {
             widgets[id].img = stock_widgets[id].simg;
-            console.log(stock_widgets[id].simg);
           }
 
           $(".ui-2#editor")
@@ -656,7 +656,6 @@
 
             if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter"]) !== -1 ) {
               widgets[id].img = stock_widgets[id].simg;
-              console.log(stock_widgets[id].simg);
             }
 
             widgets[id].name_show = name_show;
@@ -828,9 +827,11 @@
           if ($(this).is(':checked')) {
             $("#bookmarksBar").show();
             localStorage.setItem("showbmb", "yes");
+            localStorageSync(true);
           } else {
             $("#bookmarksBar").hide();
             localStorage.setItem("showbmb", "no");
+            localStorageSync(true);
           }
         });
 
@@ -1062,94 +1063,12 @@
           }
         });
 
-        $(".empty").live({
-          mouseenter: function() {
-            $(this).addClass("add-shortcut");
-          },
-          mouseleave: function() {
-            $(".tile").removeClass("add-shortcut");
-          }
-        });
-
         function _e(_eNum) {
           console.log("Error #"+_eNum);
           _gaq.push(['_trackEvent', 'Error', _eNum]);
         }
 
       $(document).ready(function($) {
-        placeWidgets();
-
-        var qtipShared = {
-          show: 'mouseover',
-          hide: 'mouseout',
-          style: {
-            name: 'dark',
-            tip: 'leftMiddle',
-          },
-          position: {
-            corner: {
-               target: 'rightMiddle',
-               tooltip: 'leftMiddle'
-            }
-          }
-        }
-
-        var qtipUI2 = {
-          show: 'mouseover',
-          hide: 'mouseout',
-          style: {
-            name: 'dark',
-            tip: 'topMiddle',
-          },
-          position: {
-            corner: {
-               target: 'bottomMiddle',
-               tooltip: 'topMiddle'
-            },
-            adjust: {
-              screen: true
-            }
-          }
-        }
-
-        $(".ui-2.x").qtip(
-          $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_close") || "Close" })
-        );
-        $(".ui-2.help").qtip(
-          $.extend({}, qtipUI2, { content: "Help" })
-        );
-
-        $(".ui-2.config").qtip(
-          $.extend({}, qtipUI2, { content: "Configure" })
-        );
-
-        $(".ui-2#apps .download").qtip(
-          $.extend({}, qtipUI2, { content: "Download Apps" })
-        );
-
-        $(".ui-2#widgets .download").qtip(
-          $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_download") || "Download Widgets" })
-        );
-
-        $("#config-button").qtip(
-          $.extend({}, qtipShared, { content: "Configure" })
-        );
-        $("#app-drawer-button").qtip(
-          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_apps") || "Apps" })
-        );
-        $("#widget-drawer-button").qtip(
-          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_widgets") || "Widgets" })
-        );
-        $("#unlock-button").qtip(
-          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_unlock") || "Unlock" })
-        );
-        $("#lock-button").qtip(
-          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_lock") || "Lock to Interact with Apps and Widgets" })
-        );
-        $("#recently-closed-tabs").qtip(
-          $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") || "Recently Closed Tabs" })
-        );
-
         $("#widget-holder > .app > a").live('mouseup', function(e) {
           if( (this.href).match(amazon_regex) ) {
             if (localStorage["amazon-locale"] !== null
@@ -1205,7 +1124,6 @@
           localStorage.setItem("amazon-locale", $(this).val());
         });
 
-        $(".tile").animate({opacity: 0}, 500);
         chrome.management.getAll( setupDrawerApps );
 
         $(".ui-2.container").center();
@@ -1254,7 +1172,6 @@
 
           if(recently_closed !== null) {
             $.each(recently_closed, function(id, tab) {
-              console.log( (tab.url).indexOf("chrome://")  )
               if ( (tab.url).indexOf("chrome://") < 0 ) {
                 $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
                     <div class="rctm-icon">\
@@ -1692,82 +1609,10 @@
       </div>
     </div>
 
-    <div id="groups">
-
-      <ul id="1" class="group">
-        <li class="tile empty" id="0x0" data-land-top="0" data-land-left="0">&nbsp;</li>
-        <li class="tile empty" id="0x1" data-land-top="0" data-land-left="1">&nbsp;</li>
-        <li class="tile empty" id="0x2" data-land-top="0" data-land-left="2">&nbsp;</li>
-        <li class="tile empty" id="0x3" data-land-top="0" data-land-left="3">&nbsp;</li>
-
-        <li class="tile empty" id="1x0" data-land-top="1" data-land-left="0">&nbsp;</li>
-        <li class="tile empty" id="1x1" data-land-top="1" data-land-left="1">&nbsp;</li>
-        <li class="tile empty" id="1x2" data-land-top="1" data-land-left="2">&nbsp;</li>
-        <li class="tile empty" id="1x3" data-land-top="1" data-land-left="3">&nbsp;</li>
-
-        <li class="tile empty" id="2x0" data-land-top="2" data-land-left="0">&nbsp;</li>
-        <li class="tile empty" id="2x1" data-land-top="2" data-land-left="1">&nbsp;</li>
-        <li class="tile empty" id="2x2" data-land-top="2" data-land-left="2">&nbsp;</li>
-        <li class="tile empty" id="2x3" data-land-top="2" data-land-left="3">&nbsp;</li>
-      </ul>
-
-      <ul id="2" class="group">
-        <li class="tile empty" id="0x4" data-land-top="0" data-land-left="4">&nbsp;</li>
-        <li class="tile empty" id="0x5" data-land-top="0" data-land-left="5">&nbsp;</li>
-        <li class="tile empty" id="0x6" data-land-top="0" data-land-left="6">&nbsp;</li>
-        <li class="tile empty" id="0x7" data-land-top="0" data-land-left="7">&nbsp;</li>
-
-        <li class="tile empty" id="1x4" data-land-top="1" data-land-left="4">&nbsp;</li>
-        <li class="tile empty" id="1x5" data-land-top="1" data-land-left="5">&nbsp;</li>
-        <li class="tile empty" id="1x6" data-land-top="1" data-land-left="6">&nbsp;</li>
-        <li class="tile empty" id="1x7" data-land-top="1" data-land-left="7">&nbsp;</li>
-
-        <li class="tile empty" id="2x4" data-land-top="2" data-land-left="4">&nbsp;</li>
-        <li class="tile empty" id="2x5" data-land-top="2" data-land-left="5">&nbsp;</li>
-        <li class="tile empty" id="2x6" data-land-top="2" data-land-left="6">&nbsp;</li>
-        <li class="tile empty" id="2x7" data-land-top="2" data-land-left="7">&nbsp;</li>
-      </ul>
-
-      <ul id="3" class="group">
-        <li class="tile empty" id="0x8" data-land-top="0" data-land-left="8">&nbsp;</li>
-        <li class="tile empty" id="0x9" data-land-top="0" data-land-left="9">&nbsp;</li>
-        <li class="tile empty" id="0x10" data-land-top="0" data-land-left="10">&nbsp;</li>
-        <li class="tile empty" id="0x11" data-land-top="0" data-land-left="11">&nbsp;</li>
-
-        <li class="tile empty" id="1x8" data-land-top="1" data-land-left="8">&nbsp;</li>
-        <li class="tile empty" id="1x9" data-land-top="1" data-land-left="9">&nbsp;</li>
-        <li class="tile empty" id="1x10" data-land-top="1" data-land-left="10">&nbsp;</li>
-        <li class="tile empty" id="1x11" data-land-top="1" data-land-left="11">&nbsp;</li>
-
-        <li class="tile empty" id="2x8" data-land-top="2" data-land-left="8">&nbsp;</li>
-        <li class="tile empty" id="2x9" data-land-top="2" data-land-left="9">&nbsp;</li>
-        <li class="tile empty" id="2x10" data-land-top="2" data-land-left="10">&nbsp;</li>
-        <li class="tile empty" id="2x11" data-land-top="2" data-land-left="11">&nbsp;</li>
-      </ul>
-
-      <ul id="4" class="group">
-        <li class="tile empty" id="0x12" data-land-top="0" data-land-left="12">&nbsp;</li>
-        <li class="tile empty" id="0x13" data-land-top="0" data-land-left="13">&nbsp;</li>
-        <li class="tile empty" id="0x14" data-land-top="0" data-land-left="14">&nbsp;</li>
-        <li class="tile empty" id="0x15" data-land-top="0" data-land-left="15">&nbsp;</li>
-
-        <li class="tile empty" id="1x12" data-land-top="1" data-land-left="12">&nbsp;</li>
-        <li class="tile empty" id="1x13" data-land-top="1" data-land-left="13">&nbsp;</li>
-        <li class="tile empty" id="1x14" data-land-top="1" data-land-left="14">&nbsp;</li>
-        <li class="tile empty" id="1x15" data-land-top="1" data-land-left="15">&nbsp;</li>
-
-        <li class="tile empty" id="2x12" data-land-top="2" data-land-left="12">&nbsp;</li>
-        <li class="tile empty" id="2x13" data-land-top="2" data-land-left="13">&nbsp;</li>
-        <li class="tile empty" id="2x14" data-land-top="2" data-land-left="14">&nbsp;</li>
-        <li class="tile empty" id="2x15" data-land-top="2" data-land-left="15">&nbsp;</li>
-      </ul>
+    <div id="grid-holder" style="position: absolute; left: 0; top: 0;">
 
     </div>
 
-
-    <script type="text/javascript">
-      prepareTiles();
-    </script>
     <script type="text/javascript" src="/javascript/hscroll.js"></script>
     <script type="text/javascript" src="/javascript/bookmarkbar.js"></script>
     <script type="text/javascript">

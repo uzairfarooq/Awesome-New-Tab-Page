@@ -15,6 +15,83 @@
  *
  */
 
+var GRID_MIN_HEIGHT   = 3,
+    GRID_MIN_WIDTH    = 7,
+    GRID_MARGIN_TOP   = localStorage.getItem("showbmb") === "yes" ? 27 : 0,
+    GRID_MARGIN_LEFT  = 32,
+    GRID_TILE_SIZE    = 200,  /* NEVER CHANGE */
+    GRID_TILE_PADDING = 3;    /* NEVER CHANGE */
+
+function placeGrid() {
+  var tile_template = '<li class="tile empty">&nbsp;</li>';
+
+  var height = GRID_MIN_HEIGHT;
+  var width = GRID_MIN_WIDTH;
+
+  if ( typeof(window.innerHeight) !== "undefined"
+    && typeof(screen.width) !== "undefined" ) {
+    var res_height = Math.floor( ( window.innerHeight - GRID_MARGIN_TOP ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
+    var res_width  = Math.floor( ( screen.width - GRID_MARGIN_LEFT ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
+
+    if(res_height > height) {
+      height = res_height;
+    }
+    if(res_width > width) {
+      width = res_width;
+    }
+  }
+
+  var widgets = JSON.parse(localStorage.getItem("widgets")),
+      placed_height = 0, placed_width = 0;
+  if( typeof(widgets) === "object" ) {
+    $.each(widgets, function(id, widget) {
+      if( parseFloat(widget.where[0]) + parseFloat(widget.size[0]) > placed_height ) {
+        placed_height = parseFloat(widget.where[0]) + parseFloat(widget.size[0]);
+      }
+      if( parseFloat(widget.where[1]) + parseFloat(widget.size[1]) + 3 > placed_width ) {
+        placed_width = parseFloat(widget.where[1]) + parseFloat(widget.size[1]) + 3;
+      }
+    });
+
+    if(placed_height > height) {
+      height = placed_height;
+    }
+    if(placed_width > width) {
+      width = placed_width;
+    }
+  }
+
+  for (var gx = 0; gx < height; gx++) {
+    for (var gy = 0; gy < width; gy++) {
+      $(tile_template).appendTo("#grid-holder").css({
+        "position": "absolute",
+        "top" : GRID_MARGIN_TOP  + ( gx * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gx + 1 ) ),
+        "left": GRID_MARGIN_LEFT + ( gy * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gy + 1 ) )
+      }).attr({
+        "id": gx + "x" + gy,
+        "data-land-top": gx,
+        "data-land-left": gy
+      });
+    }
+  }
+
+  $(".tile").animate({opacity: 0}, 500);
+}
+
+$(document).ready(function($) {
+  placeGrid();
+  placeWidgets();
+});
+
+$(".empty").live({
+  mouseenter: function() {
+    $(this).addClass("add-shortcut");
+  },
+  mouseleave: function() {
+    $(".tile").removeClass("add-shortcut");
+  }
+});
+
 var update = true;
 function makeZero(num){
   if(num < 0){
@@ -81,19 +158,6 @@ function getCovered(tile) {
   // cache.toRet = toRet;
 
   return toRet;
-}
-
-function prepareTiles() {
-  $(".tile").each(function(ind, elem){
-      $(elem).css("left", $(elem).position().left);
-      $(elem).css("top", $(elem).position().top);
-  });
-  
-  $(".tile").each(function(ind, elem){
-      $(elem).css("position", "absolute");
-      $(elem).css("left", $(elem).attr("left"));
-      $(elem).css("top", $(elem).attr("top"));
-  });
 }
 
 function setStuff(){

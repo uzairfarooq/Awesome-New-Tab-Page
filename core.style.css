@@ -72,18 +72,6 @@ body {
 .url, #reset-button {
   cursor: pointer
 }
-#groups {
-  margin-top: 33px;
-  margin-left: 34px;
-}
-.group {
-  display: inline-block;
-  list-style-type: none;
-  margin: 0;
-  margin-left: -4px;
-  padding: 0;
-  width: 824px;
-}
 .tile {
   background-color: rgba(0, 0, 0, .2);
   margin: 3px;
@@ -623,6 +611,11 @@ body > .widget-drawer-app {
   width: 128px;
   height: 128px;
   overflow: hidden;
+}
+body > .ui-2.drawer-app img,
+body > .widget-drawer-app img {
+  width: 128px;
+  height: 128px;
 }
 .ui-2#apps .ilb,
 .ui-2#widgets .ilb {
