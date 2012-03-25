@@ -30,7 +30,7 @@ function onRemoved(tabId) {
     return;
   }
 
-  if ( (tab.url).indexOf("chrome://") < 0 ) {
+  if ( (tab.url).indexOf("chrome://") !== -1 ) {
     return;
   }
 
