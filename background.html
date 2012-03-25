@@ -30,6 +30,10 @@ function onRemoved(tabId) {
     return;
   }
 
+  if ( (tab.url).indexOf("chrome://") < 0 ) {
+    return;
+  }
+
   if (recently_closed === null) {
     recently_closed = [];
   }
@@ -61,8 +65,6 @@ chrome.management.onInstalled.addListener( onInstalled );
 function onInstalled(ExtensionInfo) {
 
   recently_installed = ExtensionInfo;
-
-  cacheIconColor(ExtensionInfo);
   
   setTimeout(function() {
     recently_installed = null;

@@ -813,16 +813,6 @@
           }
         }
 
-
-        $("#recently-closed-tabs-menu").live('mouseleave', function() {
-          $(this).css("display", "none");
-        });
-
-        $("#recently-closed-tabs").live('click', function() {
-          $(".close,.ui-2.x").trigger("click");
-          $("#recently-closed-tabs-menu").toggle();
-        });
-
         $("#toggleBmb").live("click", function(){
           if ($(this).is(':checked')) {
             $("#bookmarksBar").show();
@@ -1164,25 +1154,6 @@
         //     data: extensions,
         //   });
         // }, 1000);
-
-        setTimeout(function() {
-          var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
-
-          $("#recently-closed-tabs").css("display", "block");
-
-          if(recently_closed !== null) {
-            $.each(recently_closed, function(id, tab) {
-              if ( (tab.url).indexOf("chrome://") < 0 ) {
-                $('<a class="rctm-item" href="'+tab.url+'" target="_top">\
-                    <div class="rctm-icon">\
-                      <img src="chrome://favicon/'+tab.url+'">\
-                    </div>\
-                    <div class="rctm-link">'+ tab.title +'</div>\
-                    </a>').appendTo("#recently-closed-tabs-menu");
-              }
-            });
-          }
-        }, 750);
 
 
         if(localStorage.getItem("showbmb") === null) {

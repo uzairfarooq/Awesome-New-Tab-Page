@@ -1,41 +1,81 @@
 
 /* START :: Top Left Buttons */
 
-function moveLeftButtons() {
-  if ( localStorage.getItem("hideLeftButtons") === "yes" ) {
-    $(".side-button").css("left", "-50px");
-    $("#hideLeftButtons").attr('checked', 'checked');
-  } else {
-    $(".side-button").css("left", "0px");
-  }
-}
-
-$(document).ready(function($) {
-  moveLeftButtons();
-});
-
-$("#hideLeftButtons").live("click", function(){
-  if ($(this).is(':checked')) {
-    localStorage.setItem("hideLeftButtons", "yes");
-    moveLeftButtons();
-  } else {
-    localStorage.setItem("hideLeftButtons", "no");
-    moveLeftButtons();
-  }
-});
-
-$("#top-buttons").live({
-  mouseenter: function() {
-    if ( localStorage.getItem("hideLeftButtons") === "yes" )
-      $(".side-button").css("left", "0px");
-  },
-  mouseleave: function() {
-    if ( localStorage.getItem("hideLeftButtons") === "yes" )
+  function moveLeftButtons() {
+    if ( localStorage.getItem("hideLeftButtons") === "yes" ) {
       $(".side-button").css("left", "-50px");
+      $("#hideLeftButtons").attr('checked', 'checked');
+    } else {
+      $(".side-button").css("left", "0px");
+    }
   }
-});
+
+  $(document).ready(function($) {
+    moveLeftButtons();
+  });
+
+  $("#hideLeftButtons").live("click", function(){
+    if ($(this).is(':checked')) {
+      localStorage.setItem("hideLeftButtons", "yes");
+      moveLeftButtons();
+    } else {
+      localStorage.setItem("hideLeftButtons", "no");
+      moveLeftButtons();
+    }
+  });
+
+  $("#top-buttons").live({
+    mouseenter: function() {
+      if ( localStorage.getItem("hideLeftButtons") === "yes" )
+        $(".side-button").css("left", "0px");
+    },
+    mouseleave: function() {
+      if ( localStorage.getItem("hideLeftButtons") === "yes" )
+        $(".side-button").css("left", "-50px");
+    }
+  });
 
 /*  END  :: Top Left Buttons */
+
+/* START :: Recently Closed Tabs */
+
+  $("#recently-closed-tabs-menu").live('mouseleave', function() {
+    $(this).css("display", "none");
+  });
+
+  $("#recently-closed-tabs").live('click', function() {
+    $(".close,.ui-2.x").trigger("click");
+    $("#recently-closed-tabs-menu").toggle();
+  });
+
+  $(window).bind('storage', function (e) {
+    if ( typeof(e.originalEvent) === "object"
+      && typeof(e.originalEvent.key) === "string"
+      && e.originalEvent.key === "recently_closed" )
+        resetRecentlyClosedTabs();
+  });
+
+  function resetRecentlyClosedTabs() {
+    var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
+
+    $("#recently-closed-tabs-menu").empty();
+
+    if(recently_closed !== null) {
+      $.each(recently_closed, function(id, tab) {
+        $(' <a class="rctm-item" href="'+tab.url+'" target="_top">\
+              <div class="rctm-icon">\
+                <img src="chrome://favicon/'+tab.url+'">\
+              </div>\
+              <div class="rctm-link">'+ tab.title +'</div>\
+            </a>').appendTo("#recently-closed-tabs-menu");
+      });
+    }
+  }
+  $(document).ready(function($) {
+    setTimeout(resetRecentlyClosedTabs, 500);
+  });
+
+/*  END  :: Recently Closed Tabs */
 
 
 /* Tooltips */
