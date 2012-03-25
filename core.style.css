@@ -81,6 +81,7 @@ body {
   height: 200px;
   overflow: hidden;
   display: block;
+  -webkit-transition: opacity .2s ease-in-out;
 }
 .tile-grid {
   background-color: rgba(0, 0, 0, .2);

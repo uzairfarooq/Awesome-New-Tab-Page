@@ -825,16 +825,6 @@
           }
         });
 
-        $("#toggle-grid").live("click", function(){
-          if ($(this).is(':checked')) {
-            $("body").addClass("perm-grid");
-            localStorage.setItem("perm-grid", "yes");
-          } else {
-            $("body").removeClass("perm-grid");
-            localStorage.setItem("perm-grid", "no");
-          }
-        });
-
         $("#toggle-app-names").live("click", function(){
           if ($(this).is(':checked')) {
             $("body").removeClass("hide-app-names");
@@ -1164,15 +1154,6 @@
           $("#toggleBmb").attr('checked', 'checked');
         } else {
           $("#bookmarksBar").css("display", "none");
-        }
-
-        if(localStorage.getItem("perm-grid") === null) {
-          localStorage.setItem("perm-grid", "no");
-        }
-
-        if(localStorage.getItem("perm-grid") === "yes") {
-          $("body").addClass("perm-grid");
-          $("#toggle-grid").attr('checked', 'checked');
         }
 
         if(localStorage.getItem("hide-app-names") === null) {

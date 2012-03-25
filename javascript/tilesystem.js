@@ -22,6 +22,32 @@ var GRID_MIN_HEIGHT   = 3,
     GRID_TILE_SIZE    = 200,  /* NEVER CHANGE */
     GRID_TILE_PADDING = 3;    /* NEVER CHANGE */
 
+
+function updateGridOpacity() {
+  if ($("#toggle-grid").is(':checked')) {
+    $("body").addClass("perm-grid");
+    localStorage.setItem("perm-grid", "yes");
+    $(".tile").css({opacity: 0});
+  } else {
+    $("body").removeClass("perm-grid");
+    localStorage.setItem("perm-grid", "no");
+    $(".tile").animate({opacity: 0});
+  }
+}
+
+$(document).ready(function($) {
+  $("#toggle-grid").live("click", updateGridOpacity);
+
+  if(localStorage.getItem("perm-grid") === null) {
+    localStorage.setItem("perm-grid", "no");
+  }
+
+  if(localStorage.getItem("perm-grid") === "yes") {
+    $("body").addClass("perm-grid");
+    $("#toggle-grid").attr('checked', 'checked');
+  }
+});
+
 function moveGrid(pref) {
   if ( pref.animate_top === false ) {
     $("#widget-holder,#grid-holder").css({
@@ -38,6 +64,7 @@ function moveGrid(pref) {
     "left": GRID_MARGIN_LEFT 
   });
 
+  updateGridOpacity();
 }
 
 function placeGrid() {
@@ -51,8 +78,8 @@ function placeGrid() {
     && typeof(window.innerWidth) !== "undefined"
     && typeof(screen.width) !== "undefined" ) {
     var res_height = Math.floor( ( window.innerHeight - GRID_MARGIN_TOP() ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
-    var res_width  = Math.floor( ( window.innerWidth - GRID_MARGIN_LEFT ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
-    var res_width2  = Math.floor( ( screen.width - GRID_MARGIN_LEFT ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
+    var res_width  = Math.floor( ( window.innerWidth  - GRID_MARGIN_LEFT )  / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
+    var res_width2 = Math.floor( ( screen.width       - GRID_MARGIN_LEFT )  / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
 
     if(res_height > height) {
       height = res_height;
@@ -99,7 +126,7 @@ function placeGrid() {
     }
   }
 
-  $(".tile").animate({opacity: 0}, 500);
+  updateGridOpacity();
 }
 
 $(document).ready(function($) {
