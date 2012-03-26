@@ -16,6 +16,14 @@
  */
 
 $(document).ready(function($) {
+  if(window.location.hash) {
+    switch(window.location.hash) {
+      case "#options":
+        $("#config-button").trigger("click");
+        break;
+    }
+  }
+
   $(".ui-2.container").center();
 
   $(window).bind('resize scroll', function() {

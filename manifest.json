@@ -4,9 +4,10 @@
   "chrome_url_overrides" : {
     "newtab": "ntp.html"
   },
-  "version": "2012.103.126.102",
+  "version": "2012.103.126.103",
   "name": "Awesome New Tab Page",
   "description": "Enhance your New Tab Page with ultimate customizability and power. Awesome, like you. [aNTP]",
+  "options_page": "options.html",
   "icons": {
     "128": "icon128.png"
   },
