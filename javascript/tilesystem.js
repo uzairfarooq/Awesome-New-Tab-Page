@@ -40,7 +40,7 @@ $(document).ready(function($) {
   $("#toggle-grid").live("click", updateGridOpacity);
 
   if(localStorage.getItem("perm-grid") === null) {
-    localStorage.setItem("perm-grid", "no");
+    localStorage.setItem("perm-grid", "yes");
   }
 
   if(localStorage.getItem("perm-grid") === "yes") {
