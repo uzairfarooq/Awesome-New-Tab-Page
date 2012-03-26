@@ -764,6 +764,7 @@ body > .widget-drawer-app img {
   top: 37px;
   right: 62px;
   cursor: default;
+  z-index: 20;
 }
 .ui-2#editor .fake-tile#ft0 {
   top: 37px;
