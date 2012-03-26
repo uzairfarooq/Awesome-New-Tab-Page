@@ -15,6 +15,14 @@
  *
  */
 
+$(document).ready(function($) {
+  $(".ui-2.container").center();
+
+  $(window).bind('resize scroll', function() {
+    $(".ui-2.container").center();
+  });
+});
+
 /* START :: Top Left Buttons */
 
   function moveLeftButtons() {

@@ -1,138 +1,150 @@
-<!--
-   -
-   - Awesome New Tab Page
-   -   Copyright 2011 Michael Hart (http://h4r7.me/).
-   -
-   - Want to make it even more awesome?
-   -   https://github.com/michaelhart/Awesome-New-Tab-Page/
-   -
-   - Licensed under GPL v3:
-   -   http://www.gnu.org/licenses/gpl-3.0.txt
-   -
-   -->
-<canvas width="128" height="128"></canvas>
+  <!--
+     -
+     -  Awesome New Tab Page
+     -    http://antp.co/
+     -    Copyright 2011+ Michael Hart (http://h4r7.me/).
+     -
+     -  Want to make it even more awesome?
+     -    https://github.com/michaelhart/Awesome-New-Tab-Page/
+     -
+     -  background.html
+     -    Where every journey begins.
+     -
+     -  Licensed under GPL v3:
+     -    http://www.gnu.org/licenses/gpl-3.0.txt
+     -
+     -->
 <script type="text/javascript">
-window.setTimeout(' window.location = window.location; ', 2*60*60*1000);
+window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
 
+/* START :: Recently Closed Tabs */
+  var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
+  chrome.tabs.onRemoved.addListener( onRemoved );
 
-var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
+  function onRemoved(tabId) {
+    var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
 
-chrome.tabs.onRemoved.addListener( onRemoved );
+    if(!tab || tab.incognito === true) {
+      return;
+    }
 
-function onRemoved(tabId) {
-  var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
+    if(tab.title === "") {
+      return;
+    }
 
-  if(!tab || tab.incognito === true) {
-    return;
+    if ( (tab.url).indexOf("chrome://") !== -1 ) {
+      return;
+    }
+
+    if (recently_closed === null) {
+      recently_closed = [];
+    }
+
+    recently_closed.unshift({title: tab.title, url: tab.url});
+
+    if(recently_closed.length > 15) {
+      recently_closed.pop();
+    }
+
+    localStorage.setItem("recently_closed", JSON.stringify( recently_closed ));
+    getAllTabs();
   }
 
-  if(tab.title === "") {
-    return;
+  chrome.tabs.onCreated.addListener( getAllTabs );
+
+  var tabs = null;
+  function getAllTabs() {
+    chrome.tabs.getAllInWindow(null, getAllTabs_callback);
+  }
+  function getAllTabs_callback(data) {
+    tabs = data;
+  }
+  chrome.tabs.getAllInWindow(null, getAllTabs);
+
+  /* END :: Recently Closed Tabs */
+
+/* START :: Get Installed Widgets */
+
+  var extensions;
+
+  chrome.management.getAll(reloadExtensions);
+  function reloadExtensions(data) {
+    extensions = data;
   }
 
-  if ( (tab.url).indexOf("chrome://") !== -1 ) {
-    return;
+  function reloadInstalledWidgets() {
+    localStorage.setItem("installed_widgets", JSON.stringify( [] ));
+
+    setTimeout(function() {
+      sayHelloToPotentialWidgets();
+    }, 100);
+
+    setTimeout(function() {
+      window.location = window.location;
+    }, 10000);
   }
 
-  if (recently_closed === null) {
-    recently_closed = [];
+  chrome.management.onInstalled.addListener( onInstalled );
+  function onInstalled(ExtensionInfo) {
+    chrome.management.getAll(reloadExtensions);
+    reloadInstalledWidgets();
+
+    setTimeout(function() {
+      recently_installed = null;
+    }, 5000);
   }
 
-  recently_closed.unshift({title: tab.title, url: tab.url});
-
-  if(recently_closed.length > 15) {
-    recently_closed.pop();
+  chrome.management.onUninstalled.addListener( onUninstalled );
+  function onUninstalled(ExtensionInfo) {
+    chrome.management.getAll(reloadExtensions);
+    reloadInstalledWidgets();
+    // console.log(ExtensionInfo);
   }
 
-  localStorage.setItem("recently_closed", JSON.stringify( recently_closed ))
-  getAllTabs();
-}
-
-chrome.tabs.onCreated.addListener( getAllTabs );
-
-var tabs = null;
-function getAllTabs() {
-  chrome.tabs.getAllInWindow(null, getAllTabs_callback);
-}
-function getAllTabs_callback(data) {
-  tabs = data;
-}
-chrome.tabs.getAllInWindow(null, getAllTabs);
-
-var recently_installed = null;
-chrome.management.onInstalled.addListener( onInstalled );
-
-function onInstalled(ExtensionInfo) {
-
-  recently_installed = ExtensionInfo;
-
-  setTimeout(function() {
-    recently_installed = null;
-  }, 5000);
-
-}
-
-function setupDrawerWidgets(extensions) {
-  e = extensions;
-  // $.each(extensions, setupDrawerWidget);
-  for(var i in extensions) {
-    setupDrawerWidget(i, extensions[i]);
+  if ( Math.round(new Date().getTime()/1000.0)+1000000 > parseInt(localStorage.getItem("last_widget_update")) + 1*60*60 ) {
+    chrome.management.getAll(reloadExtensions);
+    reloadInstalledWidgets();
+    localStorage.setItem("last_widget_update", Math.round(new Date().getTime()/1000.0) );
   }
 
-  // setTimeout(function() {
-  //   window.location = window.location;
-  // }, 3000);
-};
+  if ( localStorage.getItem("installed_widgets") === null ) {
+    chrome.management.getAll(reloadExtensions);
+    reloadInstalledWidgets();
+  }
 
-function setupDrawerWidget(index, value) {
-    if(value.type !== "stock") {
+  /* END :: Get Installed Widgets */
+
+/* START :: External Communication Stuff */
+
+  // Attempts to establish a connection to all installed widgets
+  function sayHelloToPotentialWidgets() {
+    console.log(extensions);
+    for (var i in extensions) {
       chrome.extension.sendRequest(
-        value.id,
+        extensions[i].id,
         "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-poke"
       );
     }
-  }
+  };
 
-chrome.extension.onRequestExternal.addListener( onRequestExternal );
-function onRequestExternal(request, sender, sendResponse) {
-  if(request.head) {
-    if(request.head === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback") {
-      console.log(request, sender);
-      respond({
-        fn: "setupDrawerWidgets",
-        data: {
+  // Listens for responses
+  chrome.extension.onRequestExternal.addListener( onRequestExternal );
+  function onRequestExternal(request, sender, sendResponse) {
+    if(request.head) {
+      if(request.head === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback") {
+
+        var installed_widgets_temp = JSON.parse(localStorage.getItem("installed_widgets"));
+
+        installed_widgets_temp.push({
           "request": request,
           "sender": sender,
-        },
-      });
+        });
+
+        localStorage.setItem("installed_widgets", JSON.stringify( installed_widgets_temp ));
+      }
     }
   }
-}
 
+  /* END :: External Communication Stuff */
 
-// Listen to Content Scripts
-chrome.extension.onConnect.addListener( onConnect );
-function onConnect(port) {
-  console.assert(port.name == "NTP-Port");
-  port.onMessage.addListener( onMessage );
-
-  respond = function(d) {
-    port.postMessage(d);
-  }
-
-}
-
-function onMessage(msg) {
-
-  if(!msg.fn || !msg.data) {
-    return false;
-  }
-
-  if(typeof window[msg.fn] === 'function') {
-    window[msg.fn](msg.data);
-  } else {
-    return false;
-  }
-
-}
 </script>
