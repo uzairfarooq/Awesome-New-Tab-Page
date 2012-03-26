@@ -427,6 +427,14 @@ body {
 }
 
 /* UI-2 */
+.ui-2 .bottom-overlay {
+  position: absolute;
+  bottom: 16px;
+  right: 0; left: 0;
+  height: 20px;
+  background-image: url(/images/bottom-overlay.png);
+  background-repeat: repeat-x;
+}
 .ui-2 h3 {
   margin-bottom: 0;
 }

@@ -35,7 +35,7 @@
     }
   });
 
-/*  END  :: Top Left Buttons */
+  /* END :: Top Left Buttons */
 
 /* START :: Recently Closed Tabs */
 
@@ -75,8 +75,7 @@
     setTimeout(resetRecentlyClosedTabs, 500);
   });
 
-/*  END  :: Recently Closed Tabs */
-
+  /* END :: Recently Closed Tabs */
 
 /* START :: Tooltips */
 
@@ -157,4 +156,4 @@
 
   });
 
-/*  END  :: Tooltips */
+  /* END :: Tooltips */
