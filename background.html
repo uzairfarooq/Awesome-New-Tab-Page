@@ -20,37 +20,47 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
 /* START :: Recently Closed Tabs */
   var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
   chrome.tabs.onRemoved.addListener( onRemoved );
-
   function onRemoved(tabId) {
     var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
+    console.log(2);
 
     if(!tab || tab.incognito === true) {
       return;
     }
+    console.log(tab);
 
     if(tab.title === "") {
       return;
     }
+    console.log(4);
 
     if ( (tab.url).indexOf("chrome://") !== -1 ) {
       return;
     }
+    console.log(5);
 
     if (recently_closed === null) {
       recently_closed = [];
     }
 
+    console.log(1);
+
     recently_closed.unshift({title: tab.title, url: tab.url});
+
+    console.log(recently_closed);
 
     if(recently_closed.length > 15) {
       recently_closed.pop();
     }
 
     localStorage.setItem("recently_closed", JSON.stringify( recently_closed ));
+
     getAllTabs();
   }
 
   chrome.tabs.onCreated.addListener( getAllTabs );
+  chrome.tabs.onUpdated.addListener( getAllTabs );
+  chrome.tabs.onHighlightChanged.addListener( getAllTabs );
 
   var tabs = null;
   function getAllTabs() {
