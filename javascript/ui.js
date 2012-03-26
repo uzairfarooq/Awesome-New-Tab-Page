@@ -1,3 +1,19 @@
+/*
+ *
+ *  Awesome New Tab Page
+ *    http://antp.co/
+ *    Copyright 2011+ Michael Hart (http://h4r7.me/).
+ *
+ *  Want to make it even more awesome?
+ *    https://github.com/michaelhart/Awesome-New-Tab-Page/
+ *
+ *  UI (User Interface)
+ *    JavaScript essential to the global user interface.
+ *
+ *  Licensed under GPL v3:
+ *    http://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ */
 
 /* START :: Top Left Buttons */
 

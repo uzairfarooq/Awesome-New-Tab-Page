@@ -1,17 +1,18 @@
 /*
  *
- * Awesome New Tab Page
- *   Copyright 2011 Michael Hart (http://h4r7.me/).
- * 
- * Want to make it even more awesome?
- *   https://github.com/michaelhart/Awesome-New-Tab-Page/
-
- * Tile / Widget System
- *   Immense thanks to David Shorten (shortenda at gmail.com)
- *   the original author of the below code.
+ *  Awesome New Tab Page
+ *    http://antp.co/
+ *    Copyright 2011+ Michael Hart (http://h4r7.me/).
  *
- * Licensed under GPL v2:
- *   http://www.gnu.org/licenses/gpl-2.0.txt
+ *  Want to make it even more awesome?
+ *    https://github.com/michaelhart/Awesome-New-Tab-Page/
+ *
+ *  Tile / Widget System
+ *    Immense thanks to David Shorten (shortenda at gmail.com)
+ *    the original author of the tile system.
+ *
+ *  Licensed under GPL v3:
+ *    http://www.gnu.org/licenses/gpl-3.0.txt
  *
  */
 
@@ -61,7 +62,7 @@ function moveGrid(pref) {
 
   $("#widget-holder,#grid-holder").css({
     "top" : GRID_MARGIN_TOP(),
-    "left": GRID_MARGIN_LEFT 
+    "left": GRID_MARGIN_LEFT
   });
 
   updateGridOpacity();
@@ -221,7 +222,7 @@ function setStuff(){
       );
       $(elem).css("left", $(elem).attr("initleft") * 206 + 8);
       $(elem).css("top", $(elem).attr("inittop") * 206 + 8);
-      
+
       var closestElm = findClosest(this);
       var tiles = getCovered(this);
 
@@ -233,7 +234,7 @@ function setStuff(){
         });
         $(this).css("z-index","1"); //set widget back on normal zindex
   });
-  
+
   var held_element = {};
   $('.widget').live('mousedown', function(e) { //when we pick up a tile
       if(lock === true) {
@@ -266,8 +267,8 @@ function setStuff(){
       $(this).attr("oldx", $(this).position().left);
       $(this).attr("oldy", $(this).position().top);
 
-  });  
-  
+  });
+
   $('.widget').live('mouseup', function(e) { //when we release a tile
       if(lock === true) {
         return false;
@@ -283,10 +284,10 @@ function setStuff(){
 
       $(this).attr("mousedown", "false");
       update = true;
-      
+
       //find the closest tile
       var closestElm = findClosest(this);
-      var tiles = getCovered(this); 
+      var tiles = getCovered(this);
 
       if(tiles.clear === true){
         if($(this).attr("data-app-source") === "from-drawer" && $(this).attr("data-widget") === "true") {
@@ -322,15 +323,15 @@ function setStuff(){
             $(elem).css("z-index", "0");
         });
         $(this).css("z-index","1"); //set widget back on normal zindex
-        
-        
+
+
       } else { //if the tile was full
         $(tiles.tiles).each(function(ind, elem){
             $(elem).css("z-index", "0");
         });
         $(this).css("left", parseInt( $(this).attr("oldx"), 10) );
         $(this).css("top", parseInt( $(this).attr("oldy"), 10) );
-        
+
         $(this).css("z-index","1");
 
         tiles = getCovered(this); // Recheck since it moved.
@@ -340,7 +341,7 @@ function setStuff(){
         $(this).css("left", parseInt( $(this).attr("oldx"), 10) );
         $(this).css("top", parseInt( $(this).attr("oldy"), 10) );
       }
-      
+
       if( $(this).attr("data-app-source") === "from-drawer") {
         $(this).css("position", "").css("left", "").css("top", "");
         if( $(this).attr("data-widget") === "true") {
@@ -351,8 +352,8 @@ function setStuff(){
       }
 
   });
-  
-  
+
+
   $('body').live('mousemove', function(e) { // when we move a tile
       if(lock === true) {
         return;
@@ -365,7 +366,7 @@ function setStuff(){
             return false;
           }
       });
-      
+
       if( held !== false){
         if(update === true){
           update = false;
@@ -380,10 +381,10 @@ function setStuff(){
 
         $(".edit-shortcut-ui").remove();
         hscroll = true;
-        
+
         var closestElm = findClosest(held);
         var tiles = getCovered(held);
-        
+
         $(".tile").removeClass("tile-green");
         $(".tile").removeClass("tile-red");
         $(".tile").css("z-index", "0");
@@ -402,5 +403,5 @@ function setStuff(){
         }
       }
   });
-  
+
 }

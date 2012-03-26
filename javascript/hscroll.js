@@ -2,7 +2,7 @@
  * Scroller.js
  * Captures mouse wheel events and runs the ScrollSmoothly
  * function based on their output.
- * Aims to aid usability by allowing the user to scroll the 
+ * Aims to aid usability by allowing the user to scroll the
  * page horizontally smoothly using only their mousewheel.
  * Mousewheel event capture by Adomas Paltanavičius at http://adomas.org/
  */
@@ -29,7 +29,7 @@ function wheel(event){
     return;
   }
   var delta = 0;
-  if (!event) 
+  if (!event)
     event = window.event;
   if (event.wheelDelta) {
     delta = event.wheelDelta/120;

@@ -2,7 +2,7 @@
    -
    - Awesome New Tab Page
    -   Copyright 2011 Michael Hart (http://h4r7.me/).
-   - 
+   -
    - Want to make it even more awesome?
    -   https://github.com/michaelhart/Awesome-New-Tab-Page/
    -
@@ -65,7 +65,7 @@ chrome.management.onInstalled.addListener( onInstalled );
 function onInstalled(ExtensionInfo) {
 
   recently_installed = ExtensionInfo;
-  
+
   setTimeout(function() {
     recently_installed = null;
   }, 5000);

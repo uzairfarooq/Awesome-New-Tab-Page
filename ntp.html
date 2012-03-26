@@ -3,14 +3,18 @@
   <head>
   <!--
      -
-     - Awesome New Tab Page
-     -   Copyright 2011 Michael Hart (http://h4r7.me/).
-     - 
-     - Want to make it even more awesome?
-     -   https://github.com/michaelhart/Awesome-New-Tab-Page/
+     -  Awesome New Tab Page
+     -    http://antp.co/
+     -    Copyright 2011+ Michael Hart (http://h4r7.me/).
      -
-     - Licensed under GPL v3:
-     -   http://www.gnu.org/licenses/gpl-3.0.txt
+     -  Want to make it even more awesome?
+     -    https://github.com/michaelhart/Awesome-New-Tab-Page/
+     -
+     -  New Tab Page
+     -    Where every journey begins.
+     -
+     -  Licensed under GPL v3:
+     -    http://www.gnu.org/licenses/gpl-3.0.txt
      -
      -->
     <title>New Tab</title>
@@ -38,7 +42,6 @@
     <script type="text/javascript" src="/javascript/ui.js?nocache=6"></script>
 
     <script>
-        // var bp = chrome.extension.getBackgroundPage();
         var port = chrome.extension.connect({name: "NTP-Port"});
         var extensions = {};
         var widgets = {};
@@ -182,7 +185,7 @@
           localStorage.setItem("widgets", JSON.stringify( stock_widgets ));
         }
 
-        var palette = 
+        var palette =
         [
           "rgba(51,   153,  51,   .7)",
           "rgba(229,  20,   0,    .7)",
@@ -252,7 +255,7 @@
                 window[msg.fn](msg.data);
             }
         });
-        
+
         /*  Type: str [app, widget, app-drawer, widget-drawer]  */
         /*  Destination: str [home, app-drawer, widget-drawer]  */
         /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]     */
@@ -543,7 +546,7 @@
             /*  Left: int                                         */  $(this).attr("data-land-left"),
             /*  Poke: int                                         */  null
           )).appendTo("#widget-holder");
-          
+
           $("#" + new_shortcut_id).css({
             "left": $(this).position().left,
             "top": $(this).position().top,
@@ -953,7 +956,7 @@
               data: extensions,
             });
           }
-          
+
           $(".ui-2#widgets").fadeToggle();
 
           $(".ui-2#apps").fadeOut();
@@ -1138,14 +1141,6 @@
 
         }, 500);
 
-        // setTimeout(function() {
-        //   port.postMessage({
-        //     fn: "setupDrawerWidgets",
-        //     data: extensions,
-        //   });
-        // }, 1000);
-
-
         if(localStorage.getItem("showbmb") === null) {
           localStorage.setItem("showbmb", "no");
         }
@@ -1315,7 +1310,7 @@
           <g:plusone expandTo="top" size="medium"
           href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></g:plusone>
 
-          <a href="https://twitter.com/share" class="twitter-share-button" 
+          <a href="https://twitter.com/share" class="twitter-share-button"
             data-url="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"
             data-text="Awesome New Tab Page: Making the New Tab Page in Google Chrome awesome."
             data-count="horizontal" data-via="NewTabPage" data-related="HartMichael:Developer">Tweet</a>
@@ -1368,7 +1363,7 @@
           <div id="toggle-grid-holder">
             <input id="toggle-grid" type="checkbox" name="show" value="true" />
             <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_shgrid"));</script></p>
-          </div> 
+          </div>
 
           <div id="toggle-app-names-holder">
             <input id="toggle-app-names" type="checkbox" name="show" value="true" />
