@@ -58,7 +58,7 @@ u {
   text-decoration: underline;
 }
 body {
-  background: #260930;
+  background: #221F20;
   margin-top: 0;
   padding: 0;
   font-family: "Droid Sans", "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", "Luxi Sans", Tahoma, sans-serif;
@@ -113,7 +113,7 @@ body {
   padding: 0px;
 }
 .widget-drag {
-  opacity: .5
+  opacity: .7;
 }
 .iframe-mask {
   background-color: transparent;
@@ -723,6 +723,60 @@ body > .widget-drawer-app img {
   cursor: pointer;
   margin: 0;
 }
+.ui-2#apps .faw-box,
+.ui-2#widgets .faw-box {
+  width: 215px;
+  height: 75px;
+  background-color: #C7C6BF;
+  margin: 5px 6px 2px 0px;
+}
+.ui-2#apps .faw-box .faw-wrapper,
+.ui-2#widgets .faw-box .faw-wrapper {
+  position: absolute;
+  padding: 5px;
+}
+.ui-2#apps .faw-box .faw-head,
+.ui-2#widgets .faw-box .faw-head {
+  padding-right: 5px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 11px;
+  display: inline;
+  color: rgba(0, 0, 0, .5);
+}
+.ui-2#apps .faw-box .faw-body,
+.ui-2#widgets .faw-box .faw-body {
+  font-size: 12px;
+  display: inline;
+}
+.ui-2#apps .faw-box .faw-featured,
+.ui-2#widgets .faw-box .faw-featured {
+  width: 205px;
+  height: 72px;
+  position: absolute;
+  top: 0;
+}
+.ui-2#apps .faw-box .faw-featured img,
+.ui-2#widgets .faw-box .faw-featured img {
+  width: 50px;
+  height: 50px;
+  top: 13px;
+}
+.ui-2#apps .faw-box .faw-featured .faw-title,
+.ui-2#widgets .faw-box .faw-featured .faw-title {
+  position: absolute;
+  top: 20px;
+  right: 0;
+}
+.ui-2#apps .faw-box .faw-featured .faw-href,
+.ui-2#widgets .faw-box .faw-featured .faw-href {
+  position: absolute;
+  bottom: 0px;
+  right: 0;
+  display: none;
+  font-size: 15px;
+}
+
 /* UI-2 Tile Editor */
 .ui-2#editor {
   display: none;

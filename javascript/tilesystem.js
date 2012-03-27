@@ -23,6 +23,10 @@ var GRID_MIN_HEIGHT   = 3,
     GRID_TILE_SIZE    = 200,  /* NEVER CHANGE */
     GRID_TILE_PADDING = 3;    /* NEVER CHANGE */
 
+$(document).ready(function($) {
+  placeGrid();
+  placeWidgets();
+});
 
 function updateGridOpacity() {
   if ($("#toggle-grid").is(':checked')) {
@@ -130,11 +134,6 @@ function placeGrid() {
   updateGridOpacity();
 }
 
-$(document).ready(function($) {
-  placeGrid();
-  placeWidgets();
-});
-
 $(".empty").live({
   mouseenter: function() {
     $(this).addClass("add-shortcut");
@@ -238,47 +237,59 @@ function setStuff(){
   var held_element = {};
   $('.widget').live('mousedown', function(e) { //when we pick up a tile
       if(lock === true) {
+        held = false;
         return false;
       }
 
       held_element.offsetX = e.offsetX;
       held_element.offsetY = e.offsetY;
 
-      $(this).attr("mousedown", "true");
       if(e.preventDefault()){
         e.preventDefault();
       }
 
       if( $(this).attr("data-app-source") === "from-drawer") {
-        $(this).css("left", $(this).offset().left);
-        $(this).css("top", $(this).offset().top);
-        $(this).css("position", "absolute");
-        $(this).prependTo("body");
-        $(".ui-2#apps").css("display", "none");
-        $(".ui-2#widgets").css("display", "none");
-        // $(".o1x1,.o1x2,.o1x3,.o2x1,.o2x2,.o2x3,.o3x1,.o3x2,.o3x3").css("opacity", "0");
+        $(this).clone().prependTo("body").css({
+            "left": $(this).offset().left,
+            "top" : $(this).offset().top,
+            "position": "absolute"
+        }).attr("mousedown", "true").attr({
+          "oldx": $(this).position().left,
+          "oldy": $(this).position().top
+        }).css("z-index","100");
+
+        $(".ui-2#apps,.ui-2#widgets").css("display", "none");
       } else {
         var tiles = getCovered(this);
         $(tiles.tiles).each(function(ind, elem){
-            $(elem).toggleClass("empty", true); //set the tile we came from to be empty
+          $(elem).toggleClass("empty", true);
         });
+
+        $(this).attr("mousedown", "true").attr({
+          "oldx": $(this).position().left,
+          "oldy": $(this).position().top
+        }).css("z-index","100");
       }
-      $(this).css("z-index","100"); //allow us to drag it across everything
-      $(this).attr("oldx", $(this).position().left);
-      $(this).attr("oldy", $(this).position().top);
+
+      if(e.preventDefault()){
+        e.preventDefault();
+      }
 
   });
 
   $('.widget').live('mouseup', function(e) { //when we release a tile
-      if(lock === true) {
+      if (lock === true) {
+        held = false;
+        return false;
+      }
+
+      if (held === false) {
         return false;
       }
 
       $(".tile").removeClass("tile-green");
       $(".tile").removeClass("tile-red");
       $(".tile").css("z-index", "0");
-
-      // $(".o1x1,.o1x2,.o1x3,.o2x1,.o2x2,.o2x3,.o3x1,.o3x2,.o3x3").css("opacity", "1");
 
       $(this).removeClass("widget-drag");
 
@@ -343,23 +354,25 @@ function setStuff(){
       }
 
       if( $(this).attr("data-app-source") === "from-drawer") {
-        $(this).css("position", "").css("left", "").css("top", "");
-        if( $(this).attr("data-widget") === "true") {
-          $(this).prependTo(".ui-2#widgets > .contents");
-        } else {
-          $(this).prependTo(".ui-2#apps > .contents");
-        }
+        $(this).remove();
+        // $(this).css("position", "").css("left", "").css("top", "");
+        // if( $(this).attr("data-widget") === "true") {
+        //   $(this).appendTo(".ui-2#widgets > .contents");
+        // } else {
+        //   $(this).appendTo(".ui-2#apps > .contents");
+        // }
       }
 
   });
 
-
+  var held = false;
   $('body').live('mousemove', function(e) { // when we move a tile
       if(lock === true) {
-        return;
+        held = false;
+        return false;
       }
 
-      var held = false;
+      held = false;
       $(".widget").each(function(ind, elem){
           if($(elem).attr("mousedown") == "true"){
             held = elem;
@@ -370,8 +383,10 @@ function setStuff(){
       if( held !== false){
         if(update === true){
           update = false;
-          $(held).attr("lastx", e.pageX);
-          $(held).attr("lasty", e.pageY);
+          $(held).attr({
+            "lastx": e.pageX,
+            "lasty": e.pageY
+          });
         }else{
           $(held).css("left", e.pageX - held_element.offsetX);
           $(held).css("top", e.pageY - held_element.offsetY);

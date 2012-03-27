@@ -818,6 +818,9 @@
         });
 
         $("#app-drawer-button").live("click", function(){
+          loadFeatured();
+          _gaq.push([ '_trackEvent', 'Window', "Apps" ]);
+
           $(".ui-2#apps").fadeToggle();
 
           $(".ui-2#widgets").fadeOut();
@@ -832,6 +835,8 @@
 
         var options_init = true;
         $("#config-button, .ui-2.config").live("click", function(){
+          _gaq.push([ '_trackEvent', 'Window', "Config" ]);
+
           $(".ui-2#config").fadeToggle();
 
           $(".ui-2#widgets").fadeOut();
@@ -844,6 +849,8 @@
         });
 
         $("#logo-button, .ui-2.logo").live("click", function(){
+          _gaq.push([ '_trackEvent', 'Window', "About" ]);
+
           $(".ui-2#about").fadeToggle();
 
           if(options_init === true) {
@@ -894,6 +901,9 @@
         });
 
         $("#widget-drawer-button").live("click", function(){
+          loadFeatured();
+          _gaq.push([ '_trackEvent', 'Window', "Widgets" ]);
+
           $(".ui-2#widgets").fadeToggle();
 
           $(".ui-2#apps").fadeOut();
@@ -960,7 +970,7 @@
             $(".ui-2#apps .drawer-app .url").removeClass("url").addClass("disabled-url");
             setTimeout(function() {
               $(".ui-2#apps .drawer-app .url").removeClass("url").addClass("disabled-url");
-            }, 200);
+            }, 1100);
 
           } else {
             // Lock
@@ -979,7 +989,7 @@
             $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
             setTimeout(function() {
               $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
-            }, 250);
+            }, 1100);
           }
         });
 
@@ -1188,7 +1198,7 @@
         <div id="about-flattr" class="ui-2">
           <h3>Flattr</h3>
           <p class="ilb">
-            Support Awesome New Tab Page with a flattr donation.
+            Support Awesome New Tab Page with Flattr.
           </p>
           <p class="ilb">
             <a class="FlattrButton" style="display:none;" href="https://github.com/michaelhart/Awesome-New-Tab-Page"></a>
@@ -1352,7 +1362,35 @@
         </div>
       </div>
 
-      <div class="ui-2 contents"></div>
+      <div class="ui-2 contents">
+        <div class="drawer-app ui-2 ilb faw-box">
+          <div class="faw-wrapper">
+            <div class="faw-head">What're apps?</div>
+            <div class="faw-body">
+              Web-based applications are programs that are designed to be used entirely within the browser.
+              <a href="http://support.google.com/chrome/bin/answer.py?answer=1050586"><u>Learn more</u></a>.
+            </div>
+          </div>
+        </div>
+        <div class="drawer-app ui-2 ilb faw-box">
+          <div class="faw-wrapper">
+            <div class="faw-head">Lock &amp; Unlock</div>
+            <div class="faw-body">
+              If you want to move one to your grid, unlock then drag it. Unlock using the lock icon on the left of the screen.
+            </div>
+          </div>
+        </div>
+        <div class="drawer-app ui-2 ilb faw-box">
+          <div class="faw-wrapper">
+            <div class="faw-head">Featured</div>
+            <div class="faw-body faw-featured">
+              <img src="/icon128.png" />
+              <div class="faw-title">Loading...</div>
+              <a class="faw-href" href="#"><b>Install</b></a>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="ui-2 bottom-overlay"></div>
     </div>
 
@@ -1377,7 +1415,35 @@
         </div>
       </div>
 
-      <div class="ui-2 contents" id="widget-drawer"></div>
+      <div class="ui-2 contents" id="widget-drawer">
+        <div class="drawer-app ui-2 ilb faw-box">
+          <div class="faw-wrapper">
+            <div class="faw-head">What're widgets?</div>
+            <div class="faw-body">
+              Widgets bring the full power of the web to your new tab page. Go ahead; get the featured widget on the right!
+            </div>
+          </div>
+        </div>
+        <div class="drawer-app ui-2 ilb faw-box">
+          <div class="faw-wrapper">
+            <div class="faw-head">Lock &amp; Unlock</div>
+            <div class="faw-body">
+              If you want to move one to your grid, unlock then drag it. Unlock using the lock icon on the left of the screen.
+            </div>
+          </div>
+        </div>
+        <div class="drawer-app ui-2 ilb faw-box">
+          <div class="faw-wrapper">
+            <div class="faw-head">Featured</div>
+            <div class="faw-body faw-featured">
+              <img src="/icon128.png" />
+              <div class="faw-title">Loading...</div>
+              <a class="faw-href" href="#"><b>Install</b></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="ui-2 bottom-overlay"></div>
     </div>
 

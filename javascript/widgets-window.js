@@ -17,11 +17,11 @@
 $(document).ready(function($) {
   setTimeout(function() {
     setupStockWidgets();
-  }, 900);
+  }, 1100);
 
   setTimeout(function() {
     setupInstalledWidgets();
-  }, 1100);
+  }, 900);
 });
 
 // Only handles 1 at a time; widget
@@ -65,7 +65,7 @@ function setupDrawerWidgets(_widget) {
         /*  Top: int                                          */  null,
         /*  Left: int                                         */  null,
         /*  Poke: int                                         */  parseInt(_widget.request.body.poke)
-      )).prependTo("#widget-drawer");
+      )).appendTo("#widget-drawer");
 
       return;
     }

@@ -78,6 +78,7 @@ $(document).ready(function($) {
   $("#recently-closed-tabs").live('click', function() {
     $(".close,.ui-2.x").trigger("click");
     $("#recently-closed-tabs-menu").toggle();
+    _gaq.push([ '_trackEvent', 'Window', "Recently Closed Tabs" ]);
   });
 
   $(window).bind('storage', function (e) {
@@ -189,3 +190,35 @@ $(document).ready(function($) {
   });
 
   /* END :: Tooltips */
+
+/* START :: Featured */
+  var loaded_featured = false;
+  function loadFeatured() {
+    if(loaded_featured === false) {
+      $.ajax({
+        url: "http://cdn.antp.co/getFeatured/?nocache-day=" + new Date().getDate(),
+        dataType: 'jsonp',
+        cache: true,
+        jsonpCallback: "setupFeatured",
+        success: setupFeatured
+      });
+    }
+
+    loaded_featured = true;
+  }
+
+  function setupFeatured(data) {
+    if( typeof(data.a) === "object" ) {
+      if( typeof(data.a.app) === "object" ) {
+        $(".ui-2#apps .faw-box .faw-featured img").attr("src", data.a.app.img);
+        $(".ui-2#apps .faw-box .faw-featured .faw-title").html(data.a.app.title);
+        $(".ui-2#apps .faw-box .faw-featured .faw-href").attr("href", data.a.app.href).css("display", "block");
+      }
+      if( typeof(data.a.widget) === "object" ) {
+        $(".ui-2#widgets .faw-box .faw-featured img").attr("src", data.a.widget.img);
+        $(".ui-2#widgets .faw-box .faw-featured .faw-title").html(data.a.widget.title);
+        $(".ui-2#widgets .faw-box .faw-featured .faw-href").attr("href", data.a.widget.href).css("display", "block");
+      }
+    }
+  }
+  /* END :: Featured */
