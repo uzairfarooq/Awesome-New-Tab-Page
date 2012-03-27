@@ -8,12 +8,12 @@
  */
 
 var hscroll = true;
-$("#widget-drawer,#app-drawer,.edit-shortcut-ui,#options-ui,.ui-2").live({
-  mouseenter: function() {
-    hscroll = false;
-  },
+$("body > .ui-2, body > #recently-closed-tabs-menu").live({
   mouseleave: function() {
     hscroll = true;
+  },
+  mouseenter: function() {
+    hscroll = false;
   }
 });
 
