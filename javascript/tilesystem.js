@@ -24,6 +24,18 @@ var GRID_MIN_HEIGHT   = 3,
     GRID_TILE_PADDING = 3;    /* NEVER CHANGE */
 
 $(document).ready(function($) {
+  $("#toggle-grid").live("click", updateGridOpacity);
+
+  if(localStorage.getItem("perm-grid") === null) {
+    localStorage.setItem("perm-grid", "yes");
+  }
+
+  if(localStorage.getItem("perm-grid") === "yes") {
+    $("body").addClass("perm-grid");
+    console.log(1);
+    $("#toggle-grid").attr('checked', 'checked');
+  }
+
   placeGrid();
   placeWidgets();
 });
@@ -39,19 +51,6 @@ function updateGridOpacity() {
     $(".tile").animate({opacity: 0});
   }
 }
-
-$(document).ready(function($) {
-  $("#toggle-grid").live("click", updateGridOpacity);
-
-  if(localStorage.getItem("perm-grid") === null) {
-    localStorage.setItem("perm-grid", "yes");
-  }
-
-  if(localStorage.getItem("perm-grid") === "yes") {
-    $("body").addClass("perm-grid");
-    $("#toggle-grid").attr('checked', 'checked');
-  }
-});
 
 function moveGrid(pref) {
   if ( pref.animate_top === false ) {

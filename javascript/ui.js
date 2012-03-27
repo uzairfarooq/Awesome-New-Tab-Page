@@ -146,6 +146,9 @@ $(document).ready(function($) {
       }
     }
 
+    $(".ui-2.widgets-refresh").qtip(
+      $.extend({}, qtipUI2, { content: "Widgets not showing up? Refresh manually." })
+    );
     $(".ui-2.x").qtip(
       $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_close") || "Close" })
     );

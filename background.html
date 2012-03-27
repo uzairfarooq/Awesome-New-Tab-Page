@@ -14,6 +14,7 @@
      -    http://www.gnu.org/licenses/gpl-3.0.txt
      -
      -->
+<script type="text/javascript" src="/javascript/jquery.js"></script>
 <script type="text/javascript">
 window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
 
@@ -22,32 +23,24 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   chrome.tabs.onRemoved.addListener( onRemoved );
   function onRemoved(tabId) {
     var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
-    console.log(2);
 
     if(!tab || tab.incognito === true) {
       return;
     }
-    console.log(tab);
 
     if(tab.title === "") {
       return;
     }
-    console.log(4);
 
     if ( (tab.url).indexOf("chrome://") !== -1 ) {
       return;
     }
-    console.log(5);
 
     if (recently_closed === null) {
       recently_closed = [];
     }
 
-    console.log(1);
-
     recently_closed.unshift({title: tab.title, url: tab.url});
-
-    console.log(recently_closed);
 
     if(recently_closed.length > 15) {
       recently_closed.pop();
@@ -74,13 +67,19 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   /* END :: Recently Closed Tabs */
 
 /* START :: Get Installed Widgets */
-
   var extensions;
 
   chrome.management.getAll(reloadExtensions);
   function reloadExtensions(data) {
     extensions = data;
   }
+
+  $(window).bind('storage', function (e) {
+    if ( typeof(e.originalEvent) === "object"
+      && typeof(e.originalEvent.key) === "string"
+      && e.originalEvent.key === "refresh_widgets" )
+        reloadInstalledWidgets();
+  });
 
   function reloadInstalledWidgets() {
     localStorage.setItem("installed_widgets", JSON.stringify( [] ));
@@ -94,6 +93,7 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
     }, 10000);
   }
 
+  chrome.management.onEnabled.addListener( onInstalled );
   chrome.management.onInstalled.addListener( onInstalled );
   function onInstalled(ExtensionInfo) {
     chrome.management.getAll(reloadExtensions);
@@ -103,7 +103,7 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
       recently_installed = null;
     }, 5000);
   }
-
+  chrome.management.onDisabled.addListener( onUninstalled );
   chrome.management.onUninstalled.addListener( onUninstalled );
   function onUninstalled(ExtensionInfo) {
     chrome.management.getAll(reloadExtensions);
@@ -111,7 +111,7 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
     // console.log(ExtensionInfo);
   }
 
-  if ( Math.round(new Date().getTime()/1000.0)+1000000 > parseInt(localStorage.getItem("last_widget_update")) + 1*60*60 ) {
+  if ( Math.round(new Date().getTime()/1000.0) > parseInt(localStorage.getItem("last_widget_update")) + 30*60 ) {
     chrome.management.getAll(reloadExtensions);
     reloadInstalledWidgets();
     localStorage.setItem("last_widget_update", Math.round(new Date().getTime()/1000.0) );
@@ -122,13 +122,20 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
     reloadInstalledWidgets();
   }
 
+  if ( localStorage.getItem("installed_widgets") === "[]" ) {
+    if ( Math.round(new Date().getTime()/1000.0) > parseInt(localStorage.getItem("last_widget_update")) + 5*60 ) {
+      chrome.management.getAll(reloadExtensions);
+      reloadInstalledWidgets();
+      localStorage.setItem("last_widget_update", Math.round(new Date().getTime()/1000.0) );
+    }
+  }
+
   /* END :: Get Installed Widgets */
 
 /* START :: External Communication Stuff */
 
   // Attempts to establish a connection to all installed widgets
   function sayHelloToPotentialWidgets() {
-    console.log(extensions);
     for (var i in extensions) {
       chrome.extension.sendRequest(
         extensions[i].id,

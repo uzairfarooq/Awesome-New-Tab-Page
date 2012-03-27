@@ -71,6 +71,21 @@ function setupDrawerWidgets(_widget) {
     }
 }
 
+$(".ui-2.widgets-refresh").live("click", function() {
+  $(".ui-2#widgets .widget").remove();
+
+  localStorage.setItem("refresh_widgets", Math.round(new Date().getTime()/1000.0) );
+
+  setTimeout(function() {
+    setupStockWidgets();
+  }, 1100);
+
+  setTimeout(function() {
+    setupInstalledWidgets();
+  }, 900);
+});
+
+
 function setupInstalledWidgets() {
   installed_widgets = JSON.parse(localStorage.getItem("installed_widgets"));
 
