@@ -32,7 +32,6 @@ $(document).ready(function($) {
 
   if(localStorage.getItem("perm-grid") === "yes") {
     $("body").addClass("perm-grid");
-    console.log(1);
     $("#toggle-grid").attr('checked', 'checked');
   }
 
