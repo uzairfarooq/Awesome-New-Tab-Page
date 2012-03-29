@@ -10,9 +10,7 @@
  *   http://www.gnu.org/licenses/gpl-3.0.txt
  *
  */
-/*body > canvas {
-  opacity: 0;
-}*/
+
 a:link,
 a:visited,
 a:hover,
@@ -112,9 +110,6 @@ body {
   margin: 3px;
   padding: 0px;
 }
-.widget-drag {
-  opacity: .7;
-}
 .iframe-mask {
   background-color: transparent;
   z-index: 802;
@@ -169,8 +164,9 @@ body {
   top: 0;
   right: 0;
 }
-.widget:active.app {
+.widget.widget-drag {
   -webkit-transform: scale(0.95);
+  opacity: .75;
 }
 .app-name {
   position: absolute;
