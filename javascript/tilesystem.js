@@ -237,6 +237,13 @@ function setStuff(){
     });
   });
 
+  // Trigger mouseup on escape key
+  $(document).keyup(function(e) {
+    if ( typeof(held_element.element) === "object" ) {
+      if (e.which == 27) { $(held_element.element).trigger("mouseup"); }
+    }
+  });
+
   var held_element = {};
   // When a tile is picked up
   $(".widget").live("mousedown", function(e) {
