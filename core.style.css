@@ -164,6 +164,9 @@ body {
   top: 0;
   right: 0;
 }
+.locked .widget:active.app {
+  -webkit-transform: scale(0.95);
+}
 .widget.widget-drag {
   -webkit-transform: scale(0.95);
   opacity: .75;
