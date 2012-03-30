@@ -216,10 +216,10 @@ function getCovered(tile) {
 function setStuff(){
   $(".widget").each(function(ind, elem){
     $(elem).css({
-      "width" : $(elem).attr("data-tile-width") * 200 + (makeZero($(elem).attr("data-tile-width") - 1) * 6),
+      "width" : $(elem).attr("data-tile-width")  * 200 + (makeZero($(elem).attr("data-tile-width")  - 1) * 6),
       "height": $(elem).attr("data-tile-height") * 200 + (makeZero($(elem).attr("data-tile-height") - 1) * 6),
-      "left": $(elem).attr("initleft") * 206 + 8,
-      "top" : $(elem).attr("inittop") * 206 + 8
+      "left": $(elem).attr("initleft") * 206,
+      "top" : $(elem).attr("inittop")  * 206
     });
 
     var closestElm = findClosest(this);
