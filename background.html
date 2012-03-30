@@ -24,20 +24,11 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   function onRemoved(tabId) {
     var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
 
-    if(!tab || tab.incognito === true) {
+    if( !tab || tab.incognito === true
+      || tab.title === ""
+      || (tab.url).indexOf("chrome://") !== -1
+      || recently_closed === null) {
       return;
-    }
-
-    if(tab.title === "") {
-      return;
-    }
-
-    if ( (tab.url).indexOf("chrome://") !== -1 ) {
-      return;
-    }
-
-    if (recently_closed === null) {
-      recently_closed = [];
     }
 
     recently_closed.unshift({title: tab.title, url: tab.url});
@@ -81,7 +72,13 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
         reloadInstalledWidgets();
   });
 
+  var lock_reload = false;
   function reloadInstalledWidgets() {
+    if ( lock_reload === true ) {
+      return;
+    }
+    lock_reload = true;
+
     localStorage.setItem("installed_widgets", JSON.stringify( [] ));
 
     setTimeout(function() {
@@ -89,6 +86,7 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
     }, 100);
 
     setTimeout(function() {
+      lock_reload = false;
       window.location = window.location;
     }, 10000);
   }
