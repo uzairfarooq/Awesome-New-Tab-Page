@@ -123,7 +123,7 @@ function placeGrid() {
   // Actually place the grid
   for (var gx = 0; gx < height; gx++) {
     for (var gy = 0; gy < width; gy++) {
-      $(tile_template).appendTo("#grid-holder").css({
+      $(tile_template).css({
         "position": "absolute",
         "top" : ( gx * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gx + 1 ) ),
         "left": ( gy * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gy + 1 ) )
@@ -131,7 +131,7 @@ function placeGrid() {
         "id": gx + "x" + gy,
         "data-land-top" : gx,
         "data-land-left": gy
-      });
+      }).appendTo("#grid-holder");
     }
   }
 
@@ -257,17 +257,16 @@ function setStuff(){
     held_element.oldX    = $(this).position().left;
     held_element.oldY    = $(this).position().top;
 
-    if( $(this).attr("data-app-source") === "from-drawer") {
-      held_element.element = $(this).clone().prependTo("body")
+    if( $(this).attr("data-app-source") === "from-drawer" ) {
+      held_element.element = $(this).clone()
         .addClass("widget-drag").css({
           "left": $(this).offset().left,
           "top" : $(this).offset().top,
           "position": "absolute",
           "z-index" : "100"
-      });
+      }).prependTo("body");
 
       // Ensure that it's always droppable
-      console.log( $(held_element.element).width()/2 )
       held_element.offsetX = $(held_element.element).width()  / 2;
       held_element.offsetY = $(held_element.element).height() / 2;
 
