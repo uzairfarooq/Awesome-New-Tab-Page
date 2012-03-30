@@ -218,8 +218,8 @@ function setStuff(){
     $(elem).css({
       "width" : $(elem).attr("data-tile-width")  * 200 + (makeZero($(elem).attr("data-tile-width")  - 1) * 6),
       "height": $(elem).attr("data-tile-height") * 200 + (makeZero($(elem).attr("data-tile-height") - 1) * 6),
-      "left": $(elem).attr("initleft") * 206,
-      "top" : $(elem).attr("inittop")  * 206
+      "left": $(elem).attr("initleft") * ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) + ( GRID_TILE_PADDING * 2 ),
+      "top" : $(elem).attr("inittop")  * ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) + ( GRID_TILE_PADDING * 2 )
     });
 
     var closestElm = findClosest(this);
