@@ -16,12 +16,11 @@
  */
 $(document).ready(function($) {
   setTimeout(function() {
-    setupStockWidgets();
-  }, 1100);
-
-  setTimeout(function() {
     setupInstalledWidgets();
   }, 900);
+  setTimeout(function() {
+    setupStockWidgets();
+  }, 1000);
 });
 
 // Only handles 1 at a time; widget
@@ -71,18 +70,23 @@ function setupDrawerWidgets(_widget) {
     }
 }
 
+var widget_refresh_clickable = true;
 $(".ui-2.widgets-refresh").live("click", function() {
+  if ( widget_refresh_clickable === false ) {
+    return;
+  }
+  widget_refresh_clickable = false;
   $(".ui-2#widgets .widget").remove();
 
   localStorage.setItem("refresh_widgets", Math.round(new Date().getTime()/1000.0) );
 
   setTimeout(function() {
-    setupStockWidgets();
-  }, 1100);
-
-  setTimeout(function() {
     setupInstalledWidgets();
   }, 900);
+  setTimeout(function() {
+    setupStockWidgets();
+    widget_refresh_clickable = true;
+  }, 1000);
 });
 
 
