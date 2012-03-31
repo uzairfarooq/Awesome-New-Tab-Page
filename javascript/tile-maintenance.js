@@ -228,7 +228,7 @@ function addShortcut(widget, top, left) {
       name: "Google",
       id: widget,
       img: "core.shortcut.blank2.png",
-      appLaunchUrl: "http://www.google.com/",
+      appLaunchUrl: "http://www.google.com/"
     };
 
     localStorageSync(false);
@@ -298,7 +298,7 @@ function addWidget(is_widget, widget, top, left, src, width, height, poke, stock
         id: widget,
         img: widget_img,
         url: appLaunchUrl,
-        appLaunchUrl: appLaunchUrl,
+        appLaunchUrl: appLaunchUrl
       };
     }
 
@@ -311,7 +311,7 @@ function addWidget(is_widget, widget, top, left, src, width, height, poke, stock
         name: widget_name,
         id: widget,
         img: widget_img,
-        path: widget_src,
+        path: widget_src
       };
     }
 

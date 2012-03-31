@@ -118,7 +118,7 @@ function setupStockWidgets() {
             height: widget.size[0],
             width: widget.size[1],
             path: widget.path,
-            poke: 1,
+            poke: 1
           },
           head: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback"
         },
@@ -126,7 +126,7 @@ function setupStockWidgets() {
           id: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg",
           name: widget.name,
           stock: id,
-          tab: null,
+          tab: null
         }
       });
     }

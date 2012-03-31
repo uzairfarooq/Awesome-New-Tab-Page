@@ -29,7 +29,7 @@
       stock: true,
       img: "app.webstore.png",
       simg: "app.webstore.png",
-      appLaunchUrl: "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage",
+      appLaunchUrl: "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage"
     },
     tutorial: {
       where: [0,0],
@@ -39,7 +39,7 @@
       stock: true,
       name: "Tutorial (Stock)",
       id: "tutorial",
-      path: "widgets/widget.tutorial.html",
+      path: "widgets/widget.tutorial.html"
     },
     clock: {
       where: [1,3],
@@ -49,7 +49,7 @@
       stock: true,
       name: "Clock (Stock)",
       id: "clock",
-      path: "widgets/widget.clock.html",
+      path: "widgets/widget.clock.html"
     },
     notepad: {
       where: [2,2],
@@ -59,7 +59,7 @@
       stock: true,
       name: "Notepad (Stock)",
       id: "notepad",
-      path: "widgets/widget.notepad.html",
+      path: "widgets/widget.notepad.html"
     },
     google: {
       where: [0,2],
@@ -69,7 +69,7 @@
       stock: true,
       name: "Google (Wide) (Stock)",
       id: "google",
-      path: "widgets/widget.google.html",
+      path: "widgets/widget.google.html"
     },
     fandango: {
       where: [2,1],
@@ -84,7 +84,7 @@
       img: "/widgets/widget.fandango.png",
       simg: "/widgets/widget.fandango.png",
       appLaunchUrl: "http://gan.doubleclick.net/gan_click?lid=41000000032569141&amp;pubid=21000000000503246",
-      id: "fandango",
+      id: "fandango"
     },
     amazon: {
       where: [1,2],
@@ -99,7 +99,7 @@
       img: "/widgets/widget.amazon.png",
       simg: "/widgets/widget.amazon.png",
       appLaunchUrl: "http://www.amazon.com/?tag=sntp-20",
-      id: "amazon",
+      id: "amazon"
     },
     facebook: {
       where: [0,4],
@@ -114,7 +114,7 @@
       img: "/widgets/widget.facebook.png",
       simg: "/widgets/widget.facebook.png",
       appLaunchUrl: "http://www.facebook.com/",
-      id: "facebook",
+      id: "facebook"
     },
     twitter: {
       where: [1,4],
@@ -129,7 +129,7 @@
       img: "/widgets/widget.twitter.png",
       simg: "/widgets/widget.twitter.png",
       appLaunchUrl: "http://www.twitter.com/",
-      id: "twitter",
+      id: "twitter"
     },
     tv: {
       where: [2,0],
@@ -139,7 +139,7 @@
       stock: true,
       name: "Hulu / Netflix (Stock)",
       id: "tv",
-      path: "widgets/widget.tv.html",
+      path: "widgets/widget.tv.html"
     }
   };
 
