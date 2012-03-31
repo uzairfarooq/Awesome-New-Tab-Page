@@ -38,11 +38,18 @@ function setupDrawerWidgets(_widget) {
         return false;
       }
 
-      var widget_name = null;
+      var widget_name = undefined;
       if (_widget.sender.name) {
         widget_name = _widget.sender.name;
       } else {
-        widget_name = extensions.filter(function (ext) { return ext.id === _widget.sender.id})[0].name;
+        if ( typeof(_widget.sender.id) === "string" )
+          widget_name = extensions.filter(function (ext) { return ext.id === _widget.sender.id })[0];
+
+        if ( typeof(widget_name) !== "undefined"
+          && typeof(widget_name.name) === "string" )
+          widget_name = widget_name.name;
+        else
+          return;
       }
 
       var widget_img = null;
@@ -89,8 +96,12 @@ $(".ui-2.widgets-refresh").live("click", function() {
   }, 1000);
 });
 
-
+var installed_widgets;
 function setupInstalledWidgets() {
+  if( localStorage.getItem("installed_widgets") === null ) {
+    return;
+  }
+
   installed_widgets = JSON.parse(localStorage.getItem("installed_widgets"));
 
   $.each(installed_widgets, function(id, widget) {
@@ -121,3 +132,17 @@ function setupStockWidgets() {
     }
   });
 }
+
+$("#widget-drawer-button").live("click", function(){
+  loadFeatured();
+  _gaq.push([ '_trackEvent', 'Window', "Widgets" ]);
+
+  $(".ui-2#widgets").fadeToggle();
+
+  $(".ui-2#apps").fadeOut();
+  $(".ui-2#config").fadeOut();
+  $("#recently-closed-tabs-menu").fadeOut();
+  $(".ui-2#about").fadeOut();
+
+  $(".ui-2#editor").fadeOut();
+});

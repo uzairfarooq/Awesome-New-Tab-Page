@@ -70,6 +70,11 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
       && typeof(e.originalEvent.key) === "string"
       && e.originalEvent.key === "refresh_widgets" )
         reloadInstalledWidgets();
+
+    if ( typeof(e.originalEvent) === "object"
+      && typeof(e.originalEvent.key) === "string"
+      && e.originalEvent.key === "" )
+        reloadInstalledWidgets();
   });
 
   var lock_reload = false;
@@ -81,9 +86,7 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
 
     localStorage.setItem("installed_widgets", JSON.stringify( [] ));
 
-    setTimeout(function() {
-      sayHelloToPotentialWidgets();
-    }, 100);
+    sayHelloToPotentialWidgets();
 
     setTimeout(function() {
       lock_reload = false;

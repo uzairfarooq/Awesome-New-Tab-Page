@@ -15,21 +15,98 @@
  *
  */
 
-$(document).ready(function($) {
-  if(window.location.hash) {
-    switch(window.location.hash) {
-      case "#options":
-        $("#config-button").trigger("click");
-        break;
-    }
-  }
+/* START :: Windows */
 
-  $(".ui-2.container").center();
-
-  $(window).bind('resize scroll', function() {
+  $(document).ready(function($) {
     $(".ui-2.container").center();
+
+    $(window).bind('resize scroll', function() {
+      $(".ui-2.container").center();
+    });
   });
-});
+
+  $(".close,.ui-2.x").live("click", function(){
+    $("body > .ui-2").fadeOut();
+    $("#recently-closed-tabs-menu").fadeOut();
+
+    $(".edit-shortcut-ui").remove();
+
+    window.location.hash = "";
+    hscroll = true;
+  });
+
+  $("#app-drawer-button").live("click", function(){
+    loadFeatured();
+    _gaq.push([ '_trackEvent', 'Window', "Apps" ]);
+
+    $(".ui-2#apps").fadeToggle();
+
+    $(".ui-2#widgets").fadeOut();
+    $(".ui-2#config").fadeOut();
+    $("#recently-closed-tabs-menu").fadeOut();
+    $(".ui-2#about").fadeOut();
+
+    $(".ui-2#editor").fadeOut();
+    $(".edit-shortcut-ui").remove();
+  });
+
+  var options_init = true;
+  $("#config-button, .ui-2.config").live("click", function(){
+    _gaq.push([ '_trackEvent', 'Window', "Config" ]);
+
+    $(".ui-2#config").fadeToggle();
+
+    $(".ui-2#widgets").fadeOut();
+    $(".ui-2#apps").fadeOut();
+    $("#recently-closed-tabs-menu").fadeOut();
+    $(".ui-2#about").fadeOut();
+
+    $(".ui-2#editor").fadeOut();
+    $(".edit-shortcut-ui").remove();
+  });
+
+  $("#logo-button, .ui-2.logo").live("click", function(){
+    _gaq.push([ '_trackEvent', 'Window', "About" ]);
+
+    $(".ui-2#about").fadeToggle();
+
+    if(options_init === true) {
+      options_init = false;
+
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+
+      (function() {
+          var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+          s.type = 'text/javascript';
+          s.async = true;
+          s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
+          t.parentNode.insertBefore(s, t);
+      })();
+
+      (function() {
+        var twitterScriptTag = document.createElement('script');
+        twitterScriptTag.type = 'text/javascript';
+        twitterScriptTag.async = true;
+        twitterScriptTag.src = 'https://platform.twitter.com/widgets.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(twitterScriptTag, s);
+      })();
+    }
+
+    $(".ui-2#widgets").fadeOut();
+    $(".ui-2#apps").fadeOut();
+    $("#recently-closed-tabs-menu").fadeOut();
+    $(".ui-2#config").fadeOut();
+
+    $(".ui-2#editor").fadeOut();
+    $(".edit-shortcut-ui").remove();
+  });
+
+  /* END :: Windows */
 
 /* START :: Top Left Buttons */
 
@@ -225,3 +302,170 @@ $(document).ready(function($) {
     }
   }
   /* END :: Featured */
+
+/* START :: Configure */
+
+  $(document).ready(function($) {
+    if(window.location.hash) {
+      switch(window.location.hash) {
+        case "#options":
+          $("#config-button").trigger("click");
+          break;
+      }
+    }
+
+    if(localStorage.getItem("showbmb") === null) {
+      localStorage.setItem("showbmb", "no");
+    }
+
+    if(localStorage.getItem("showbmb") === "yes") {
+      $("#toggleBmb").attr('checked', 'checked');
+    } else {
+      $("#bookmarksBar").css("display", "none");
+    }
+
+    if(localStorage.getItem("hide-app-names") === null) {
+      localStorage.setItem("hide-app-names", "no");
+    }
+
+    if(localStorage.getItem("hide-app-names") === "yes") {
+      $("body").addClass("hide-app-names");
+    } else {
+      $("#toggle-app-names").attr('checked', 'checked');
+    }
+
+    if(localStorage.getItem("hide-shortcut-names") === null) {
+      localStorage.setItem("hide-shortcut-names", "no");
+    }
+
+    if(localStorage.getItem("hide-shortcut-names") === "yes") {
+      $("body").addClass("hide-shortcut-names");
+    } else {
+      $("#toggle-shortcut-names").attr('checked', 'checked');
+    }
+
+    if(localStorage.getItem("lock") === "false") {
+      $('#unlock-button').trigger('click');
+    } else {
+      $("body").addClass("locked").removeClass("unlocked");
+    }
+
+    if(localStorage.getItem("bg-img-css") && localStorage.getItem("bg-img-css") !== "") {
+      $("body").css("background", localStorage.getItem("bg-img-css") );
+      $("#bg-img-css").val( localStorage.getItem("bg-img-css") );
+    }
+  });
+
+  $(document).ready(function($) {
+    $("#amazon-locale-selection").val(localStorage.getItem("amazon-locale") || "amazon.com");
+    $("#amazon-locale-selection").change(function() {
+      localStorage.setItem("amazon-locale", $(this).val());
+    });
+
+    $("#widget-holder > .app > a").live('mouseup', function(e) {
+      if( (this.href).match(amazon_regex) ) {
+        if (localStorage["amazon-locale"] !== null
+          && localStorage["amazon-locale"] !== ""
+          && typeof(localStorage["amazon-locale"]) !== "undefined") {
+          this.href = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
+        } else {
+          $(this).attr("data-url", "http://www.amazon.com/?tag=sntp-20");
+        }
+      }
+
+      if( (this.href).indexOf("file://") != -1 ) {
+        switch(e.which)
+        {
+          case 1:
+            chrome.tabs.update(null, {url: (this.href)});
+            return false;
+          break;
+          case 2:
+            chrome.tabs.create({url: (this.href)});
+            return false;
+          break;
+        }
+      }
+    }).live('click', function(e) {
+      if( (this.href).indexOf("file://") != -1 ) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    });
+
+    $("#colorselector-bg").ColorPicker({
+      color: '#' + ( localStorage.getItem("color-bg") || "221f20") ,
+      onShow: function (colpkr) {
+        $(colpkr).fadeIn(500);
+        return false;
+      },
+      onHide: function (colpkr) {
+        $(colpkr).fadeOut(500);
+        return false;
+      },
+      onChange: function (hsb, hex, rgb) {
+        $(".bg-color").css('backgroundColor', '#' + hex);
+        localStorage.setItem("color-bg", hex);
+      }
+    });
+  });
+
+  $(".bg-color").css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
+
+  $("#toggleBmb").live("click", function(){
+    if ($(this).is(':checked')) {
+      $("#bookmarksBar").show();
+      localStorage.setItem("showbmb", "yes");
+      moveGrid({ "animate_top": true });
+    } else {
+      $("#bookmarksBar").hide();
+      localStorage.setItem("showbmb", "no");
+      moveGrid({ "animate_top": true });
+    }
+  });
+
+  $("#toggle-app-names").live("click", function(){
+    if ($(this).is(':checked')) {
+      $("body").removeClass("hide-app-names");
+      localStorage.setItem("hide-app-names", "no");
+    } else {
+      $("body").addClass("hide-app-names");
+      localStorage.setItem("hide-app-names", "yes");
+    }
+  });
+
+  $("#toggle-shortcut-names").live("click", function(){
+    if ($(this).is(':checked')) {
+      $("body").removeClass("hide-shortcut-names");
+      localStorage.setItem("hide-shortcut-names", "no");
+    } else {
+      $("body").addClass("hide-shortcut-names");
+      localStorage.setItem("hide-shortcut-names", "yes");
+    }
+  });
+
+  $("#bg-img-css").live('keyup', function() {
+    $(".bg-color").css("background", "" );
+    $(".bg-color").css("background", $(this).val() );
+
+    if($(this).val() === "") {
+      $(".bg-color").css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
+    }
+
+    localStorage.setItem("bg-img-css", $(this).val() );
+  });
+
+  $("#reset-button").live("click", function(){
+    var r=confirm("Are you sure you want to reset widget and app placements, stock widget preferences (notepad, coloring, etc.), and coloring preferences? Any customizations will be irrevocably lost.");
+    if (r==true) {
+      reset();
+      reload();
+    }
+  });
+
+  /* END :: Configure */
+
+
+
+

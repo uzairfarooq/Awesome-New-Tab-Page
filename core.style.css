@@ -59,7 +59,7 @@ body {
   background: #221F20;
   margin-top: 0;
   padding: 0;
-  font-family: "Droid Sans", "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", "Luxi Sans", Tahoma, sans-serif;
+  font-family: "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", "Luxi Sans", Tahoma, sans-serif;
   font-size: 14px;
   overflow-y: hidden;
   width: 3550px;
@@ -178,21 +178,6 @@ body {
   color: white;
   word-wrap: break-word;
 }
-.note {
-  position: absolute;
-  top: 17px;
-  width: 700px;
-  left: 100px;
-}
-#top-right {
-  position: fixed;
-  text-decoration: none;
-  top: 35px;
-  right: 5px;
-  height: 48px;
-  display: block;
-  cursor: pointer;
-}
 #lock-button {
   background-color: red;
   border-color: red;
@@ -270,34 +255,6 @@ body {
   background-image: url("/images/core.shortcut.png");
   opacity: .5 !important;
   cursor: pointer;
-}
-.edit-shortcut-ui {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  z-index: 1000;
-  position: absolute;
-  display: none;
-  top: -500px;
-  left: -500px;
-  background-color: #DFDFDF;
-  height: 200px;
-  width: 200px;
-  opacity: .85;
-}
-.edit-shortcut-ui .bubble {
-  right: 10px !important;
-  text-align: center;
-  display: block;
-  margin-right: 10px;
-  margin-left: 10px;
-  margin-top: 10px;
-  position: static;
-}
-.edit-shortcut-ui p {
-  -webkit-margin-before: 10px;
-  -webkit-margin-after: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 .colorpicker {
   z-index: 1000
