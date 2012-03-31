@@ -32,12 +32,12 @@ $(document).ready(function($) {
   placeWidgets();
 });
 
-var GRID_MIN_HEIGHT   = 3,
-    GRID_MIN_WIDTH    = 7,
-    GRID_MARGIN_TOP   = function() { return localStorage.getItem("showbmb") === "yes" ? 27 : 0; },
-    GRID_MARGIN_LEFT  = 27,
-    GRID_TILE_SIZE    = 200,  /* NEVER CHANGE */
-    GRID_TILE_PADDING = 3;    /* NEVER CHANGE */
+var GRID_MIN_HEIGHT     = 3,
+    GRID_MIN_WIDTH      = 7,
+    GRID_MARGIN_TOP     = function() { return localStorage.getItem("showbmb") === "yes" ? 27 : 0; },
+    GRID_MARGIN_LEFT    = 27,
+    GRID_TILE_SIZE      = 200,  // NEVER CHANGE
+    GRID_TILE_PADDING   = 3;    // NEVER CHANGE
 
 // Handles permanent grid preference
 function updateGridOpacity() {
@@ -251,6 +251,14 @@ function setStuff() {
     }
   });
 
+  // When a tile is resized
+  $(".resize-tile > div").live("mousedown", function(e) {
+    console.log(this);
+
+    e.preventDefault();
+    e.stopPropagation();
+  });
+
   var held_element = {};
   // When a tile is picked up
   $(".widget").live("mousedown", function(e) {
@@ -259,10 +267,15 @@ function setStuff() {
       return false;
     }
 
+    $(".widget").css("z-index", "1");
+
     held_element.offsetX = e.offsetX;
     held_element.offsetY = e.offsetY;
     held_element.oldX    = $(this).position().left;
     held_element.oldY    = $(this).position().top;
+    held_element.oldX    = $(this).position().left;
+    held_element.width   = $(this).width();
+    held_element.height  = $(this).height();
 
     if( $(this).attr("data-app-source") === "from-drawer" ) {
       held_element.element = $(this).clone()
@@ -274,8 +287,8 @@ function setStuff() {
       }).prependTo("body");
 
       // Ensure that it's always droppable
-      held_element.offsetX = $(held_element.element).width()  / 2;
-      held_element.offsetY = $(held_element.element).height() / 2;
+      held_element.offsetX_required = $(held_element.element).width()  / 2;
+      held_element.offsetY_required = $(held_element.element).height() / 2;
 
       $(".ui-2#apps,.ui-2#widgets").css("display", "none");
     } else {
@@ -289,6 +302,9 @@ function setStuff() {
 
       held_element.element = this;
     }
+
+    $(".resize-tile").css("display", "none");
+    $(this).find(".resize-tile").css("display", "block");
 
     if ( e.preventDefault ) {
       e.preventDefault();
@@ -340,7 +356,7 @@ function setStuff() {
       $(this).removeClass("widget-drag").css({
         "left": $(closestElm).position().left,
         "top" : $(closestElm).position().top,
-        "z-index": "1"
+        "z-index": "2"
       });
 
       $(tiles.tiles).each(function(ind, elem){
@@ -352,7 +368,7 @@ function setStuff() {
       $(this).removeClass("widget-drag").css({
         "left": held_element.oldX,
         "top" : held_element.oldY,
-        "z-index": "1"
+        "z-index": "2"
       });
 
       tiles = getCovered(this);
@@ -381,10 +397,18 @@ function setStuff() {
     if ( typeof(held_element.element) === "object" ) {
       if(update === true){
         update = false;
-      }else{
+      } else {
+        held_left = held_element.width / 2;
+        held_top = held_element.height / 2;
+
+        if( held_element.offsetX_required )
+          held_left = held_element.offsetX_required;
+        if( held_element.offsetY_required)
+          held_top  = held_element.offsetY_required;
+
         $(held_element.element).css({
-          "left": e.pageX - held_element.offsetX - GRID_MARGIN_LEFT,
-          "top" : e.pageY - held_element.offsetY - GRID_MARGIN_TOP()
+          "left": e.pageX - held_left - GRID_MARGIN_LEFT,
+          "top" : e.pageY - held_top  - GRID_MARGIN_TOP()
         });
       }
 
