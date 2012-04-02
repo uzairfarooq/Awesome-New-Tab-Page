@@ -19,40 +19,48 @@
 var gradient = ", -webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .04)), color-stop(0, rgba(255, 255, 255, 0.35)) )";
 var amazon_regex = new RegExp("amazon\.(com|cn|co\.uk|at|fr|de|it|co\.jp|es)[/]{0,1}[\?]{0,1}");
 
-function stitch(type, destination, id, name, url, img, height, width, top, left, poke) {
+var resize_template = '<div class="resize-tile"> \
+    <div class="resize-tile-top"></div> \
+    <div class="resize-tile-bottom"></div> \
+    <div class="resize-tile-left"></div> \
+    <div class="resize-tile-right"></div> \
+  </div>';
+
+function stitch(type, id, name, url, img, height, width, top, left, poke) {
   widgets = JSON.parse(localStorage.getItem("widgets"));
 
-  var stitch = "";
-
-  if(!type || !destination || !height || !width) {
-    return false;
+  if(!type || !height || !width) {
+      return console.error("stitch", "Type, height, or width missing.");
   }
 
   if(!url) {
     if( typeof(stock_widgets[id]) !== "undefined" ) {
       url = stock_widgets[id].appLaunchUrl;
     } else {
-      console.warn( [false, "Not stock & no URL"] );
+      delete widgets[id];
+      localStorageSync(false);
+      return console.error("stitch", "Not stock & no URL. Widget '"+id+"' deleted.");
     }
   }
 
   if(type === "app" || type === "shortcut") {
-    if(widgets[id].color) {
-      background_color = widgets[id].color;
+    if ( typeof(widgets[id]) !== "object" ) {
+      return console.error("stitch", id, "Tile storage discrepancy; tile not in storage.")
+    }
+
+    if ( widgets[id].color ) {
+      var background_color = widgets[id].color;
     } else {
-      new_background_color = palette[Math.floor(Math.random() * palette.length)];
-      background_color = new_background_color;
+      var new_background_color = palette[Math.floor(Math.random() * palette.length)];
+      var background_color = new_background_color;
       widgets[id].color = new_background_color;
       localStorageSync(false);
     }
 
-    if(widgets[id].name_show === false) {
-      name_show = "opacity-0";
-    } else {
-      name_show = "";
-    }
+    var name_show = (widgets[id].name_show === false) ? "opacity-0" : "";
 
-    if(widgets[id].shortcut_background_transparent && widgets[id].shortcut_background_transparent === true) {
+    if ( widgets[id].shortcut_background_transparent
+      && widgets[id].shortcut_background_transparent === true) {
       background_color = "transparent";
       use_gradient = "";
     } else {
@@ -66,84 +74,212 @@ function stitch(type, destination, id, name, url, img, height, width, top, left,
     }
   }
 
-  if(height > 3 || width > 3) return [false, "Too big"];
+  if ( height > 3 ) { height = 3; console.warn("stitch", "Max height exceeded. Defaulted to max.") }
+  if ( width  > 3 ) { width  = 3; console.warn("stitch", "Max width exceeded. Defaulted to max." ) }
+
+  if ( type === "widget-drawer" ) {
+    if ( typeof(poke) === "object"
+      && poke[0] && poke[0] === 2
+      && poke[1] && poke[1] === true
+      && poke[2] && typeof(poke[2]) === "object" ) {
+      var resize_enabled = true;
+    }
+  }
+
+  if ( type === "iframe" || type === "app" || type === "shortcut" ) {
+
+    if ( typeof(widgets[id]) === "object" ) {
+      if ( widgets[id].resize !== "true" ) {
+        if ( type === "app" || type === "shortcut" ) {
+          widgets[id].resize = true;
+          widgets[id].v2 =  {
+                              "min_width" : 1,
+                              "max_width" : 2,
+                              "min_height": 1,
+                              "max_height": 2
+                            }
+          localStorageSync(false);
+        }
+      }
+    }
+
+    if ( widgets[id].resize === true ) {
+      var resize_enabled = true;
+
+      var poke = {};
+      poke.min_height = widgets[id].min_height;
+      poke.max_height = widgets[id].max_height;
+      poke.min_width  = widgets[id].min_width ;
+      poke.max_width  = widgets[id].max_width ;
+
+    }
+  }
 
   if(img === "id") {
     img = "chrome://extension-icon/" + id + "/128/0";
   }
 
-  if(type === "app") {
-    stitch += '<div class="widget app" style="position:absolute; background-image: url('+encodeURI(img)+')'+use_gradient+'; ';
-    stitch += 'background-color: ' + background_color + ';" ';
-  } else if (type === "iframe") {
-    stitch += '<div class="widget" style="position:absolute;" ';
-  } else if (type === "shortcut") {
-    stitch += '<div class="widget app shortcut" style="position:absolute; background-image: url('+encodeURI(img)+')'+use_gradient+'; ';
-    stitch += 'background-color: ' + background_color + ';"';
-  } else if (type === "widget-drawer") {
-    stitch += '<div class="widget app drawer-app ui-2 ilb" ';
-    stitch += 'data-app-source="from-drawer" data-widget="true" data-stock="'+id+'" ';
-    stitch += 'data-poke="' + poke + '" ';
-    stitch += 'data-widget-src="' + url + '" ';
-    stitch += 'data-tile-height="' + height + '" ';
-    stitch += 'data-tile-width="' + width + '" ';
-  } else if (type === "app-drawer") {
-    stitch += '<div class="widget app drawer-app ui-2 ilb"';
-    stitch += 'id="' + id + '" data-app-source="from-drawer" ';
-    stitch += 'data-tile-height="1" data-tile-width="1" ';
-  } else {
-    return [false, "Unknown type"];
-  }
-
-  stitch += 'id="' + id + '" ';
-  stitch += 'data-tile-height="' + height + '" ';
-  stitch += 'data-tile-width="' + width + '" ';
-
-  if(destination === "home") {
-    stitch += 'inittop="' + top + '" ';
-    stitch += 'initleft="' + left + '" ';
-  }
-
-  stitch += '>\n';
-
-  if(type === "app") {
-    stitch += '<div class="app-name '+name_show+'">' + name + '</div> ';
-    stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
-    stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
-  } else if (type === "iframe") {
-    stitch += '<iframe src="' + url + '" scrolling="no" frameborder="0" ';
-    stitch += 'align="center" height="100%" width="100%"></iframe> ';
-    stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div></div>\n ';
-  } else if (type === "shortcut") {
-    stitch += '<div class="app-name '+name_show+'">' + name + '</div> ';
-    stitch += '<a href="' + url + '"><div class="app-mask">&nbsp;</div></a> ';
-    stitch += '<div class="iframe-mask hidden"><div id="delete">&nbsp;</div><div id="shortcut-edit">&nbsp;</div></div>\n ';
-  } else if (type === "widget-drawer") {
-    stitch += '<img class="ui-2 ilb" src="' + img + '"> ';
-    stitch += '<div class="ui-2 drawer-app-name ilb">' + name + '</div> ';
-    stitch += '<div class="ui-2 drawer-app-wh ilb">'+width+' Wide, '+height+' Tall</div>';
-    if(id !== "webstore" && id !== "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
-      stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
-    }
-  } else if (type === "app-drawer") {
+  if (type === "app-drawer") {
+    // Use Amazon country TLD preference
     if( url && (url).match(amazon_regex) ) {
-      if (localStorage["amazon-locale"] !== null
-        && localStorage["amazon-locale"] !== ""
-        && typeof(localStorage["amazon-locale"]) !== "undefined") {
-        this.href = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
+      if ( localStorage.getItem("amazon-locale") !== null
+        && localStorage.getItem("amazon-locale") !== ""
+        && typeof(localStorage.getItem("amazon-locale")) !== "undefined") {
+        url = "http://www." + localStorage.getItem("amazon-locale") + "/?tag=sntp-20";
       } else {
-        $(this).attr("data-url", "http://www.amazon.com/?tag=sntp-20");
+        url = "http://www.amazon.com/?tag=sntp-20";
+      }
+    }
+  }
+
+  if ( typeof(name) !== "string" ) {
+      console.warn("stitch", "Name not string for widget '"+id+"'.");
+      name = "";
+  } else {
+    name = $.trim( name.replace(/\[antp\]/i, "") );
+  }
+
+  if ( type !== "app"
+    && type !== "shortcut"
+    && type !== "widget-drawer"
+    && type !== "app-drawer"
+    && type !== "iframe" ) {
+    return console.error("stitch", "Invalid type.", type);
+  }
+
+  var stitch = $("<div></div>")
+    .attr("id", id)
+    .addClass("widget")
+    .attr({
+      "tile-width" : width,
+      "tile-height": height,
+      "tile-init-top"   : top,
+      "tile-init-left"  : left
+    })
+
+  if ( type === "app")          $(stitch).addClass("app");
+  if ( type === "shortcut" )    $(stitch).addClass("app shortcut");
+  if ( type === "widget-drawer"
+    || type === "app-drawer" )  $(stitch).addClass("app drawer-app ui-2 ilb");
+
+  if ( type === "app" || type === "shortcut" || type === "iframe" )
+    $(stitch).css("position", "absolute")
+
+  if ( type === "app" || type === "shortcut" ) {
+    $(stitch).css({
+      "background-image": "url("+encodeURI(img)+")"+use_gradient,
+      "background-color": background_color
+    })
+  }
+
+  if ( type === "widget-drawer" || type === "app-drawer" ) {
+
+
+    $(stitch).attr({"app-source": "from-drawer"});
+
+    if        ( type === "widget-drawer" ) {
+      $(stitch).attr({
+        "tile-widget"     : "true",
+        "tile-widget-src" : url,
+        "tile-stock"      : id,
+        "tile-poke"       : poke[0]
+      });
+    } else if ( type === "app-drawer" ) {
+      $(stitch).attr({
+        "tile-width" : 1,
+        "tile-height": 1
+      });
+    }
+  }
+
+  if ( type === "app" || type === "shortcut" ) {
+    $(stitch).append(
+      $("<div></div>").addClass("app-name "+name_show).html(name),
+      $("<a/>").attr("href", url)
+    );
+  }
+
+  if (type === "iframe") {
+    $(stitch).append(
+      $("<iframe></iframe>").attr({
+        "src"         : url,
+        "scrolling"   : "no",
+        "frameborder" : "0",
+        "align"       : "center",
+        "height"      : "100%",
+        "width"       : "100%"
+      })
+    );
+  }
+
+  if ( type === "app-drawer" || type === "widget-drawer" ) {
+    $(stitch).append(
+      $("<img>").addClass("ui-2 ilb")
+        .attr("src", img)
+    );
+
+    $(stitch).append(
+      $("<div></div").addClass("ui-2 drawer-app-name ilb")
+        .html(name)
+    );
+
+    if ( type === "app-drawer") {
+      $(stitch).find("img,.drawer-app-name")
+        .addClass("url")
+        .attr("url", url)
+    }
+
+    if (type === "widget-drawer") {
+      $(stitch).append(
+        $("<div></div").addClass("ui-2 drawer-app-wh ilb")
+          .html(width + " Wide, " + height + " Tall")
+      );
+
+      if ( resize_enabled === true ) {
+        $(stitch).attr({
+          "resize"      : poke[1],
+          "min_height"  : poke[2].min_height,
+          "max_height"  : poke[2].max_height,
+          "min_width"   : poke[2].min_width,
+          "max_width"   : poke[2].max_width,
+        });
       }
     }
 
-    stitch += '<img class="ui-2 ilb url" src="' + img + '" data-url="' + url + '">';
-    stitch += '<div class="ui-2 drawer-app-name ilb url"  data-url="' + url + '">' + name + '</div> ';
     if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter", "mgmiemnjjchgkmgbeljfocdjjnpjnmcg"]) === -1 ) {
-      stitch += '<div class="ui-2 drawer-app-uninstall ilb">Remove</div>';
+      $(stitch).append(
+        $("<div></div").addClass("ui-2 drawer-app-uninstall ilb")
+          .html("Uninstall")
+      );
     }
   }
 
-  stitch += '</div>';
+  if ( type === "app" || type === "shortcut"  || type === "iframe" ) {
+    $(stitch).append(
+      $("<div></div").addClass("iframe-mask hidden")
+    );
+
+    $(stitch).find(".iframe-mask").append(
+      $("<div></div").attr("id", "delete")
+    );
+
+    if ( type === "app" || type === "shortcut" ) {
+      $(stitch).find(".iframe-mask").append(
+        $("<div></div").attr("id", "shortcut-edit"),
+        resize_template
+      );
+    }
+
+    if ( type === "iframe" ) {
+      if ( resize_enabled === true ) {
+        $(stitch).find(".iframe-mask").append(
+          resize_template
+        );
+      }
+    }
+
+  }
+
   return stitch;
 }
 
@@ -155,11 +291,25 @@ function placeWidgets() {
 
   widgets = JSON.parse(localStorage.getItem("widgets"));
 
-  $.each(widgets, function(id, widget){
+  $.each(widgets, function(id, widget) {
     if(widget.type === "iframe" && widget.size[0] <= 3 && widget.size[1] <= 3) {
+
+      // console.log(widget)
+      // if( typeof(parseInt(widget.poke)) === "number"
+      // && parseInt(widget.poke) === 2
+      // && typeof(widget.resize) === "string"
+      // && widget.resize === "true" ) {
+      //   var poke = [parseInt(widget.poke), widget.poke.resize, {
+      //     "max_height": widget.max_height,
+      //     "min_height": widget.min_height,
+      //     "max_width" : widget.max_width,
+      //     "min_width" : widget.min_width
+      //   }]
+      // }
+
+
       $(stitch(
         /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "iframe",
-        /*  Destination: str [home, app-drawer, widget-drawer]*/  "home",
         /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  id,
         /*  Ext. Name: str [Awesome New Tab Page]             */  widget.name,
         /*  URL: str, can be iframe or app url                */  widget.path,
@@ -180,7 +330,6 @@ function placeWidgets() {
 
       $(stitch(
         /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "app",
-        /*  Destination: str [home, app-drawer, widget-drawer]*/  "home",
         /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  id,
         /*  Ext. Name: str [Awesome New Tab Page]             */  widget.name,
         /*  URL: str, can be iframe or app url                */  widget.url ,
@@ -197,7 +346,6 @@ function placeWidgets() {
 
       $(stitch(
         /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "shortcut",
-        /*  Destination: str [home, app-drawer, widget-drawer]*/  "home",
         /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  id,
         /*  Ext. Name: str [Awesome New Tab Page]             */  widget.name,
         /*  URL: str, can be iframe or app url                */  widget.appLaunchUrl,
@@ -239,88 +387,126 @@ function addShortcut(widget, top, left) {
 }
 
 // Updates shortcut placement
-function updateWidget(widget, top, left) {
-  try {
-    widgets = JSON.parse(localStorage.getItem("widgets"));
-    if(!widgets[widget]) return;
+function updateWidget(obj) {
+  if ( typeof(obj.id) !== "string" ) return;
 
-    widgets[widget].where = [top, left];
+  widgets = JSON.parse(localStorage.getItem("widgets"));
+  if ( !widgets[obj.id] ) return;
 
-    localStorageSync();
+  if ( obj.top !== undefined )
+    widgets[obj.id].where[0] = obj.top;
+  if ( obj.left !== undefined )
+    widgets[obj.id].where[1] = obj.left;
+
+
+  if ( obj.height !== undefined ) {
+    if ( $.inArray( parseInt(obj.height), [1, 2, 3] ) !== -1 ) {
+      widgets[obj.id].size[0] = parseInt(obj.height);
+    }
   }
-  catch (err) {
-    _e(2);
+  if (  obj.width !== undefined ) {
+    if ( $.inArray( parseInt(obj.width ), [1, 2, 3] ) !== -1 ) {
+      widgets[obj.id].size[1] = parseInt(obj.width );
+    }
   }
+
+  localStorageSync();
 }
 
 // Add widget to localStorage then refresh
-function addWidget(is_widget, widget, top, left, src, width, height, poke, stock) {
-  try {
-    widgets = JSON.parse(localStorage.getItem("widgets"));
-    var new_ext_data = null;
-    var widget_img = null;
-    var appLaunchUrl = null;
-    var widget_name = null;
-    var widget_src = null;
-    if(!height) height = 1;
-    if(!width) width = 1;
+function addWidget(obj) {
 
-    if(stock) {
-      if(is_widget === false) {
-        widget_img = stock.img;
-        appLaunchUrl = stock.appLaunchUrl;
-      } else {
-        widget_src = stock.path;
-      }
-      widget_name = stock.name;
-      widget = stock.id;
+  widgets = JSON.parse(localStorage.getItem("widgets"));
+
+  if ( typeof(obj.height) === "undefined" || parseInt(obj.height) === "NaN" )
+    obj.height = 1;
+  else
+    if      ( parseInt(obj.height) > TILE_MAX_HEIGHT )
+      obj.height = TILE_MAX_HEIGHT;
+    else if ( parseInt(obj.height) < TILE_MIN_HEIGHT )
+      obj.height = TILE_MIN_HEIGHT;
+    else
+      obj.height = parseInt(obj.height);
+
+  if ( typeof(obj.width ) === "undefined" || parseInt(obj.width ) === "NaN" )
+    obj.width  = 1;
+  else
+    if      ( parseInt(obj.width ) > TILE_MAX_WIDTH )
+      obj.width  = TILE_MAX_WIDTH;
+    else if ( parseInt(obj.width ) < TILE_MIN_WIDTH )
+      obj.width  = TILE_MIN_WIDTH;
+    else
+      obj.width  = parseInt(obj.width );
+
+  if ( typeof(obj.stock) === "object"
+    && obj.is_widget === true ) {
+    obj.widget_src = obj.stock.path;
+    obj.widget_name = obj.stock.name;
+    obj.widget = obj.stock.id;
+  } else {
+    obj.new_ext_data = extensions.filter(function (ext) { return ext.id === obj.widget; })[0];
+    if(obj.is_widget === false) {
+      obj.widget_img = "chrome://extension-icon/"+obj.new_ext_data.id+"/128/0";
+      obj.appLaunchUrl = obj.new_ext_data.appLaunchUrl;
     } else {
-      new_ext_data = extensions.filter(function (ext) { return ext.id === widget})[0];
-      if(is_widget === false) {
-        widget_img = "chrome://extension-icon/"+new_ext_data.id+"/128/0";
-        appLaunchUrl = new_ext_data.appLaunchUrl;
-      } else {
-        widget_src = "chrome-extension://"+new_ext_data.id+"/" + src.replace(/\s+/g, '');
+      obj.widget_src = "chrome-extension://"+obj.new_ext_data.id+"/" + obj.src.replace(/\s+/g, '');
+    }
+    obj.widget_name = obj.new_ext_data.name;
+  }
+
+  if ( obj.widget === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
+    obj.widget = new_guid();
+  }
+
+  if(obj.is_widget === false) {
+    widgets[obj.widget] = {
+      where: [obj.top,obj.left],
+      size: [1,1],
+      isApp: true,
+      name: obj.widget_name,
+      id: obj.widget,
+      img: obj.widget_img,
+      url: obj.appLaunchUrl,
+      appLaunchUrl: obj.appLaunchUrl,
+      "resize": true,
+      "v2"    : {
+        "min_width" : 1,
+        "max_width" : 2,
+        "min_height": 1,
+        "max_height": 2
       }
-      widget_name = new_ext_data.name;
-    }
-
-    if(widget === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
-      widget = new_guid();
-    }
-
-    if(is_widget === false) {
-      widgets[widget] = {
-        where: [top,left],
-        size: [1,1],
-        isApp: true,
-        name: widget_name,
-        id: widget,
-        img: widget_img,
-        url: appLaunchUrl,
-        appLaunchUrl: appLaunchUrl
-      };
-    }
-
-    if(is_widget === true) {
-      widgets[widget] = {
-        where: [top,left],
-        size: [height,width],
-        type: "iframe",
-        isApp: false,
-        name: widget_name,
-        id: widget,
-        img: widget_img,
-        path: widget_src
-      };
-    }
-
-    localStorageSync(true);
-
+    };
   }
-  catch (err) {
-    _e(3);
+
+  if(obj.is_widget === true) {
+
+    if ( obj.poke && parseInt(obj.poke) !== "NaN" ) {
+      obj.poke = parseInt(obj.poke);
+    } else {
+      obj.poke = 1;
+    }
+
+    widgets[obj.widget] = {
+      "where" : [obj.top,obj.left],
+      "size"  : [obj.height,obj.width],
+      "type"  : "iframe",
+      "isApp" : false,
+      "name"  : obj.widget_name,
+      "id"    : obj.widget,
+      "img"   : obj.widget_img,
+      "path"  : obj.widget_src,
+      "poke"  : obj.poke,
+      "resize": ( obj.resize === "true" ) ? true : false,
+      "v2"    : {
+        "min_width" : obj.min_width,
+        "max_width" : obj.max_width,
+        "min_height": obj.min_height,
+        "max_height": obj.max_height
+      }
+    };
   }
+
+  localStorageSync(true);
 }
 
 // Delete widget; no refresh

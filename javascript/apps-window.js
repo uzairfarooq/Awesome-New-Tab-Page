@@ -46,7 +46,6 @@ function setupDrawerApps() {
 
         $(stitch(
           /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "app-drawer",
-          /*  Destination: str [home, app-drawer, widget-drawer]*/  "app-drawer",
           /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  value.id,
           /*  Ext. Name: str [Awesome New Tab Page]             */  value.name,
           /*  URL: str, can be iframe or app url                */  value.appLaunchUrl,

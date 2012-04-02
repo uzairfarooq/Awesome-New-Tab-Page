@@ -37,7 +37,12 @@ var GRID_MIN_HEIGHT     = 3,
     GRID_MARGIN_TOP     = function() { return localStorage.getItem("showbmb") === "yes" ? 27 : 0; },
     GRID_MARGIN_LEFT    = 27,
     GRID_TILE_SIZE      = 200,  // NEVER CHANGE
-    GRID_TILE_PADDING   = 3;    // NEVER CHANGE
+    GRID_TILE_PADDING   = 3,    // NEVER CHANGE
+
+    TILE_MIN_WIDTH      = 1,
+    TILE_MAX_WIDTH      = 3,
+    TILE_MIN_HEIGHT     = 1,
+    TILE_MAX_HEIGHT     = 3;
 
 // Handles permanent grid preference
 function updateGridOpacity() {
@@ -92,6 +97,7 @@ function placeGrid() {
       width = res_width;
     }
   }
+
   if ( typeof(screen.width) !== "undefined"
     && typeof(screen.height) !== "undefined" ) {
     var res_height2 = Math.floor( ( screen.height - 150 - GRID_MARGIN_LEFT  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
@@ -127,6 +133,11 @@ function placeGrid() {
     }
   }
 
+  // For performance reasons, never allow the grid to get excessively
+  // wide / tall, no matter what the reason
+  height = (height > 25) ? 25 : height; //  5,144 px
+  width  = (width  > 50) ? 50 : width ; // 10,294 px
+
   // Actually place the grid
   for (var gx = 0; gx < height; gx++) {
     for (var gy = 0; gy < width; gy++) {
@@ -134,10 +145,9 @@ function placeGrid() {
         "position": "absolute",
         "top" : ( gx * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gx + 1 ) ),
         "left": ( gy * GRID_TILE_SIZE ) + ( ( GRID_TILE_PADDING * 2 ) * ( gy + 1 ) )
-      }).attr({
-        "id": gx + "x" + gy,
-        "data-land-top" : gx,
-        "data-land-left": gy
+      }).attr("id", gx + "x" + gy).attr({
+        "land-top" : gx,
+        "land-left": gy
       }).appendTo("#grid-holder");
     }
   }
@@ -192,11 +202,11 @@ function getCovered(tile) {
   //   cache = {}; cache.closest = closestElm; cache.tile = tile;
   // }
 
-  var top  = parseInt( $(closestElm).attr("data-land-top")  , 10);
-  var left = parseInt( $(closestElm).attr("data-land-left") , 10);
+  var top  = parseInt( $(closestElm).attr("land-top")  , 10);
+  var left = parseInt( $(closestElm).attr("land-left") , 10);
 
-  var height = parseInt( $(tile).attr("data-tile-height")   , 10);
-  var width  = parseInt( $(tile).attr("data-tile-width")    , 10);
+  var height = parseInt( $(tile).attr("tile-height")   , 10);
+  var width  = parseInt( $(tile).attr("tile-width")    , 10);
 
   for (h=0; h<=(height-1); h++)
   {
@@ -223,10 +233,10 @@ function getCovered(tile) {
 function setStuff() {
   $(".widget").each(function(ind, elem){
     $(elem).css({
-      "width" : $(elem).attr("data-tile-width")  * 200 + (makeZero($(elem).attr("data-tile-width")  - 1) * 6),
-      "height": $(elem).attr("data-tile-height") * 200 + (makeZero($(elem).attr("data-tile-height") - 1) * 6),
-      "left": $(elem).attr("initleft") * ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) + ( GRID_TILE_PADDING * 2 ),
-      "top" : $(elem).attr("inittop")  * ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) + ( GRID_TILE_PADDING * 2 )
+      "width" : $(elem).attr("tile-width")  * 200 + (makeZero($(elem).attr("tile-width")  - 1) * 6),
+      "height": $(elem).attr("tile-height") * 200 + (makeZero($(elem).attr("tile-height") - 1) * 6),
+      "left": $(elem).attr("tile-init-left") * ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) + ( GRID_TILE_PADDING * 2 ),
+      "top" : $(elem).attr("tile-init-top")  * ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) + ( GRID_TILE_PADDING * 2 )
     });
 
     var closestElm = findClosest(this);
@@ -249,17 +259,292 @@ function setStuff() {
     if ( typeof(held_element.element) === "object" ) {
       if (e.which == 27) { $(held_element.element).trigger("mouseup"); }
     }
+    $(".resize-tile > div").trigger("mouseup");
+
+    // Close all UI-2 elements
+    $(".ui-2.x").trigger("click");
   });
 
-  // When a tile is resized
-  $(".resize-tile > div").live("mousedown", function(e) {
-    console.log(this);
-
-    e.preventDefault();
-    e.stopPropagation();
+  $(window).mouseup("mouseup", function(e) {
+    $(".resize-tile > div").trigger("mouseup");
   });
+
+  /* START :: Resize */
+
+    resize_element = {};
+    resize_element.element = false;
+    // When a tile resize square is clicked
+    $(".resize-tile > div").live("mousedown", function(e) {
+      if ( lock === true ) {
+        resize_element.element = false;
+        return false;
+      }
+
+      switch ( $(this).attr("class") ) {
+        case "resize-tile-top":
+          resize_element.side = "top";    break;
+        case "resize-tile-bottom":
+          resize_element.side = "bottom"; break;
+        case "resize-tile-left":
+          resize_element.side = "left";   break;
+        case "resize-tile-right":
+          resize_element.side = "right";  break;
+        default:
+          return console.error("Resize Mousedown", "Invalid side.");
+      }
+      widgets = JSON.parse(localStorage.getItem("widgets"));
+
+
+      resize_element.element = $(this).closest(".widget")[0];
+      var id = $(resize_element.element).attr("id");
+
+      if ( typeof(widgets[id]) === "object"
+        && typeof(widgets[id].resize) === "boolean"
+        && typeof(widgets[id].v2) === "object"
+        && widgets[id].resize === true ) {
+        resize_element.v2         = widgets[id].v2;
+      } else {
+        resize_element.element = false;
+        return console.error("Resize Mousedown", resize_element.side, "Tile storage discrepancy; tile not resizable.");
+      }
+
+      resize_element.top     = $(resize_element.element).position().top;
+      resize_element.left    = $(resize_element.element).position().left;
+      resize_element.width   = $(resize_element.element).width();
+      resize_element.height  = $(resize_element.element).height();
+      resize_element.clientX = e.clientX;
+      resize_element.clientY = e.clientY;
+      resize_element.tileH   = $(resize_element.element).attr("tile-height");
+      resize_element.tileW   = $(resize_element.element).attr("tile-width");
+      resize_element.moved_left = 0;
+      resize_element.moved_top  = 0;
+
+      $(getCovered( resize_element.element ).tiles).addClass("empty");
+
+      $(resize_element.element).find("#shortcut-edit,#delete").addClass("force-hide");
+
+      $(resize_element.element)
+        .addClass("widget-resize");
+
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    // When a tile resize square is released
+    $(document).live("mousemove", function(e) {
+      if ( lock === true ) {
+        resize_element.element = false;
+        return false;
+      }
+
+      if ( typeof(resize_element.element) !== "object" ) {
+        return;
+      }
+
+      var new_width = 0;
+      var new_height = 0;
+      switch ( resize_element.side ) {
+        case "top":
+          new_height = ( resize_element.clientY - e.clientY ) + resize_element.height;
+          new_top    = resize_element.top - ( resize_element.clientY - e.clientY );
+
+          new_height = calcHeight({
+            "height": new_height,
+            "min"  : resize_element.v2.min_height,
+            "max"  : resize_element.v2.max_height
+          });
+
+          if ( new_height.height <= calcHeight({"is": 1}).height
+            || new_height.height >= calcHeight({"is": 2}).height ) return;
+
+          resize_element.moved_top = ( resize_element.clientY - e.clientY );
+
+          if( new_top < (GRID_TILE_PADDING*2) ) {
+            new_top = (GRID_TILE_PADDING*2);
+            return;
+          }
+
+          $(resize_element.element).css({
+            "height" : new_height.height,
+            "top"  : new_top
+          }).attr({"tile-height": new_height.new_y});
+
+          break;
+        case "bottom":
+          new_height = ( e.clientY - resize_element.clientY ) + resize_element.height;
+
+          new_height = calcHeight({
+            "height": new_height,
+            "min"  : resize_element.v2.min_height,
+            "max"  : resize_element.v2.max_height
+          });
+
+          $(resize_element.element).css({
+            "height" : new_height.height
+          }).attr({"tile-height": new_height.new_y});
+
+          break;
+        case "left":
+          new_width = ( resize_element.clientX - e.clientX ) + resize_element.width;
+          new_left  = resize_element.left - ( resize_element.clientX - e.clientX );
+
+          new_width = calcWidth({
+            "width": new_width,
+            "min"  : resize_element.v2.min_width,
+            "max"  : resize_element.v2.max_width
+          });
+
+          if ( new_width.width <= calcWidth({"is": 1}).width
+            || new_width.width >= calcWidth({"is": 2}).width ) return;
+
+          resize_element.moved_left = ( resize_element.clientX - e.clientX );
+
+          if( new_left < (GRID_TILE_PADDING*2) ) {
+            new_left = (GRID_TILE_PADDING*2);
+            return;
+          }
+
+          $(resize_element.element).css({
+            "width" : new_width.width,
+            "left"  : new_left
+          }).attr({"tile-width": new_width.new_x});
+
+          break;
+        case "right":
+          new_width = ( e.clientX - resize_element.clientX ) + resize_element.width;
+
+          new_width = calcWidth({
+            "width": new_width,
+            "min"  : resize_element.v2.min_width,
+            "max"  : resize_element.v2.max_width
+          });
+
+          $(resize_element.element).css({
+            "width" : new_width.width
+          }).attr({"tile-width": new_width.new_x});
+
+          break;
+      }
+    });
+
+    function calcWidth(obj) {
+      if ( obj.width === undefined ) obj.width = 0;
+      if ( obj.is !== undefined) obj.min = obj.max = obj.is;
+      obj.min = ( obj.min < TILE_MIN_WIDTH ) ? TILE_MIN_WIDTH : obj.min;
+      obj.max = ( obj.max > TILE_MAX_WIDTH ) ? TILE_MAX_WIDTH : obj.max;
+      if ( obj.width < ( (GRID_TILE_SIZE * obj.min) + ((GRID_TILE_PADDING*2)*(obj.min-1)) ) ) {
+        obj.width = ( (GRID_TILE_SIZE * obj.min) + ((GRID_TILE_PADDING*2)*(obj.min-1)) );
+      }
+      if ( obj.width > ( (GRID_TILE_SIZE * obj.max) + ((GRID_TILE_PADDING*2)*(obj.max-1)) ) ) {
+        obj.width = ( (GRID_TILE_SIZE * obj.max) + ((GRID_TILE_PADDING*2)*(obj.max-1)) );
+      }
+
+      return {
+        "width" : obj.width,
+        "new_x" : Math.ceil( obj.width / (GRID_TILE_SIZE + (GRID_TILE_PADDING * 2)) )
+      }
+    }
+
+    function calcHeight(obj) {
+      if ( obj.height === undefined ) obj.height = 0;
+      if ( obj.is !== undefined) obj.min = obj.max = obj.is;
+      obj.min = ( obj.min < TILE_MIN_HEIGHT ) ? TILE_MIN_HEIGHT : obj.min;
+      obj.max = ( obj.max > TILE_MAX_HEIGHT ) ? TILE_MAX_HEIGHT : obj.max;
+      if ( obj.height < ( (GRID_TILE_SIZE * obj.min) + ((GRID_TILE_PADDING*2)*(obj.min-1)) ) ) {
+        obj.height = ( (GRID_TILE_SIZE * obj.min) + ((GRID_TILE_PADDING*2)*(obj.min-1)) );
+      }
+      if ( obj.height > ( (GRID_TILE_SIZE * obj.max) + ((GRID_TILE_PADDING*2)*(obj.max-1)) ) ) {
+        obj.height = ( (GRID_TILE_SIZE * obj.max) + ((GRID_TILE_PADDING*2)*(obj.max-1)) );
+      }
+
+      return {
+        "height" : obj.height,
+        "new_y" : Math.ceil( obj.height / (GRID_TILE_SIZE + (GRID_TILE_PADDING * 2)) )
+      }
+    }
+
+    // When a tile resize square is released
+    $(".resize-tile > div, .widget").live("mouseup", function(e) {
+      if ( lock === true ) {
+        resize_element.element = false;
+        return false;
+      }
+
+      if ( typeof(resize_element.element) !== "object" ) {
+        return;
+      }
+
+      var left = $(resize_element.element).position().left;
+      var column;
+      for (var col = 1; col < 50; col++) {
+        var bracket = ((GRID_TILE_SIZE * (col-0)) + (GRID_TILE_PADDING * 2) * (col-0)) + 6;
+        if ( bracket > left+5 ) {
+          new_left  = ((GRID_TILE_SIZE * (col-1)) + (GRID_TILE_PADDING * 2) * (col-1)) + 6;
+
+          column = col - 1;
+
+          $(resize_element.element).css({
+            "left": new_left
+          }).attr("land-left", col);
+          break;
+        }
+      }
+
+      var top = $(resize_element.element).position().top;
+      var row;
+      for (var _row = 1; _row < 50; _row++) {
+        var bracket = ((GRID_TILE_SIZE * (_row-0)) + (GRID_TILE_PADDING * 2) * (_row-0)) + 6;
+        if ( bracket > top+5 ) {
+          new_top  = ((GRID_TILE_SIZE * (_row-1)) + (GRID_TILE_PADDING * 2) * (_row-1)) + 6;
+
+          row = _row - 1;
+
+          $(resize_element.element).css({
+            "top": new_top
+          }).attr("land-top", _row);
+          break;
+        }
+      }
+
+      $(resize_element.element).css({
+        "width" : calcWidth ({"is": $(resize_element.element).attr("tile-width")  }).width,
+        "height": calcHeight({"is": $(resize_element.element).attr("tile-height") }).height,
+      }).removeClass("widget-resize");
+
+      if ( getCovered( resize_element.element ).clear === true ) {
+        updateWidget({
+          "id"    : $(resize_element.element).attr("id"),
+          "width" : $(resize_element.element).attr("tile-width"),
+          "height": $(resize_element.element).attr("tile-height"),
+          "left"  : column,
+          "top"   : row
+        });
+      } else {
+        $(resize_element.element).css({
+          "width" : resize_element.width,
+          "height": resize_element.height,
+          "left"  : resize_element.left,
+          "top"   : resize_element.top
+        }).attr({
+          "tile-width" : resize_element.tileW,
+          "tile-height": resize_element.tileH
+        });
+      }
+
+      $(getCovered( resize_element.element ).tiles).removeClass("empty");
+
+      $(resize_element.element).find("#shortcut-edit,#delete").removeClass("force-hide");
+
+      resize_element.element = false;
+
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    /* END :: Resize */
 
   var held_element = {};
+  held_element.element = false;
   // When a tile is picked up
   $(".widget").live("mousedown", function(e) {
     if(lock === true) {
@@ -273,11 +558,10 @@ function setStuff() {
     held_element.offsetY = e.offsetY;
     held_element.oldX    = $(this).position().left;
     held_element.oldY    = $(this).position().top;
-    held_element.oldX    = $(this).position().left;
     held_element.width   = $(this).width();
     held_element.height  = $(this).height();
 
-    if( $(this).attr("data-app-source") === "from-drawer" ) {
+    if( $(this).attr("app-source") === "from-drawer" ) {
       held_element.element = $(this).clone()
         .addClass("widget-drag").css({
           "left": $(this).offset().left,
@@ -313,7 +597,7 @@ function setStuff() {
 
   // When a tile is released
   $(".widget").live("mouseup", function(e) {
-    if (lock === true) {
+    if ( lock === true ) {
       held_element.element = false;
       return false;
     }
@@ -328,29 +612,47 @@ function setStuff() {
     var tiles = getCovered(this);
 
     if ( tiles.clear === true ) {
-      if( $(this).attr("data-app-source") === "from-drawer" && $(this).attr("data-widget") === "true" ) {
-        addWidget(true,
-          $(this).attr("id"),
-          $(closestElm).attr("data-land-top"),
-          $(closestElm).attr("data-land-left"),
-          $(this).attr("data-widget-src"),
-          $(this).attr("data-tile-width"),
-          $(this).attr("data-tile-height"),
-          $(this).attr("data-poke"),
-          stock_widgets[$(this).attr("data-stock")]
-        );
-      } else if( $(this).attr("data-app-source") === "from-drawer") {
-        addWidget(false,
-          $(this).attr("id"),
-          $(closestElm).attr("data-land-top"),
-          $(closestElm).attr("data-land-left"),
-          null, null, null, null, $(this).attr("data-stock")
-        );
-      } else {
-        updateWidget($(this).attr("id"),
-          $(closestElm).attr("data-land-top"),
-          $(closestElm).attr("data-land-left")
-        );
+      if( $(this).attr("app-source") === "from-drawer" && $(this).attr("tile-widget") === "true" ) {
+        var is_widget = true,
+            src       = $(this).attr("tile-widget-src"),
+            width     = $(this).attr("tile-width"),
+            height    = $(this).attr("tile-height"),
+            poke      = $(this).attr("poke"),
+            stock     = stock_widgets[$(this).attr("stock")];
+      } else if ( $(this).attr("app-source") === "from-drawer" && $(this).attr("widget") === undefined ) {
+        var is_widget = false,
+            src       = undefined,
+            width     = 1,
+            height    = 1,
+            poke      = undefined,
+            stock     = $(this).attr("stock");
+      }
+
+      if ( $(this).attr("app-source") === "from-drawer" ) {
+        addWidget({
+          "is_widget" : is_widget,
+          "widget"    : $(this).attr("id"),
+          "top"       : $(closestElm).attr("land-top"),
+          "left"      : $(closestElm).attr("land-left"),
+          "src"       : src,
+          "width"     : width,
+          "height"    : height,
+          "stock"     : stock,
+          "poke"      : poke,
+          "resize"    : $(this).attr("resize"),
+          "min_width" : parseInt($(this).attr("min_width")),
+          "max_width" : parseInt($(this).attr("max_width")),
+          "min_height": parseInt($(this).attr("min_height")),
+          "max_height": parseInt($(this).attr("max_height"))
+        })
+      }
+
+      if ( $(this).attr("app-source") !== "from-drawer" ) {
+        updateWidget({
+          "id"  : $(this).attr("id"),
+          "top" : $(closestElm).attr("land-top"),
+          "left": $(closestElm).attr("land-left")
+        });
       }
 
       $(this).removeClass("widget-drag").css({
@@ -378,7 +680,7 @@ function setStuff() {
       });
     }
 
-    if( $(this).attr("data-app-source") === "from-drawer") {
+    if( $(this).attr("app-source") === "from-drawer") {
       $(this).remove();
     }
 

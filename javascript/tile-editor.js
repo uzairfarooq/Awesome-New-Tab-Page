@@ -38,13 +38,12 @@ $(".unlocked .empty.add-shortcut").live("click", function() {
 
   addShortcut(
     new_shortcut_id,
-    $(this).attr("data-land-top"),
-    $(this).attr("data-land-left")
+    $(this).attr("land-top"),
+    $(this).attr("land-left")
   );
 
   $(stitch(
     /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "shortcut",
-    /*  Destination: str [home, app-drawer, widget-drawer]*/  "home",
     /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  new_shortcut_id,
     /*  Ext. Name: str [Awesome New Tab Page]             */  "Google",
     /*  URL: str, can be iframe or app url                */  "http://www.google.com/",
@@ -90,9 +89,53 @@ $("#shortcut-edit").live("click", function(e){
     $(".hide-if-app").hide();
   }
 
+  var this_extension = extensions.filter(function (ext) { return ext.id === id })[0];
+  var is_app = (typeof(this_extension) !== "undefined" && typeof(this_extension.isApp) === "boolean");
+  var stock_app = false;
+
   if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter"]) !== -1 ) {
     widgets[id].img = stock_widgets[id].simg;
+    stock_app = true;
   }
+
+   $("#swatches").html("");
+   if ( is_app == true && stock_app === false ) {
+      var image = widgets[id].img;
+      var medianPalette = createPalette(
+        $("<img />").attr({
+          "src": image,
+          "id" : "temporary-element-to-delete"
+        }).css({
+          "display": "none"
+        }).appendTo("body")
+      , 5);
+      $.each(medianPalette, function(index, value) {
+        var swatchEl = $('<div>')
+        .css("background-color","rgba(" +value[0]+ "," +value[1]+  "," +value[2]+ ", 1)")
+        .data({
+          "r": value[0],
+          "g": value[1],
+          "b": value[2]
+        }).addClass("swatch");
+        $("#swatches").append(swatchEl);
+      });
+
+      $("#temporary-element-to-delete").remove();
+
+   }
+
+   $(".swatch").live("click", function () {
+     var id = $(".ui-2#editor").attr("active-edit-id");
+     var r = $(this).data("r");
+     var g = $(this).data("g");
+     var b = $(this).data("b");
+     $(".ui-2#editor #shortcut_colorpicker").ColorPickerSetColor( ({ r: r, g: g, b: b }) );
+     $("#" + id).css('backgroundColor', "rgba("+r+"," +g+ "," +b+ ",.7)" );
+     $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba(" +r+ "," +g+ "," +b+ ",.7)" );
+     widgets[id].color = "rgba(" +r+ "," +g+ "," +b+ ",.7)";
+     localStorageSync(false);
+     updateShortcut();
+   });
 
   $(".ui-2#editor")
     .fadeIn()

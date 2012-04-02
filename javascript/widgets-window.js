@@ -26,55 +26,86 @@ $(document).ready(function($) {
 // Only handles 1 at a time; widget
 function setupDrawerWidgets(_widget) {
     if (!_widget.request || !_widget.sender) {
-      return false;
+      return console.error("setupDrawerWidgets", "Sender missing.");
     }
     if (!_widget.request.body) {
-      return false;
+      return console.error("setupDrawerWidgets", "Body missing.");
     }
-    if (_widget.request.body.poke === 1) {
-      widgets[_widget.sender.id] = _widget.body;
 
-      if( parseInt(_widget.request.body.height) > 3 || parseInt(_widget.request.body.width) > 3 ) {
-        return false;
-      }
-
-      var widget_name = undefined;
-      if (_widget.sender.name) {
-        widget_name = _widget.sender.name;
-      } else {
-        if ( typeof(_widget.sender.id) === "string" )
-          widget_name = extensions.filter(function (ext) { return ext.id === _widget.sender.id })[0];
-
-        if ( typeof(widget_name) !== "undefined"
-          && typeof(widget_name.name) === "string" )
-          widget_name = widget_name.name;
-        else
-          return;
-      }
-
-      var widget_img = null;
-      if (_widget.sender.id === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
-        widget_img = "icon128.png";
-      } else {
-        widget_img = 'chrome://extension-icon/' + _widget.sender.id + '/128/0"';
-      }
-
-      $(stitch(
-        /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "widget-drawer",
-        /*  Destination: str [home, app-drawer, widget-drawer]*/  "widget-drawer",
-        /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  _widget.sender.id,
-        /*  Ext. Name: str [Awesome New Tab Page]             */  widget_name,
-        /*  URL: str, can be iframe or app url                */  (_widget.request.body.path).replace(/\s+/g, ''),
-        /*  Img: str, full path or [id]                       */  ( "id" ),
-        /*  Height: int [1, 2, 3]                             */  parseInt(_widget.request.body.height),
-        /*  Width: int [1, 2, 3]                              */  parseInt(_widget.request.body.width),
-        /*  Top: int                                          */  null,
-        /*  Left: int                                         */  null,
-        /*  Poke: int                                         */  parseInt(_widget.request.body.poke)
-      )).appendTo("#widget-drawer");
-
-      return;
+    if ( _widget.request.body.poke
+      && parseInt(_widget.request.body.poke) !== "NaN" ) {
+      _widget.request.body.poke = parseInt(_widget.request.body.poke);
+    } else {
+      _widget.request.body.poke = 1;
     }
+
+    widgets[_widget.sender.id] = _widget.body;
+
+    if( parseInt(_widget.request.body.height) > 3 || parseInt(_widget.request.body.width) > 3 ) {
+      return console.error("setupDrawerWidgets", "Width or Height too large.");
+    }
+
+    var widget_name;
+    if (_widget.sender.name) {
+      widget_name = _widget.sender.name;
+    } else {
+      if ( typeof(_widget.sender.id) === "string" )
+        widget_name = extensions.filter(function (ext) { return ext.id === _widget.sender.id })[0];
+
+      if ( typeof(widget_name) !== "undefined"
+        && typeof(widget_name.name) === "string" )
+        widget_name = widget_name.name;
+      else
+        return console.error("setupDrawerWidgets", "Widget name undefined.");
+    }
+
+    var widget_img ;
+    if (_widget.sender.id === "mgmiemnjjchgkmgbeljfocdjjnpjnmcg") {
+      widget_img = "icon128.png";
+    } else {
+      widget_img = 'chrome://extension-icon/' + _widget.sender.id + '/128/0"';
+    }
+
+    // Poke v2 Checks
+    var obj = _widget.request.body;
+    if ( obj.poke && parseInt(obj.poke) === 2 ) {
+      if ( obj.v2.resize === true
+        && parseInt(obj.v2.min_width ) !== "NaN"
+        && parseInt(obj.v2.max_width ) !== "NaN"
+        && parseInt(obj.v2.min_height) !== "NaN"
+        && parseInt(obj.v2.max_height) !== "NaN" ) {
+        obj.v2.min_width  = ( parseInt(obj.v2.min_width  ) < TILE_MIN_WIDTH  ) ? TILE_MIN_WIDTH : parseInt(obj.v2.min_width );
+        obj.v2.min_width  = ( parseInt(obj.v2.min_width  ) > TILE_MAX_WIDTH  ) ? TILE_MAX_WIDTH : parseInt(obj.v2.min_width );
+
+        obj.v2.max_width  = ( parseInt(obj.v2.max_width  ) < TILE_MIN_WIDTH  ) ? TILE_MIN_WIDTH : parseInt(obj.v2.max_width );
+        obj.v2.max_width  = ( parseInt(obj.v2.max_width  ) > TILE_MAX_WIDTH  ) ? TILE_MAX_WIDTH : parseInt(obj.v2.max_width );
+
+        obj.v2.min_height = ( parseInt(obj.v2.min_height) < TILE_MIN_HEIGHT ) ? TILE_MIN_HEIGHT : parseInt(obj.v2.min_height);
+        obj.v2.min_height = ( parseInt(obj.v2.min_height) > TILE_MAX_HEIGHT ) ? TILE_MAX_HEIGHT : parseInt(obj.v2.min_height);
+
+        obj.v2.max_height = ( parseInt(obj.v2.max_height) < TILE_MIN_HEIGHT ) ? TILE_MIN_HEIGHT : parseInt(obj.v2.max_height);
+        obj.v2.max_height = ( parseInt(obj.v2.max_height) > TILE_MAX_HEIGHT ) ? TILE_MAX_HEIGHT : parseInt(obj.v2.max_height);
+      } else {
+        obj.v2 = {};
+        obj.v2.resize = false;
+      }
+    } else {
+        obj.v2 = {};
+        obj.v2.resize = false;
+    }
+
+    $(stitch(
+      /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "widget-drawer",
+      /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  _widget.sender.id,
+      /*  Ext. Name: str [Awesome New Tab Page]             */  widget_name,
+      /*  URL: str, can be iframe or app url                */  (_widget.request.body.path).replace(/\s+/g, ''),
+      /*  Img: str, full path or [id]                       */  ( "id" ),
+      /*  Height: int [1, 2, 3]                             */  parseInt(_widget.request.body.height),
+      /*  Width: int [1, 2, 3]                              */  parseInt(_widget.request.body.width),
+      /*  Top: int                                          */  null,
+      /*  Left: int                                         */  null,
+      /*  Poke: array                                       */  [obj.poke, obj.v2.resize, obj.v2]
+    )).appendTo("#widget-drawer");
 }
 
 var widget_refresh_clickable = true;

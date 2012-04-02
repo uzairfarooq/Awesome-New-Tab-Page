@@ -155,20 +155,67 @@ body {
   background: transparent;
   text-shadow: -1px 1px 0px #000;
 }
-.app-mask {
-  background-color: transparent;
-  z-index: 801;
-  width: 100%;
-  height: 100%;
+#widget-holder > .app > a {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0; bottom: 0;
+  right: 0; left: 0;
+}
+.force-hide {
+  display: none !important;
+}
+.resize-tile {
+  display: none;
+  position: absolute;
+  top: 0; bottom: 0;
+  right: 0; left: 0;
+  box-shadow: 0 0 0 2px #0099CC, 0px 0px 7px 2px #0099CC;
+  z-index: -1;
+}
+.resize-tile > .resize-tile-top,
+.resize-tile > .resize-tile-left,
+.resize-tile > .resize-tile-right,
+.resize-tile > .resize-tile-bottom {
+  position: absolute;
+  height: 33px;
+  width: 33px;
+  background-image: url(/images/drag.png);
+}
+.resize-tile > .resize-tile-top {
+  left:0;
+  right:0;
+  margin-left: auto;
+  margin-right: auto;
+  top: -19px;
+}
+.resize-tile > .resize-tile-bottom {
+  left:0;
+  right:0;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: -19px;
+}
+.resize-tile > .resize-tile-left {
+  top:0;
+  bottom:0;
+  margin-top: auto;
+  margin-bottom: auto;
+  left: -19px;
+}
+.resize-tile > .resize-tile-right {
+  top:0;
+  bottom:0;
+  margin-top: auto;
+  margin-bottom: auto;
+  right: -19px;
 }
 .locked .widget:active.app {
   -webkit-transform: scale(0.95);
 }
 .widget.widget-drag {
   -webkit-transform: scale(0.95);
+  opacity: .75;
+}
+.widget.widget-resize {
   opacity: .75;
 }
 .app-name {
@@ -658,22 +705,23 @@ body > .widget-drawer-app img {
 .ui-2#apps .drawer-app-name,
 .ui-2#widgets .drawer-app-name {
   position: absolute;
-  width: 135px;
+  width: 130px;
   height: 50px;
   word-wrap:break-word;
+  font-size: 13px;
 
   overflow: hidden;
 }
 .ui-2#apps .drawer-app-uninstall,
 .ui-2#widgets .drawer-app-uninstall {
   position: absolute;
-  top: 58px;
+  bottom: 20px;
   text-align: right;
   color: rgba(0, 0, 0, .3);
   font-size: 12px;
-  height: 15px;
   cursor: pointer;
-  right: 5px;
+  right: -15px;
+  -webkit-transform: rotate(-90deg);
   margin: 0;
 }
 .unlocked .ui-2#apps .drawer-app-uninstall,
@@ -841,4 +889,25 @@ body > .widget-drawer-app img {
 }
 .opacity-0 {
   opacity: 0;
+}
+
+.swatch {
+  width: 40px;
+  height: 20px;
+  margin-right: 2px;
+  float: left;
+  -webkit-transition: all 0.5s;
+}
+.swatch:hover {
+  -webkit-transition: none;
+  -webkit-transform: scale(1.2, 1.2);
+  -webkit-box-shadow: 0 1px 10px black;
+}
+.swatch:first-child {
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+}
+.swatch:last-child {
+  -webkit-border-top-right-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
 }
