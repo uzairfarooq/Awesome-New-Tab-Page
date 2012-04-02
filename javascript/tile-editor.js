@@ -16,8 +16,7 @@
  */
 
 $("#delete").live("click", function(){
-  var to_delete = null;
-  to_delete = $(this).parent().parent();
+  var to_delete = $(this).parent().parent();
   if(to_delete) {
     removeWidget( $(to_delete).attr("id") );
 
@@ -30,6 +29,10 @@ $("#delete").live("click", function(){
 
     $(to_delete).remove();
   }
+});
+
+$("#widget-config").live("click", function(){
+  window.location = $(this).attr("url");
 });
 
 // Create shortcut on click
