@@ -24,10 +24,13 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   function onRemoved(tabId) {
     var tab = tabs.filter(function (tab) { return tab.id === tabId})[0];
 
-    if( !tab || tab.incognito === true
+    if (recently_closed === null ) {
+      recently_closed = [];
+    }
+
+    if ( !tab || tab.incognito === true
       || tab.title === ""
-      || (tab.url).indexOf("chrome://") !== -1
-      || recently_closed === null) {
+      || (tab.url).indexOf("chrome://" ) !== -1 ) {
       return;
     }
 
