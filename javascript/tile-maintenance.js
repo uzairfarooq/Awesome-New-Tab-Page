@@ -43,6 +43,15 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
     }
   }
 
+  if ( type === "iframe" ) {
+    if( typeof(widgets[id]) === "object" ) {
+      if ( typeof(widgets[id].optionsUrl) === "string"
+        && widgets[id].optionsUrl !== "" ) {
+        var optionsUrl = widgets[id].optionsUrl;
+      }
+    }
+  }
+
   if(type === "app" || type === "shortcut") {
     if ( typeof(widgets[id]) !== "object" ) {
       return console.error("stitch", id, "Tile storage discrepancy; tile not in storage.")
@@ -263,6 +272,17 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
       $("<div></div").attr("id", "delete")
     );
 
+    if ( type === "iframe" ) {
+      if ( optionsUrl ) {
+        $(stitch).find(".iframe-mask").append(
+          $("<div></div").attr({
+            "id" : "widget-config",
+            "url": optionsUrl
+          })
+        );
+      }
+    }
+
     if ( type === "app" || type === "shortcut" ) {
       $(stitch).find(".iframe-mask").append(
         $("<div></div").attr("id", "shortcut-edit"),
@@ -436,6 +456,7 @@ function addWidget(obj) {
       obj.appLaunchUrl = obj.new_ext_data.appLaunchUrl;
     } else {
       obj.widget_src = "chrome-extension://"+obj.new_ext_data.id+"/" + obj.src.replace(/\s+/g, '');
+      obj.widget_options = obj.new_ext_data.optionsUrl;
     }
     obj.widget_name = obj.new_ext_data.name;
   }
@@ -481,6 +502,7 @@ function addWidget(obj) {
       "id"    : obj.widget,
       "img"   : obj.widget_img,
       "path"  : obj.widget_src,
+      "optionsUrl": obj.widget_options,
       "poke"  : obj.poke,
       "resize": ( obj.resize === "true" ) ? true : false,
       "v2"    : {
@@ -497,12 +519,9 @@ function addWidget(obj) {
 
 // Delete widget; no refresh
 function removeWidget(widget) {
-  try {
+    widgets = JSON.parse(localStorage.getItem("widgets"));
+
     delete widgets[widget];
 
     localStorageSync(false);
-  }
-  catch (err) {
-    _e(4);
-  }
 }

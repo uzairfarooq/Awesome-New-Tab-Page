@@ -137,13 +137,24 @@ body {
 #shortcut-edit:hover {
   background-image: url("/images/core.edit_h.png")
 }
+#widget-config {
+  width: 48px;
+  height: 48px;
+  background-image: url("/images/core.config.png");
+  cursor: pointer;
+  display: none;
+}
+#widget-config:hover {
+  background-image: url("/images/core.config_h.png")
+}
 #delete:hover,
 .locked #uninstall:hover {
   background-image: url("/images/core.delete_h.png")
 }
 #widget-holder .iframe-mask:hover #delete,
 #widget-holder .locked .iframe-mask:hover #uninstall,
-#widget-holder .iframe-mask:hover #shortcut-edit {
+#widget-holder .iframe-mask:hover #shortcut-edit,
+#widget-holder .iframe-mask:hover #widget-config {
   display: block
 }
 #widget-holder > .app,
@@ -892,15 +903,17 @@ body > .widget-drawer-app img {
 }
 
 .swatch {
+  -webkit-box-shadow: 0 0px 5px rgba(0, 0, 0, .5);
   width: 40px;
   height: 20px;
   margin-right: 2px;
   float: left;
   -webkit-transition: all 0.5s;
+  cursor: pointer;
 }
 .swatch:hover {
-  -webkit-transition: none;
-  -webkit-transform: scale(1.2, 1.2);
+  -webkit-transition: all 0.1s;
+  -webkit-transform: scale(1.5, 1.5);
   -webkit-box-shadow: 0 1px 10px black;
 }
 .swatch:first-child {

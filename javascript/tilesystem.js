@@ -321,7 +321,7 @@ function setStuff() {
 
       $(getCovered( resize_element.element ).tiles).addClass("empty");
 
-      $(resize_element.element).find("#shortcut-edit,#delete").addClass("force-hide");
+      $(resize_element.element).find("#shortcut-edit,#delete,#widget-config").addClass("force-hide");
 
       $(resize_element.element)
         .addClass("widget-resize");
@@ -533,7 +533,7 @@ function setStuff() {
 
       $(getCovered( resize_element.element ).tiles).removeClass("empty");
 
-      $(resize_element.element).find("#shortcut-edit,#delete").removeClass("force-hide");
+      $(resize_element.element).find("#shortcut-edit,#delete,#widget-config").removeClass("force-hide");
 
       resize_element.element = false;
 
