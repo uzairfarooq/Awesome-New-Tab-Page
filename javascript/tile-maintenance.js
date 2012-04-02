@@ -294,20 +294,6 @@ function placeWidgets() {
   $.each(widgets, function(id, widget) {
     if(widget.type === "iframe" && widget.size[0] <= 3 && widget.size[1] <= 3) {
 
-      // console.log(widget)
-      // if( typeof(parseInt(widget.poke)) === "number"
-      // && parseInt(widget.poke) === 2
-      // && typeof(widget.resize) === "string"
-      // && widget.resize === "true" ) {
-      //   var poke = [parseInt(widget.poke), widget.poke.resize, {
-      //     "max_height": widget.max_height,
-      //     "min_height": widget.min_height,
-      //     "max_width" : widget.max_width,
-      //     "min_width" : widget.min_width
-      //   }]
-      // }
-
-
       $(stitch(
         /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "iframe",
         /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  id,
