@@ -318,8 +318,11 @@
       localStorage.setItem("showbmb", "no");
     }
 
+    bookmark_bar_rendered = false;
     if(localStorage.getItem("showbmb") === "yes") {
       $("#toggleBmb").attr('checked', 'checked');
+      bookmark_bar_rendered = true;
+      chrome.bookmarks.getTree(getBookmarks);
     } else {
       $("#bookmarksBar").css("display", "none");
     }
@@ -415,6 +418,11 @@
 
   $("#toggleBmb").live("click", function(){
     if ($(this).is(':checked')) {
+      if ( bookmark_bar_rendered === false ) {
+        bookmark_bar_rendered = true;
+        chrome.bookmarks.getTree(getBookmarks);
+      }
+
       $("#bookmarksBar").show();
       localStorage.setItem("showbmb", "yes");
       moveGrid({ "animate_top": true });

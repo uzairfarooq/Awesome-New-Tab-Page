@@ -13,7 +13,6 @@
 * @param {BookmarkTreeNode array} array of BookmarkTreeNode results
 */
 
-chrome.bookmarks.getTree(getBookmarks);
 function getBookmarks(tree)
 {
     //bookmarksList = '<ul id="nav">';
@@ -63,7 +62,7 @@ function truncate(str, len, dots)
         if(dots)
             ret += "...";
     }
-    
+
     return ret;
 }
 
