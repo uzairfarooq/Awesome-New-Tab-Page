@@ -235,7 +235,7 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
     if ( type === "app-drawer") {
       $(stitch).find("img,.drawer-app-name")
         .addClass("url")
-        .attr("url", url)
+        .attr("data-url", url)
     }
 
     if (type === "widget-drawer") {
