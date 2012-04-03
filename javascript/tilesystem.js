@@ -256,13 +256,16 @@ function setStuff() {
 
   // Trigger mouseup on escape key
   $(document).keyup(function(e) {
-    if ( typeof(held_element.element) === "object" ) {
-      if (e.which == 27) { $(held_element.element).trigger("mouseup"); }
-    }
-    $(".resize-tile > div").trigger("mouseup");
+    if (e.which == 27) {
+      if ( typeof(held_element.element) === "object" ) {
+        $(held_element.element).trigger("mouseup");
+      }
+      if ( typeof(resize_element.element) === "object" )
+      $(".resize-tile > div").trigger("mouseup");
 
-    // Close all UI-2 elements
-    $(".ui-2.x").trigger("click");
+      // Close all UI-2 elements
+      $(".ui-2.x").trigger("click");
+    }
   });
 
   $(window).mouseup("mouseup", function(e) {
