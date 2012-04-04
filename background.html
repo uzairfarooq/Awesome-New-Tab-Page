@@ -62,37 +62,34 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
 
 /* START :: Get Installed Widgets */
   var extensions;
-
   chrome.management.getAll(reloadExtensions);
   function reloadExtensions(data) {
+    console.log(data)
     extensions = data;
+    reloadInstalledWidgets();
   }
 
   $(window).bind('storage', function (e) {
+    // When Refresh button in the widgets window is pressed
     if ( typeof(e.originalEvent) === "object"
       && typeof(e.originalEvent.key) === "string"
       && e.originalEvent.key === "refresh_widgets" )
-        reloadInstalledWidgets();
+        chrome.management.getAll(reloadExtensions);
 
+    // When Awesome New Tab Page is reset
     if ( typeof(e.originalEvent) === "object"
       && typeof(e.originalEvent.key) === "string"
       && e.originalEvent.key === "" )
-        reloadInstalledWidgets();
+        chrome.management.getAll(reloadExtensions);
   });
 
-  var lock_reload = false;
   function reloadInstalledWidgets() {
-    if ( lock_reload === true ) {
-      return;
-    }
-    lock_reload = true;
 
     localStorage.setItem("installed_widgets", JSON.stringify( [] ));
 
     sayHelloToPotentialWidgets();
 
     setTimeout(function() {
-      lock_reload = false;
       window.location = window.location;
     }, 10000);
   }
@@ -101,7 +98,6 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   chrome.management.onInstalled.addListener( onInstalled );
   function onInstalled(ExtensionInfo) {
     chrome.management.getAll(reloadExtensions);
-    reloadInstalledWidgets();
 
     setTimeout(function() {
       recently_installed = null;
@@ -111,25 +107,21 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   chrome.management.onUninstalled.addListener( onUninstalled );
   function onUninstalled(ExtensionInfo) {
     chrome.management.getAll(reloadExtensions);
-    reloadInstalledWidgets();
     // console.log(ExtensionInfo);
   }
 
   if ( Math.round(new Date().getTime()/1000.0) > parseInt(localStorage.getItem("last_widget_update")) + 30*60 ) {
     chrome.management.getAll(reloadExtensions);
-    reloadInstalledWidgets();
     localStorage.setItem("last_widget_update", Math.round(new Date().getTime()/1000.0) );
   }
 
   if ( localStorage.getItem("installed_widgets") === null ) {
     chrome.management.getAll(reloadExtensions);
-    reloadInstalledWidgets();
   }
 
   if ( localStorage.getItem("installed_widgets") === "[]" ) {
     if ( Math.round(new Date().getTime()/1000.0) > parseInt(localStorage.getItem("last_widget_update")) + 5*60 ) {
       chrome.management.getAll(reloadExtensions);
-      reloadInstalledWidgets();
       localStorage.setItem("last_widget_update", Math.round(new Date().getTime()/1000.0) );
     }
   }
