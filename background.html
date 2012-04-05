@@ -61,11 +61,13 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   /* END :: Recently Closed Tabs */
 
 /* START :: Get Installed Widgets */
-  var extensions;
+  var extensions,
+      event_lock = false;
   chrome.management.getAll(reloadExtensions);
   function reloadExtensions(data) {
     extensions = data;
     reloadInstalledWidgets();
+    event_lock = false;
   }
 
   $(window).bind('storage', function (e) {
@@ -96,6 +98,12 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   chrome.management.onEnabled.addListener( onInstalled );
   chrome.management.onInstalled.addListener( onInstalled );
   function onInstalled(ExtensionInfo) {
+
+    if ( event_lock === true ) {
+      return;
+    } else {
+      event_lock = true;
+    }
     chrome.management.getAll(reloadExtensions);
 
     setTimeout(function() {
@@ -105,6 +113,13 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   chrome.management.onDisabled.addListener( onUninstalled );
   chrome.management.onUninstalled.addListener( onUninstalled );
   function onUninstalled(ExtensionInfo) {
+
+    if ( event_lock === true ) {
+      return;
+    } else {
+      event_lock = true;
+    }
+
     chrome.management.getAll(reloadExtensions);
     // console.log(ExtensionInfo);
   }
