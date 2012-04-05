@@ -64,7 +64,6 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   var extensions;
   chrome.management.getAll(reloadExtensions);
   function reloadExtensions(data) {
-    console.log(data)
     extensions = data;
     reloadInstalledWidgets();
   }
