@@ -133,9 +133,9 @@ $("#shortcut-edit").live("click", function(e){
      var g = $(this).data("g");
      var b = $(this).data("b");
      $(".ui-2#editor #shortcut_colorpicker").ColorPickerSetColor( ({ r: r, g: g, b: b }) );
-     $("#" + id).css('backgroundColor', "rgba("+r+"," +g+ "," +b+ ",.7)" );
-     $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba(" +r+ "," +g+ "," +b+ ",.7)" );
-     widgets[id].color = "rgba(" +r+ "," +g+ "," +b+ ",.7)";
+     $("#" + id).css('backgroundColor', "rgba("+r+"," +g+ "," +b+ ", 1)" );
+     $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba(" +r+ "," +g+ "," +b+ ", 1)" );
+     widgets[id].color = "rgba(" +r+ "," +g+ "," +b+ ", 1)";
      localStorageSync(false);
      updateShortcut();
    });
@@ -189,9 +189,9 @@ $("#shortcut-edit").live("click", function(e){
     onChange: function (hsb, hex, rgb) {
       widgets  = JSON.parse(localStorage.getItem("widgets"));
       var id = $(".ui-2#editor").attr("active-edit-id");
-      $("#"+id).css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.7)" );
-      $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+",.7)" );
-      widgets[id].color = "rgba("+rgb.r+","+rgb.g+","+rgb.b+", .7)";
+      $("#"+id).css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+", 1)" );
+      $(".ui-2#editor .fake-tile#preview-tile").css('backgroundColor', "rgba("+rgb.r+","+rgb.g+","+rgb.b+", 1)" );
+      widgets[id].color = "rgba("+rgb.r+","+rgb.g+","+rgb.b+",  1)";
       localStorageSync(false);
       updateShortcut();
     }
