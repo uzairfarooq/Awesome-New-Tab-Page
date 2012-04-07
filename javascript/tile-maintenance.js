@@ -83,8 +83,8 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
     }
   }
 
-  if ( height > 3 ) { height = 3; console.warn("stitch", "Max height exceeded. Defaulted to max.") }
-  if ( width  > 3 ) { width  = 3; console.warn("stitch", "Max width exceeded. Defaulted to max." ) }
+  if ( height > 3 ) { height = 3; console.warn("stitch", "Max height exceeded. Defaulted to max."); }
+  if ( width  > 3 ) { width  = 3; console.warn("stitch", "Max width exceeded. Defaulted to max." ); }
 
   if ( type === "widget-drawer" ) {
     if ( typeof(poke) === "object"
@@ -202,6 +202,7 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
   }
 
   if ( type === "app" || type === "shortcut" ) {
+
     $(stitch).append(
       $("<div></div>").addClass("app-name "+name_show).html(name),
       $("<a/>").attr("href", url)

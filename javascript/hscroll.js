@@ -25,9 +25,9 @@
 
   function handle(delta) {
     if (delta < 0)
-      ScrollSmoothly(10, 15, "right");
+      ScrollSmoothly(8, 8, "right");
     else if (delta > 0)
-      ScrollSmoothly(10, 15, "left");
+      ScrollSmoothly(8, 8, "left");
   }
 
   function wheel(event){
@@ -74,4 +74,7 @@
       window.addEventListener('DOMMouseScroll', wheel, false);
     }
     window.onmousewheel = document.onmousewheel = wheel;
+    $(document).live("mousewheel", function(e) {
+      wheel(e.originalEvent);
+    })
 

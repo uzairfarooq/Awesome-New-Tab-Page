@@ -100,7 +100,7 @@ function placeGrid() {
 
   if ( typeof(screen.width) !== "undefined"
     && typeof(screen.height) !== "undefined" ) {
-    var res_height2 = Math.floor( ( screen.height - 150 - GRID_MARGIN_LEFT  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
+    var res_height2 = Math.floor( ( screen.height - 190 - GRID_MARGIN_LEFT  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
     var res_width2  = Math.floor( ( screen.width        - GRID_MARGIN_LEFT  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
 
     if(res_height2 > height) {
