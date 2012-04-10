@@ -415,6 +415,15 @@
               Open Color Picker
             </div>
             <div id="swatches"></div>
+
+            <p>
+              <input id="shortcut_background_transparent" type="checkbox" />
+              Completely transparent background
+            </p>
+            <p class="tip">
+              Tip: If you check this box, you may also want to hide the name.
+            </p>
+
           <div class="hide-if-app">
             <h3>URL</h3>
             <p>Enter the URL you'd like to link to, such as http://www.google.com/</p>
@@ -429,12 +438,16 @@
               Note: This option is not available for apps.
             </p>
           </div>
+
+        </div>
+
+        <div id="tile-editor-left">
           <div class="hide-if-app">
             <h3>Icon</h3>
-            <p>Enter a URL to an image to change the icon. 128px by 128px is recommended.</p>
+            <p>Enter a URL to an image to change the icon. 200px by 200px is recommended.</p>
             <input id="img_url" type="text" />
             <p class="tip">
-              Advanced: Hide the name and use an image that's 200px by 200px to completely
+              Advanced: Hide the name and favicon and use an image that's 200px by 200px to completely
               customize the tile.
             </p>
             <p class="tip">
@@ -443,23 +456,12 @@
           </div>
         </div>
 
-        <div id="tile-editor-left">
-          <h3>Completely Transparent Background</h3>
-          <p>
-            <input id="shortcut_background_transparent" type="checkbox" />
-            Disable this tile's background
-          </p>
-          <p class="tip">
-            Tip: If you check this box, you may also want to hide the name.
-          </p>
-
-        </div>
-
         <div id="fake-tile-wrapper">
           <h3>Preview</h3>
           <div id="fake-tile-background" class="bg-color">
             <div class="fake-tile" id="preview-tile">
               <div class="app-name"></div>
+              <img class="app-favicon"></img>
             </div>
             <div class="fake-tile" id="ft0"></div>
             <div class="fake-tile" id="ft1"></div>
