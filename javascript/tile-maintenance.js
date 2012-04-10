@@ -201,10 +201,10 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
     }
   }
 
-  if ( type === "shortcut" ) {
-
+  if ( type === "shortcut" || type === "app" ) {
     var favicon;
-    if ( widgets[id].favicon_show !== false
+    if ( type === "shortcut"
+      && widgets[id].favicon_show !== false
       && url.match("http") !== null ) {
       favicon = $("<img></img>").attr("src", "chrome://favicon/"+url).addClass("app-favicon");
     } else {
