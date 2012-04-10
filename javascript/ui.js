@@ -276,18 +276,18 @@
   function loadFeatured() {
     if(loaded_featured === false) {
       $.ajax({
-        url: "http://cdn.antp.co/getFeatured/?nocache-day=" + new Date().getDate(),
-        dataType: 'jsonp',
+        url: "https://cdn.antp.co/getFeatured/?nocache-day=" + new Date().getDate(),
+        dataType: "jsonp",
         cache: true,
         jsonpCallback: "setupFeatured",
         success: setupFeatured
       });
     }
-
-    loaded_featured = true;
   }
 
   function setupFeatured(data) {
+    loaded_featured = true;
+
     if( typeof(data.a) === "object" ) {
       if( typeof(data.a.app) === "object" ) {
         $(".ui-2#apps .faw-box .faw-featured img").attr("src", data.a.app.img);
