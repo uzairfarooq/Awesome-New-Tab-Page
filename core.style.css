@@ -168,7 +168,8 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-#widget-holder .app-favicon {
+#widget-holder .app-favicon,
+.ui-2#editor #preview-tile .app-favicon {
   width: 16px; height: 16px;
   position: absolute;
   bottom: 5px;
@@ -227,7 +228,8 @@ body {
   margin-bottom: auto;
   right: -19px;
 }
-.locked .widget:active.app {
+.locked .widget:active.app,
+.ui-2#editor #preview-tile:active {
   -webkit-transform: scale(0.95);
 }
 .widget.widget-drag {
@@ -814,6 +816,9 @@ body > .widget-drawer-app img {
 /* UI-2 Tile Editor */
 .ui-2#editor {
   display: none;
+}
+.ui-2#editor input[type="text"] {
+  width: 200px;
 }
 .ui-2#editor #tile-editor-right {
   width: 325px;
