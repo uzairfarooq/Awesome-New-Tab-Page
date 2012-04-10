@@ -102,7 +102,7 @@ $("#shortcut-edit").live("click", function(e){
   }
 
   $("#swatches").html("");
-  if ( is_app == true && stock_app === false ) {
+  if ( is_app === true && stock_app === false ) {
     var image = widgets[id].img;
     var medianPalette = createPalette(
       $("<img />").attr({
