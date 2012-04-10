@@ -97,9 +97,11 @@ $("#shortcut-edit").live("click", function(e){
 
   if ( is_shortcut ) {
     if ( widgets[id].favicon_show !== false ) {
+      $(".ui-2#editor #shortcut_favicon_show").prop("checked", true);
       $(".ui-2#editor #preview-tile .app-favicon").show()
         .attr("src", "chrome://favicon/"+ widgets[id].url);
     } else {
+      $(".ui-2#editor #shortcut_favicon_show").prop("checked", false);
       $(".ui-2#editor #preview-tile .app-favicon").hide()
         .attr("src", "chrome://favicon/"+ widgets[id].url);
     }
