@@ -9,22 +9,21 @@ Awesome New Tab Page is my attempt at making a more awesome new tab page for [Go
 
 How is it more awesome?
 -----------------------
-It's more like a home screen on an Android phone or a Windows 8 start menu. By that I mean that instead of just icons and bookmarks, you can have some very dynamic widgets that are always ready to show something useful. From the weather to the news, your _awesome_ new tab page is what _you_ make it. Customize and expand it as you choose.
+It's more like a home screen on an Android phone or a Windows 8 start menu. By that I mean that instead of just icons and bookmarks, you can have some very dynamic widgets that are always ready to show something useful. From the weather to the news, your _awesome_ new tab page is what _you_ make it. Customize and expand it as you choose. Awesome, like you.
 
 I have an idea, who do I tell?
 ------------------------------
-Well, I'd appreciate it if you posted it here: [voice.newtabpage.org](https://voice.newtabpage.org)
+Well, I'd appreciate it if you posted it here: [feedback.antp.co](http://feedback.antp.co/).
 
-However, you can also contact me directly through Google+: [h4r7.me](http://h4r7.me/)
+However, you can also contact me directly through Google+: [h4r7.me](http://h4r7.me/).
 
 How are widgets made?
 ---------------------
-Until I can manage the time to write better documentation, please refer to this sample widget:
-[Awesome New Tab Page Shell / Example Widget](https://github.com/michaelhart/NTP-Widget-Shell)
+See the [wiki](http://wiki.antp.co/).
 
-Widgets are packaged within Chrome extensions (either exclusively or bundled in a pre-existing extension) and are added to the widgets menu for users to add to their new tab page.
+Widgets are packaged within Chrome extensions (either exclusively or bundled in a pre-existing extension) and, when installed, are added to the widgets window for users to add to their new tab page.
 
-If you have any questions, please email me from here: [h4r7.me](http://h4r7.me/).
+If you have any questions, please ask them here: [help.antp.co](http://help.antp.co/).
 
 What license is this extension released under?
 ----------------------------------------------
@@ -36,7 +35,7 @@ Everyone who is willing to agree to allow me to publish submitted code under the
 
 Translating / Internationalization
 ----------------------------------
-Want to help ensure Awesome New Tab Page works great in your native language? Head over here to help translate: [crowdwin/project/antp](https://crowdin.net/project/antp/)
+Want to help ensure Awesome New Tab Page works great in your native language? Head over here to help translate: [crowdwin.net/project/antp](https://crowdin.net/project/antp/).
 
 Do widgets need to be licensed under GPL v3+?
 ---------------------------------------------
