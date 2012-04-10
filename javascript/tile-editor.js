@@ -81,24 +81,38 @@ $("#shortcut-edit").live("click", function(e){
   if(!shortcut_parent) { console.warn("!shortcut_parent", this, shortcut_parent); return; }
 
   widgets = JSON.parse(localStorage.getItem("widgets"));
+
   var id = $(shortcut_parent)[0].id;
   if(!widgets[id]) { console.warn("!widgets["+id+"]", shortcut_parent, widgets); return; }
 
-  if(widgets[id].type && widgets[id].type === "shortcut") {
-    shortcut_type = "shortcut";
-    $(".hide-if-app").show();
-  } else {
-    shortcut_type = "app";
-    $(".hide-if-app").hide();
-  }
-
   var this_extension = extensions.filter(function (ext) { return ext.id === id })[0];
   var is_app = (typeof(this_extension) !== "undefined" && typeof(this_extension.isApp) === "boolean");
-  var stock_app = false;
+  var is_shortcut = (widgets[id].type && widgets[id].type === "shortcut");
 
+  var stock_app = false;
   if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter"]) !== -1 ) {
     widgets[id].img = stock_widgets[id].simg;
     stock_app = true;
+  }
+
+  if ( is_shortcut ) {
+    if ( widgets[id].show_favicon !== false ) {
+      $(".ui-2#editor #preview-tile .app-favicon").show()
+        .attr("src", "chrome://favicon/"+ widgets[id].url);
+    } else {
+      $(".ui-2#editor #preview-tile .app-favicon").hide()
+        .attr("src", "chrome://favicon/"+ widgets[id].url);
+    }
+  } else {
+    $(".ui-2#editor #preview-tile .app-favicon").hide();
+  }
+
+  if ( is_shortcut ) {
+    var editor_type = "shortcut";
+    $(".hide-if-app").show();
+  } else {
+    var editor_type = "app";
+    $(".hide-if-app").hide();
   }
 
   $("#swatches").html("");
@@ -142,7 +156,7 @@ $("#shortcut-edit").live("click", function(e){
   $(".ui-2#editor")
     .fadeIn()
     .attr("active-edit-id", id)
-    .attr("active-edit-type", shortcut_type);
+    .attr("active-edit-type", editor_type);
 
   if(widgets[id].shortcut_background_transparent && widgets[id].shortcut_background_transparent === true) {
     $(".ui-2#editor #shortcut_background_transparent").prop("checked", true);
