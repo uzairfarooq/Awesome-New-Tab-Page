@@ -101,31 +101,30 @@ $("#shortcut-edit").live("click", function(e){
     stock_app = true;
   }
 
-   $("#swatches").html("");
-   if ( is_app == true && stock_app === false ) {
-      var image = widgets[id].img;
-      var medianPalette = createPalette(
-        $("<img />").attr({
-          "src": image,
-          "id" : "temporary-element-to-delete"
-        }).css({
-          "display": "none"
-        }).appendTo("body")
-      , 5);
-      $.each(medianPalette, function(index, value) {
-        var swatchEl = $('<div>')
-        .css("background-color","rgba(" +value[0]+ "," +value[1]+  "," +value[2]+ ", 1)")
-        .data({
-          "r": value[0],
-          "g": value[1],
-          "b": value[2]
-        }).addClass("swatch");
-        $("#swatches").append(swatchEl);
-      });
+  $("#swatches").html("");
+  if ( is_app == true && stock_app === false ) {
+    var image = widgets[id].img;
+    var medianPalette = createPalette(
+      $("<img />").attr({
+        "src": image,
+        "id" : "temporary-element-to-delete"
+      }).css({
+        "display": "none"
+      }).appendTo("body")
+    , 5);
+    $.each(medianPalette, function(index, value) {
+      var swatchEl = $('<div>')
+      .css("background-color","rgba(" +value[0]+ "," +value[1]+  "," +value[2]+ ", 1)")
+      .data({
+        "r": value[0],
+        "g": value[1],
+        "b": value[2]
+      }).addClass("swatch");
+      $("#swatches").append(swatchEl);
+    });
 
-      $("#temporary-element-to-delete").remove();
-
-   }
+    $("#temporary-element-to-delete").remove();
+  }
 
    $(".swatch").live("click", function () {
      var id = $(".ui-2#editor").attr("active-edit-id");
