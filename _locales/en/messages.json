@@ -167,13 +167,7 @@
   "ui_config_contrib": {
     "message": "Contributors"
   },
-  "ui_shortcut_name": {
-    "message": "Image URL must be exactly 128px by 128px, preferably in PNG format with alpha transparency. To reset to default, just erase everything in the field."
-  },
   "ui_shortcut_img": {
-    "message": "Image URL must be exactly 128px by 128px, preferably in PNG format with alpha transparency. To reset to default, just erase everything in the field."
-  },
-  "ui_shortcut_img1": {
     "message": "Image URL must be exactly 128px by 128px, preferably in PNG format with alpha transparency. To reset to default, just erase everything in the field."
   },
   "notepad_default": {
