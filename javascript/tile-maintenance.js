@@ -201,11 +201,20 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
     }
   }
 
-  if ( type === "app" || type === "shortcut" ) {
+  if ( type === "shortcut" ) {
+
+    var favicon;
+    if ( widgets[id].favicon_show !== false
+      && url.match("http") !== null ) {
+      favicon = $("<img></img>").attr("src", "chrome://favicon/"+url).addClass("app-favicon");
+    } else {
+      favicon = $("<img></img>").attr("src", "chrome://favicon/"+url).addClass("app-favicon force-hide");
+    }
 
     $(stitch).append(
       $("<div></div>").addClass("app-name "+name_show).html(name),
-      $("<a/>").attr("href", url)
+      $("<a/>").attr("href", url),
+      favicon
     );
   }
 
