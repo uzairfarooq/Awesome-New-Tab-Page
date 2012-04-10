@@ -96,7 +96,7 @@ $("#shortcut-edit").live("click", function(e){
   }
 
   if ( is_shortcut ) {
-    if ( widgets[id].show_favicon !== false ) {
+    if ( widgets[id].favicon_show !== false ) {
       $(".ui-2#editor #preview-tile .app-favicon").show()
         .attr("src", "chrome://favicon/"+ widgets[id].url);
     } else {
@@ -225,14 +225,17 @@ function updateShortcut(e) {
     var url  = $(".ui-2#editor #shortcut_url").val();
     var img  = $(".ui-2#editor #img_url").val();
     var name_show  = $(".ui-2#editor #shortcut_name_show").is(':checked');
+    var favicon_show  = $(".ui-2#editor #shortcut_favicon_show").is(':checked');
     var shortcut_background_transparent  = $(".ui-2#editor #shortcut_background_transparent").is(':checked');
+    var is_shortcut = (widgets[id].type && widgets[id].type === "shortcut");
+
 
     if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter"]) !== -1 ) {
       widgets[id].img = stock_widgets[id].simg;
     }
 
     widgets[id].name_show = name_show;
-    if(name_show === false) {
+    if ( name_show === false ) {
       $(".ui-2#editor #shortcut_name_show").prop("checked", false);
       $(".ui-2#editor .app-name, #widget-holder #"+id+" .app-name").css("opacity", 0);
     } else {
@@ -240,8 +243,18 @@ function updateShortcut(e) {
       $(".ui-2#editor .app-name, #widget-holder #"+id+" .app-name").css("opacity", 1);
     }
 
-    widgets[id].shortcut_background_transparent = shortcut_background_transparent;
+    widgets[id].favicon_show = favicon_show;
+    console.log(favicon_show)
+    if ( favicon_show !== false ) {
+      $(".ui-2#editor #preview-tile .app-favicon, #"+id+" .app-favicon").show()
+        .attr("src", "chrome://favicon/"+ url);
+      $("#" + id )
+    } else {
+      $(".ui-2#editor #preview-tile .app-favicon, #"+id+" .app-favicon").hide()
+        .attr("src", "chrome://favicon/"+ url);
+    }
 
+    widgets[id].shortcut_background_transparent = shortcut_background_transparent;
     if(type === "shortcut") {
       widgets[id].img = img;
 
