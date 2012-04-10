@@ -847,6 +847,7 @@ body > .widget-drawer-app img {
   height: 200px;
   opacity: 1 !important;
   background-color: rgba(0, 0, 0, .2);
+  text-shadow: -1px 1px 0px #000;
 }
 .ui-2#editor .fake-tile#preview-tile {
   top: 37px;
