@@ -29,6 +29,14 @@ What license is this extension released under?
 ----------------------------------------------
 __[GNU General Public License version 3](https://www.gnu.org/licenses/gpl-3.0.txt)__
 
+Further Restrictions:
+
+> To make use of or modify the below code in any way:
+>
+> * You agree to leave this copyright and license notice intact without modification; and
+> * You agree to mark your modified versions as modified from the original version; and
+> * You agree not to misrepresent the origin of this material or your relationship with the authors of this project or the project itself.
+
 Who can contribute?
 -------------------
 Everyone who is willing to agree to allow me to publish submitted code under the GPL v3 or future licenses. This ensures both of us (and anyone else) can use it so long as it always remains under the same license.

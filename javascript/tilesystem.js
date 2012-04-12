@@ -1,20 +1,21 @@
-/*
- *
- *  Awesome New Tab Page
- *    http://antp.co/
- *    Copyright 2011+ Michael Hart (http://h4r7.me/).
- *
- *  Want to make it even more awesome?
- *    https://github.com/michaelhart/Awesome-New-Tab-Page/
- *
- *  Tile / Widget System
- *    Immense thanks to David Shorten (shortenda at gmail.com)
- *    the original author of the tile system.
- *
- *  Licensed under GPL v3:
- *    http://www.gnu.org/licenses/gpl-3.0.txt
- *
- */
+/** Awesome New Tab Page
+  *   antp.co
+  *   Copyright 2011-2012 Michael Hart (h4r7.me)
+  * Want to make it even more awesome?
+  *   github.antp.co
+  *
+  * Licensed under GPL v3:
+  *   http://www.gnu.org/licenses/gpl-3.0.txt
+  *   Further Restrictions:
+  *     To make use of or modify the below code in any way:
+  *     - You agree to leave this copyright and license notice intact without
+  *       modification; and
+  *     - You agree to mark your modified versions as modified from the original
+  *       version; and
+  *     - You agree not to misrepresent the origin of this material or your
+  *       relationship with the authors of this project or the project itself.
+***/
+
 
 $(document).ready(function($) {
   $("#toggle-grid").live("click", updateGridOpacity);
