@@ -101,11 +101,11 @@ $("#shortcut-edit").live("click", function(e){
     if ( widgets[id].favicon_show !== false ) {
       $(".ui-2#editor #shortcut_favicon_show").prop("checked", true);
       $(".ui-2#editor #preview-tile .app-favicon").show()
-        .attr("src", "chrome://favicon/"+ widgets[id].url);
+        .attr("src", "chrome://favicon/"+ (widgets[id].url || widgets[id].appLaunchUrl) );
     } else {
       $(".ui-2#editor #shortcut_favicon_show").prop("checked", false);
       $(".ui-2#editor #preview-tile .app-favicon").hide()
-        .attr("src", "chrome://favicon/"+ widgets[id].url);
+        .attr("src", "chrome://favicon/"+ (widgets[id].url || widgets[id].appLaunchUrl) );
     }
   } else {
     $(".ui-2#editor #preview-tile .app-favicon").hide();
@@ -217,6 +217,25 @@ $("#shortcut-edit").live("click", function(e){
   $(".ui-2#editor #shortcut_colorpicker").ColorPickerSetColor( ({ r: rgb[1], g: rgb[2], b: rgb[3] }) );
 });
 
+// Adds shortcut
+function addShortcut(widget, top, left) {
+  widgets = JSON.parse(localStorage.getItem("widgets"));
+
+  widgets[widget] = {
+    where: [top,left],
+    size: [1,1],
+    type: "shortcut",
+    isApp: false,
+    name: "Google",
+    id: widget,
+    img: "core.shortcut.blank2.png",
+    appLaunchUrl: "http://www.google.com/",
+    url: "http://www.google.com/"
+  };
+
+  localStorageSync(false);
+}
+
 // Update tile, localStorage, and previews for Tile Editor changes
 $(".ui-2#editor input").live('keyup change', updateShortcut);
 
@@ -248,7 +267,6 @@ function updateShortcut(e) {
     }
 
     widgets[id].favicon_show = favicon_show;
-    console.log(favicon_show)
     if ( favicon_show !== false ) {
       $(".ui-2#editor #preview-tile .app-favicon, #"+id+" .app-favicon").show()
         .attr("src", "chrome://favicon/"+ url);

@@ -380,30 +380,7 @@ function placeWidgets() {
   setStuff();
 }
 
-// Adds shortcut to localStorage
-function addShortcut(widget, top, left) {
-  try {
-    widgets = JSON.parse(localStorage.getItem("widgets"));
-
-    widgets[widget] = {
-      where: [top,left],
-      size: [1,1],
-      type: "shortcut",
-      isApp: false,
-      name: "Google",
-      id: widget,
-      img: "core.shortcut.blank2.png",
-      appLaunchUrl: "http://www.google.com/"
-    };
-
-    localStorageSync(false);
-  }
-  catch (err) {
-    _e(6);
-  }
-}
-
-// Updates shortcut placement
+// Updates widgets
 function updateWidget(obj) {
   if ( typeof(obj.id) !== "string" ) return;
 
