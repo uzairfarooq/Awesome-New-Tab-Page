@@ -444,7 +444,9 @@
         <div id="tile-editor-left">
           <div class="hide-if-app">
             <h3>Icon</h3>
-            <p>Enter a URL to an image to change the icon. 200px by 200px is recommended.</p>
+			<input type="file" id="icon-file" onchange="dndFileSelected();" style="position:absolute;left:-10000px;top:-10000px;">
+			<button onclick="$('#icon-file').click();">Change...</button>
+            <p>Enter a URL to an image, or Drag & Drop an image above to change the icon. 200px by 200px is recommended.</p>
             <input id="img_url" type="text" />
             <p class="tip">
               Advanced: Hide the name and favicon and use an image that's 200px by 200px to completely
@@ -498,5 +500,7 @@
     <script type="text/javascript" src="/javascript/color-thief.js"></script>
     <script type="text/javascript" src="/javascript/quantize.js"></script>
     <script type="text/javascript" src="/javascript/google-analytics.js"></script>
+	
+    <script type="text/javascript" src="/javascript/dnd.js"></script>
   </body>
 </html>
