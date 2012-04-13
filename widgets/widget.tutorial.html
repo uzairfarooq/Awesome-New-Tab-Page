@@ -162,6 +162,13 @@
         left: 55px;
       }
 
+      .flattr-left {
+        position: absolute;
+        top: 240px;
+        left: 36px;
+        z-index: 100;
+      }
+
       .twitter-right {
         z-index: 100;
         position: absolute;
@@ -214,6 +221,10 @@
   <body>
     <div class="widget">
       <div class="tutorial">
+        <div class="flattr-left">
+          <a class="FlattrButton" style="display:none;" href="http://antp.co/"></a>
+        </div>
+
         <div id="1" class="screen">
           <p>
             <script>document.write(chrome.i18n.getMessage("tutorial_1_welcome"));</script>
@@ -239,7 +250,9 @@
           </div>
         </div>
 
-        <div id="2" class="screen hidden">
+        <div id="2" class="screen hidden"
+          style="margin-top: 50px;"
+        >
           <h1>
             <script>document.write(chrome.i18n.getMessage("tutorial_2_title"));</script>
           </h1>
@@ -271,7 +284,7 @@
         </div>
 
         <div id="4" class="screen hidden"
-          style="margin-top: 100px;"
+          style="margin-top: 75px;"
         >
           <img src="widget.tutorial.up_mid.png"
             style="position: fixed; left: 35px; top: -20px; -webkit-transform: rotate(-110deg);"
@@ -349,6 +362,14 @@
               twitterScriptTag.src = 'https://platform.twitter.com/widgets.js';
               var s = document.getElementsByTagName('script')[0];
               s.parentNode.insertBefore(twitterScriptTag, s);
+            })();
+
+            (function() {
+              var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+              s.type = 'text/javascript';
+              s.async = true;
+              s.src = 'https://api.flattr.com/js/0.6/load.js?mode=auto';
+              t.parentNode.insertBefore(s, t);
             })();
           </script>
         </div>
