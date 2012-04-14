@@ -17,6 +17,12 @@ $("body").bind({
     e.stopPropagation();
     e.preventDefault();
     return false;
+  },
+  "drop": function(e) {
+    $(".ui-2#editor .iframe-mask").removeClass("filesystem-drop-area");
+
+    e.preventDefault();
+    return false;
   }
 });
 
