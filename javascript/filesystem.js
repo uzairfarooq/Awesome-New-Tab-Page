@@ -18,7 +18,7 @@ $("body").bind({
   }
 });
 
-$(".filesystem-drop-area").bind({
+$(".ui-2#editor").bind({
   "drop": function(e) {
     $(".ui-2#editor .iframe-mask").removeClass("filesystem-drop-area");
 
@@ -26,6 +26,7 @@ $(".filesystem-drop-area").bind({
     e = e.originalEvent || e;
 
     var files = (e.files || e.dataTransfer.files);
+
 
     if ( files
       && files[0]
