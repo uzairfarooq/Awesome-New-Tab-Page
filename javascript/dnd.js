@@ -21,11 +21,11 @@ function dndFileSelected() {
 }
 
 function saveImage(file) {
-  if ($("#img_url").is(':visible') === false) {
+  if ( $("#img_url").is(':visible') === false ) {
     return false;
   }
 
-  if (file.size > 1024 * 1024) {
+  if ( file.size >  1024 * 1024 ) {
     alert("The image you chose is too big! Keep it under 1MB.");
     document.getElementById("icon-file").reset();
     document.getElementById("icon-file").focus();
@@ -67,7 +67,7 @@ function dataURItoBlob(dataURI) {
 function errorHandler(e) {
   var msg = "";
 
-  switch (e.code) {
+  switch ( e.code ) {
     case FileError.QUOTA_EXCEEDED_ERR:
     msg = "QUOTA_EXCEEDED_ERR";
     break;
@@ -88,7 +88,7 @@ function errorHandler(e) {
     break;
   };
 
-  console.Log("Error: " + msg);
+  console.error("filesystem" + msg);
 }
 
 function initFS() {
