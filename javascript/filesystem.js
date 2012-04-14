@@ -95,7 +95,7 @@ function errorHandler(e) {
 }
 
 function initFS() {
-  window.webkitRequestFileSystem(window.PERSISTENT, 1024 * 1024, function(filesystem) {
+  window.webkitRequestFileSystem(window.PERSISTENT, 50 * 1024 * 1024, function(filesystem) {
     fs = filesystem;
   }, errorHandler);
 }
