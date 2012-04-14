@@ -266,6 +266,8 @@ function setStuff() {
 
       // Close all UI-2 elements
       $(".ui-2.x").trigger("click");
+
+      $(".ui-2#editor .iframe-mask").removeClass("filesystem-drop-area");
     }
   });
 
@@ -555,6 +557,8 @@ function setStuff() {
       held_element.element = false;
       return false;
     }
+
+    $(".ui-2.x").trigger("click");
 
     $(".widget").css("z-index", "1");
 
