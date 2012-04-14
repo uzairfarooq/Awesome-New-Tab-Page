@@ -1,24 +1,28 @@
-var holder = document.getElementById("preview-tile");
+$("#preview-tile").bind({
+  "dragover": function() {
 
-holder.ondragover = function () {
   return false;
-};
-holder.ondragend = function () {
-  return false;
-};
-holder.ondrop = function (e) {
-  e.preventDefault();
-  var file = e.dataTransfer.files[0];
-  saveImage(file);
-  return false;
-};
+  },
+  "dragend": function() {
 
-function dndFileSelected() {
-  var file = document.getElementById("icon-file").files[0];
-  if (file) {
-    saveImage(file);
+    return false;
+  },
+  "drop": function(e) {
+    // jQuery wraps the originalEvent, so we try to detect that here...
+    e = e.originalEvent || e;
+
+    // Using e.files with fallback because e.dataTransfer is immutable and
+    // can't be overridden in Polyfills (http://sandbox.knarly.com/js/dropfiles/).
+    var files = (e.files || e.dataTransfer.files);
+
+    if ( files && files[0] ) {
+      saveImage(files[0]);
+    }
+
+    e.preventDefault();
+    return false;
   }
-}
+});
 
 function saveImage(file) {
   if ( $("#img_url").is(':visible') === false ) {
@@ -41,7 +45,6 @@ function saveImage(file) {
       fileEntry.createWriter(function(fileWriter) {
         fileWriter.onwriteend = function(e) {
           $("#img_url").val(fileEntry.toURL());
-          holder.style.background = "url(" + fileEntry.toURL() + ") no-repeat center";
           $("#img_url").change();
         };
         fileWriter.write(dataURItoBlob(event.target.result));
