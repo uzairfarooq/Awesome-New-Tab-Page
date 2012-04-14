@@ -154,8 +154,12 @@
   });
 
   $("#recently-closed-tabs").live('click', function() {
-    $(".close,.ui-2.x").trigger("click");
     $("#recently-closed-tabs-menu").toggle();
+
+    $(".ui-2#widgets").hide();
+    $(".ui-2#config").hide();
+    $(".ui-2#apps").hide();
+    $(".ui-2#about").hide();
     _gaq.push([ '_trackEvent', 'Window', "Recently Closed Tabs" ]);
   });
 
