@@ -197,7 +197,7 @@
       hide: 'mouseout',
       style: {
         name: 'dark',
-        tip: 'leftMiddle',
+        tip: 'leftMiddle'
       },
       position: {
         corner: {
@@ -205,14 +205,14 @@
            tooltip: 'leftMiddle'
         }
       }
-    }
+    };
 
     var qtipUI2 = {
       show: 'mouseover',
       hide: 'mouseout',
       style: {
         name: 'dark',
-        tip: 'topMiddle',
+        tip: 'topMiddle'
       },
       position: {
         corner: {
@@ -223,7 +223,7 @@
           screen: true
         }
       }
-    }
+    };
 
     $(".ui-2.widgets-refresh").qtip(
       $.extend({}, qtipUI2, { content: "Widgets not showing up? Refresh manually." })
