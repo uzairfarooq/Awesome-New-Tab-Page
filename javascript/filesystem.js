@@ -1,14 +1,15 @@
 $("body").bind({
   "dragover": function(e) {
-    console.log("over");
-    $(".ui-2#editor .iframe-mask").addClass("filesystem-drop-area");
+
+    if ( $(".ui-2#editor").attr("active-edit-type") === "shortcut" ) {
+      $(".ui-2#editor .iframe-mask").addClass("filesystem-drop-area");
+    }
 
     e.stopPropagation();
     e.preventDefault();
     return false;
   },
   "dragleave": function(e) {
-    console.log("leave");
     $(".ui-2#editor .iframe-mask").removeClass("filesystem-drop-area");
 
     e.stopPropagation();
@@ -17,7 +18,7 @@ $("body").bind({
   }
 });
 
-$(".ui-2#editor").bind({
+$(".filesystem-drop-area").bind({
   "drop": function(e) {
     $(".ui-2#editor .iframe-mask").removeClass("filesystem-drop-area");
 
@@ -26,8 +27,16 @@ $(".ui-2#editor").bind({
 
     var files = (e.files || e.dataTransfer.files);
 
-    if ( files && files[0] ) {
-      saveImage(files[0]);
+    if ( files
+      && files[0]
+      && files[0].type ) {
+
+      if ( (files[0].type).match("image/") ) {
+        saveImage(files[0]);
+      } else {
+        console.error("filesystem", "Not image.");
+      }
+
     }
 
     e.preventDefault();
