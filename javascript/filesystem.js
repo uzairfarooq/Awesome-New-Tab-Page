@@ -1,6 +1,5 @@
 $("body").bind({
   "dragover": function(e) {
-
     if ( $(".ui-2#editor").attr("active-edit-type") === "shortcut" ) {
       $(".ui-2#editor .iframe-mask").addClass("filesystem-drop-area");
     }
@@ -27,17 +26,10 @@ $(".ui-2#editor").bind({
 
     var files = (e.files || e.dataTransfer.files);
 
-
     if ( files
       && files[0]
       && files[0].type ) {
-
-      if ( (files[0].type).match("image/") ) {
-        saveImage(files[0]);
-      } else {
-        console.error("filesystem", "Not image.");
-      }
-
+      saveShortcutIcon(files[0]);
     }
 
     e.preventDefault();
@@ -45,15 +37,27 @@ $(".ui-2#editor").bind({
   }
 });
 
-function saveImage(file) {
-  if ( $("#img_url").is(':visible') === false ) {
-    return false;
+$("#filesystem_icon_ui").click(function() {
+  $("#filesystem_icon_input").click();
+});
+
+$("#filesystem_icon_input").change(function() {
+  var files = $("#filesystem_icon_input")[0].files;
+    if ( files
+      && files[0]
+      && files[0].type ) {
+      saveShortcutIcon(files[0]);
+    }
+});
+
+function saveShortcutIcon(file) {
+  if ( (file.type).match("image/") === null ) {
+    console.error("filesystem", "Not image.");
   }
 
   if ( file.size >  1024 * 1024 ) {
     alert("The image you chose is too big! Keep it under 1MB.");
-    document.getElementById("icon-file").reset();
-    document.getElementById("icon-file").focus();
+    $("#filesystem_icon_input").reset().focus();
     return false;
   }
 

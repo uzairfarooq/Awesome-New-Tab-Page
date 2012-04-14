@@ -411,57 +411,63 @@
               <input id="shortcut_name_show" type="checkbox" />
               Show / Hide Name
             </p>
-
-            <h3>Change Background Color</h3>
-            <div id="shortcut_colorpicker" class="bubble ilb">
-              Open Color Picker
-            </div>
-            <div id="swatches"></div>
-
-            <p>
-              <input id="shortcut_background_transparent" type="checkbox" />
-              Completely transparent background
-            </p>
-            <p class="tip">
-              Tip: If you check this box, you may also want to hide the name.
-            </p>
-
           <div class="hide-if-app">
             <h3>URL</h3>
             <p>Enter the URL you'd like to link to, such as http://www.google.com/</p>
             <input id="shortcut_url" type="text" />
-
+            <p class="tip">
+              Tip: A valid URL contains a protocol - such as "http://" - before the domain.
+              Without a valid protocol, your shortcuts will not work.
+            </p>
             <p>
               <input id="shortcut_favicon_show" type="checkbox" />
               Show / Hide Favicon
             </p>
+          </div>
 
-            <p class="tip">
-              Note: This option is not available for apps.
-            </p>
+          <h3>Change Background Color</h3>
+          <div id="shortcut_colorpicker" class="bubble ilb">
+            Open Color Picker
+          </div>
+          <div id="swatches"></div>
+
+          <p>
+            <input id="shortcut_background_transparent" type="checkbox" />
+            Completely transparent background
+          </p>
+          <p class="tip">
+            Tip: If you check this box, you may also want to hide the name and favicon.
+          </p>
+          <div class="hide-if-app">
+          <p class="tip">
+            Note: This option has no effect on the custom icon setting.
+          </p>
           </div>
 
         </div>
 
         <div id="tile-editor-left">
+          <div class="show-if-app">
+            <p class="tip">
+              Not all options are available for apps. Create a shortcut instead. Simply click on an empty tile.
+            </p>
+          </div>
           <div class="hide-if-app">
-            <h3>Icon</h3>
-			<input type="file" id="icon-file" onchange="dndFileSelected();" style="position:absolute;left:-10000px;top:-10000px;">
-			<button onclick="$('#icon-file').click();">Change...</button>
-            <p>Enter a URL to an image, or Drag & Drop an image above to change the icon. 200px by 200px is recommended.</p>
-            <input id="img_url" type="text" />
+            <h3>Icon & Background</h3>
+            <p>Enter a web URL to an image, use the browse button, or drag & drop an image above to change the icon.</p>
+            <input id="img_url" type="text" class="ilb" />
+            <input type="file" id="filesystem_icon_input" style="display: none;">
+            <div id="filesystem_icon_ui" type="file" class="bubble ilb">
+              Browse
+            </div>
             <p class="tip">
               Advanced: Hide the name and favicon and use an image that's 200px by 200px to completely
-              customize the tile.
-            </p>
-            <p class="tip">
-              Note: This option is not available for apps.
+              customize a 1x1 tile.
             </p>
           </div>
         </div>
 
         <div id="fake-tile-wrapper">
-          <h3>Preview</h3>
           <div id="fake-tile-background" class="bg-color">
             <div class="fake-tile" id="preview-tile">
               <div class="app-name"></div>

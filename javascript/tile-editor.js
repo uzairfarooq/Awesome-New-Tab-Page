@@ -20,6 +20,7 @@
 $("#delete").live("click", function(){
   var to_delete = $(this).parent().parent();
   if(to_delete) {
+    $(".ui-2.x").trigger("click");
     removeWidget( $(to_delete).attr("id") );
 
     hscroll = true;
@@ -114,9 +115,11 @@ $("#shortcut-edit").live("click", function(e){
   if ( is_shortcut ) {
     var editor_type = "shortcut";
     $(".hide-if-app").show();
+    $(".show-if-app").hide();
   } else {
     var editor_type = "app";
     $(".hide-if-app").hide();
+    $(".show-if-app").show();
   }
 
   $("#swatches").html("").hide();
