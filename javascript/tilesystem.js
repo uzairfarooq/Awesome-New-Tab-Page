@@ -286,6 +286,8 @@ function setStuff() {
         return false;
       }
 
+      $(".ui-2.x").trigger("click");
+
       switch ( $(this).attr("class") ) {
         case "resize-tile-top":
           resize_element.side = "top";    break;
