@@ -958,3 +958,10 @@ body > .widget-drawer-app img {
     text-align: center;
     font-size: 50px;
   }
+
+  .filesystem-error {
+    background-color: yellow;
+    text-align: center;
+    color: black;
+    display: none;
+  }

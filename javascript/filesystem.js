@@ -19,6 +19,7 @@ $("body").bind({
 
 $(".ui-2#editor").bind({
   "drop": function(e) {
+    var error;
     $(".ui-2#editor .iframe-mask").removeClass("filesystem-drop-area");
 
     // jQuery wraps the originalEvent
@@ -30,6 +31,10 @@ $(".ui-2#editor").bind({
       && files[0]
       && files[0].type ) {
       saveShortcutIcon(files[0]);
+    } else {
+      error = "No file to upload.";
+      $(".filesystem-error").html(error).stop().slideDown().delay(2000).slideUp();
+      console.error("filesystem:", error);
     }
 
     e.preventDefault();
@@ -42,22 +47,33 @@ $("#filesystem_icon_ui").click(function() {
 });
 
 $("#filesystem_icon_input").change(function() {
+  var error;
   var files = $("#filesystem_icon_input")[0].files;
     if ( files
       && files[0]
       && files[0].type ) {
       saveShortcutIcon(files[0]);
+    } else {
+      error = "No file selected to upload.";
+      $(".filesystem-error").html(error).stop().slideDown().delay(2000).slideUp();
+      console.error("filesystem:", error);
     }
 });
 
 function saveShortcutIcon(file) {
+  var error;
   if ( (file.type).match("image/") === null ) {
-    console.error("filesystem", "Not image.");
+    error = "Not an image.<br /> Type: "+ file.type;
+    $(".filesystem-error").html(error).stop().slideDown().delay(2000).slideUp();
+    console.error("filesystem:", error);
+    return false;
   }
 
-  if ( file.size >  1024 * 1024 ) {
-    alert("The image you chose is too big! Keep it under 1MB.");
-    $("#filesystem_icon_input").reset().focus();
+  if ( file.size >  100 * 1024 ) {
+    error = "File size too great: Size: "+ ((file.size)/1024/1024).toFixed(2) + " MB.<br /> Please limit to 100 KB" ;
+    $(".filesystem-error").html(error).stop().slideDown().delay(2000).slideUp();
+    console.error("filesystem:", error);
+    $("#filesystem_icon_input")[0].reset().focus();
     return false;
   }
 
@@ -114,8 +130,9 @@ function errorHandler(e) {
     default:
     msg = "Unknown Error";
     break;
-  };
+  }
 
+  $(".filesystem-error").html(msg).stop().slideDown().delay(2000).slideUp();
   console.error("filesystem" + msg);
 }
 
