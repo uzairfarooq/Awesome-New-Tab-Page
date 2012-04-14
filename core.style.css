@@ -918,6 +918,9 @@ body > .widget-drawer-app img {
  * Swatches in Tile Editor
  */
 
+  .swatches {
+    height: 20px;
+  }
   .swatch {
     -webkit-box-shadow: 0 0px 5px rgba(0, 0, 0, .5);
     width: 40px;

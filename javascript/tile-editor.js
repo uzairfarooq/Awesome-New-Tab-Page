@@ -119,7 +119,7 @@ $("#shortcut-edit").live("click", function(e){
     $(".hide-if-app").hide();
   }
 
-  $("#swatches").html("");
+  $("#swatches").html("").hide();
   if ( is_app === true && stock_app === false ) {
     var image = widgets[id].img;
     var medianPalette = createPalette(
@@ -138,7 +138,7 @@ $("#shortcut-edit").live("click", function(e){
         "g": value[1],
         "b": value[2]
       }).addClass("swatch");
-      $("#swatches").append(swatchEl);
+      $("#swatches").append(swatchEl).show();
     });
 
     $("#temporary-element-to-delete").remove();
