@@ -1,18 +1,29 @@
-$("#preview-tile").bind({
-  "dragover": function() {
+$("body").bind({
+  "dragover": function(e) {
+    console.log("over");
+    $(".ui-2#editor .iframe-mask").addClass("filesystem-drop-area");
 
-  return false;
-  },
-  "dragend": function() {
-
+    e.stopPropagation();
+    e.preventDefault();
     return false;
   },
+  "dragleave": function(e) {
+    console.log("leave");
+    $(".ui-2#editor .iframe-mask").removeClass("filesystem-drop-area");
+
+    e.stopPropagation();
+    e.preventDefault();
+    return false;
+  }
+});
+
+$(".ui-2#editor").bind({
   "drop": function(e) {
-    // jQuery wraps the originalEvent, so we try to detect that here...
+    $(".ui-2#editor .iframe-mask").removeClass("filesystem-drop-area");
+
+    // jQuery wraps the originalEvent
     e = e.originalEvent || e;
 
-    // Using e.files with fallback because e.dataTransfer is immutable and
-    // can't be overridden in Polyfills (http://sandbox.knarly.com/js/dropfiles/).
     var files = (e.files || e.dataTransfer.files);
 
     if ( files && files[0] ) {

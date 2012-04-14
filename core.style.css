@@ -112,11 +112,9 @@ body {
 .iframe-mask {
   background-color: transparent;
   z-index: 802;
-  width: 100%;
-  height: 100%;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0; right: 0;
+  bottom: 0; left: 0;
 }
 #delete,
 .locked #uninstall {
@@ -827,7 +825,7 @@ body > .widget-drawer-app img {
   left: 55px;
 }
 .ui-2#editor #tile-editor-left {
-  width: 325px;
+  width: 295px;
 
   position: absolute;
   right: 55px;
@@ -841,7 +839,7 @@ body > .widget-drawer-app img {
 }
 .ui-2#editor #fake-tile-background {
   width: 325px;
-  height: 275px;
+  height: 250px;
   overflow: hidden;
   position: relative;
   margin-top: 10px;
@@ -855,46 +853,46 @@ body > .widget-drawer-app img {
   text-shadow: -1px 1px 0px #000;
 }
 .ui-2#editor .fake-tile#preview-tile {
-  top: 37px;
+  top: 25px;
   right: 62px;
   cursor: default;
   z-index: 20;
 }
 .ui-2#editor .fake-tile#ft0 {
-  top: 37px;
+  top: 25px;
   right: 62px;
   cursor: default;
 }
 .ui-2#editor .fake-tile#ft1 {
-  top: -169px;
+  top: -181px;
   left: -144px;
 }
 .ui-2#editor .fake-tile#ft2 {
-  top: -169px;
+  top: -181px;
   right: 62px;
 }
 .ui-2#editor .fake-tile#ft3 {
-  top: -169px;
+  top: -181px;
   right: -144px;
 }
 .ui-2#editor .fake-tile#ft4 {
-  top: 37px;
+  top: 25px;
   left: -144px;
 }
 .ui-2#editor .fake-tile#ft5 {
-  top: 37px;
+  top: 25px;
   right: -144px;
 }
 .ui-2#editor .fake-tile#ft6 {
-  top: 243px;
+  top: 231px;
   left: -144px;
 }
 .ui-2#editor .fake-tile#ft7 {
-  top: 243px;
+  top: 231px;
   right: 62px;
 }
 .ui-2#editor .fake-tile#ft8 {
-  top: 243px;
+  top: 231px;
   right: -144px;
 }
 .ui-2#editor input[type=input] {
@@ -916,25 +914,42 @@ body > .widget-drawer-app img {
   opacity: 0;
 }
 
-.swatch {
-  -webkit-box-shadow: 0 0px 5px rgba(0, 0, 0, .5);
-  width: 40px;
-  height: 20px;
-  margin-right: 2px;
-  float: left;
-  -webkit-transition: all 0.5s;
-  cursor: pointer;
-}
-.swatch:hover {
-  -webkit-transition: all 0.1s;
-  -webkit-transform: scale(1.5, 1.5);
-  -webkit-box-shadow: 0 1px 10px black;
-}
-.swatch:first-child {
-  -webkit-border-top-left-radius: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-}
-.swatch:last-child {
-  -webkit-border-top-right-radius: 4px;
-  -webkit-border-bottom-right-radius: 4px;
-}
+/**
+ * Swatches in Tile Editor
+ */
+
+  .swatch {
+    -webkit-box-shadow: 0 0px 5px rgba(0, 0, 0, .5);
+    width: 40px;
+    height: 20px;
+    margin-right: 2px;
+    float: left;
+    -webkit-transition: all 0.5s;
+    cursor: pointer;
+  }
+  .swatch:hover {
+    -webkit-transition: all 0.1s;
+    -webkit-transform: scale(1.5, 1.5);
+    -webkit-box-shadow: 0 1px 10px black;
+  }
+  .swatch:first-child {
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+  }
+  .swatch:last-child {
+    -webkit-border-top-right-radius: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+  }
+
+/**
+ * Drop Area Styling (for drop uploading images)
+ */
+
+  .filesystem-drop-area {
+    content: "Drop Here";
+    z-index: 1000;
+    box-shadow: 0 0 0 2px #09C, 0px 0px 7px 2px #09C;
+    background: url("/images/ui-2/drop.png") no-repeat center center, rgba(0, 156, 204, .5);
+    text-align: center;
+    font-size: 50px;
+  }
