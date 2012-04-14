@@ -446,7 +446,7 @@ function setStuff() {
       return {
         "width" : obj.width,
         "new_x" : Math.ceil( obj.width / (GRID_TILE_SIZE + (GRID_TILE_PADDING * 2)) )
-      }
+      };
     }
 
     function calcHeight(obj) {
@@ -464,7 +464,7 @@ function setStuff() {
       return {
         "height" : obj.height,
         "new_y" : Math.ceil( obj.height / (GRID_TILE_SIZE + (GRID_TILE_PADDING * 2)) )
-      }
+      };
     }
 
     // When a tile resize square is released
@@ -479,9 +479,9 @@ function setStuff() {
       }
 
       var left = $(resize_element.element).position().left;
-      var column;
+      var column, bracket;
       for (var col = 1; col < 50; col++) {
-        var bracket = ((GRID_TILE_SIZE * (col-0)) + (GRID_TILE_PADDING * 2) * (col-0)) + 6;
+        bracket = ((GRID_TILE_SIZE * (col-0)) + (GRID_TILE_PADDING * 2) * (col-0)) + 6;
         if ( bracket > left+5 ) {
           new_left  = ((GRID_TILE_SIZE * (col-1)) + (GRID_TILE_PADDING * 2) * (col-1)) + 6;
 
@@ -497,7 +497,7 @@ function setStuff() {
       var top = $(resize_element.element).position().top;
       var row;
       for (var _row = 1; _row < 50; _row++) {
-        var bracket = ((GRID_TILE_SIZE * (_row-0)) + (GRID_TILE_PADDING * 2) * (_row-0)) + 6;
+        bracket = ((GRID_TILE_SIZE * (_row-0)) + (GRID_TILE_PADDING * 2) * (_row-0)) + 6;
         if ( bracket > top+5 ) {
           new_top  = ((GRID_TILE_SIZE * (_row-1)) + (GRID_TILE_PADDING * 2) * (_row-1)) + 6;
 
@@ -512,7 +512,7 @@ function setStuff() {
 
       $(resize_element.element).css({
         "width" : calcWidth ({"is": $(resize_element.element).attr("tile-width")  }).width,
-        "height": calcHeight({"is": $(resize_element.element).attr("tile-height") }).height,
+        "height": calcHeight({"is": $(resize_element.element).attr("tile-height") }).height
       }).removeClass("widget-resize");
 
       if ( getCovered( resize_element.element ).clear === true ) {
