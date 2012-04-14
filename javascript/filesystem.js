@@ -1,3 +1,6 @@
+/**
+ * When a file is being dragged into the browser
+ */
 $("body").bind({
   "dragover": function(e) {
     if ( $(".ui-2#editor").attr("active-edit-type") === "shortcut" ) {
@@ -17,6 +20,9 @@ $("body").bind({
   }
 });
 
+/**
+ * When a file is dropped on the tile editor
+ */
 $(".ui-2#editor").bind({
   "drop": function(e) {
     var error;
@@ -30,10 +36,25 @@ $(".ui-2#editor").bind({
     if ( files
       && files[0]
       && files[0].type ) {
-      saveShortcutIcon(files[0]);
+      var file = files[0];
+
+      if ( $(".ui-2#editor").attr("active-edit-type") !== "shortcut" ) {
+        error = "This tile is not a shortcut.";
+        $.jGrowl(error, { header: "Filesystem Error" });
+        console.error("filesystem:", error);
+        return false;
+      }
+      if ( file.size >  150 * 1024 ) {
+        error = "File size too great: Size: "+ ((file.size)/1024).toFixed(2) + " KB.<br /> Please limit to 150 KB" ;
+        $.jGrowl(error, { header: "Filesystem Error" });
+        console.error("filesystem:", error);
+        return false;
+      }
+
+      saveShortcutIcon(file);
     } else {
       error = "No file to upload.";
-      $(".filesystem-error").html(error).stop().slideDown().delay(2000).slideUp();
+      $.jGrowl(error, { header: "Filesystem Error" });
       console.error("filesystem:", error);
     }
 
@@ -55,25 +76,18 @@ $("#filesystem_icon_input").change(function() {
       saveShortcutIcon(files[0]);
     } else {
       error = "No file selected to upload.";
-      $(".filesystem-error").html(error).stop().slideDown().delay(2000).slideUp();
+      $.jGrowl(error, { header: "Filesystem Error" });
       console.error("filesystem:", error);
     }
 });
 
 function saveShortcutIcon(file) {
   var error;
+
   if ( (file.type).match("image/") === null ) {
     error = "Not an image.<br /> Type: "+ file.type;
-    $(".filesystem-error").html(error).stop().slideDown().delay(2000).slideUp();
+    $.jGrowl(error, { header: "Filesystem Error" });
     console.error("filesystem:", error);
-    return false;
-  }
-
-  if ( file.size >  100 * 1024 ) {
-    error = "File size too great: Size: "+ ((file.size)/1024/1024).toFixed(2) + " MB.<br /> Please limit to 100 KB" ;
-    $(".filesystem-error").html(error).stop().slideDown().delay(2000).slideUp();
-    console.error("filesystem:", error);
-    $("#filesystem_icon_input")[0].reset().focus();
     return false;
   }
 
@@ -82,7 +96,9 @@ function saveShortcutIcon(file) {
     var extension = file.name;
     extension = extension.split(".");
     extension = extension.pop();
-    fs.root.getFile($(".ui-2#editor").attr("active-edit-id") + "." + extension, {create: true}, function(fileEntry) {
+    shortcuts.getFile(
+      $(".ui-2#editor").attr("active-edit-id") + "." + extension
+      , {create: true}, function(fileEntry) {
       fileEntry.createWriter(function(fileWriter) {
         fileWriter.onwriteend = function(e) {
           $("#img_url").val(fileEntry.toURL());
@@ -132,14 +148,20 @@ function errorHandler(e) {
     break;
   }
 
-  $(".filesystem-error").html(msg).stop().slideDown().delay(2000).slideUp();
-  console.error("filesystem" + msg);
+  $.jGrowl(msg, { header: "Filesystem Error" });
+  console.error("filesystem: " + msg);
 }
 
+var fs, shortcuts;
 function initFS() {
   window.webkitRequestFileSystem(window.PERSISTENT, 50 * 1024 * 1024, function(filesystem) {
     fs = filesystem;
+    fs.root.getDirectory("/shortcut", { create: true }, function(dirEntry){
+      console.log("1", dirEntry);
+      shortcuts = dirEntry;
+    });
   }, errorHandler);
+
 }
 if (window.webkitRequestFileSystem) {
   initFS();
