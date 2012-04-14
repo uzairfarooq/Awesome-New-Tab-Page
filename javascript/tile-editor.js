@@ -158,7 +158,7 @@ $("#shortcut-edit").live("click", function(e){
    });
 
   $(".ui-2#editor")
-    .fadeIn()
+    .show()
     .attr("active-edit-id", id)
     .attr("active-edit-type", editor_type);
 

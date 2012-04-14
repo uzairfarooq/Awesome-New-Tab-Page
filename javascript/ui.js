@@ -28,8 +28,7 @@
   });
 
   $(".close,.ui-2.x").live("click", function(){
-    $("body > .ui-2").fadeOut();
-    $("#recently-closed-tabs-menu").fadeOut();
+    $("body > .ui-2,#recently-closed-tabs-menu").hide();
 
     $(".edit-shortcut-ui").remove();
 
@@ -41,14 +40,14 @@
     loadFeatured();
     _gaq.push([ '_trackEvent', 'Window', "Apps" ]);
 
-    $(".ui-2#apps").fadeToggle();
+    $(".ui-2#apps").toggle();
 
-    $(".ui-2#widgets").fadeOut();
-    $(".ui-2#config").fadeOut();
-    $("#recently-closed-tabs-menu").fadeOut();
-    $(".ui-2#about").fadeOut();
+    $(".ui-2#widgets").hide();
+    $(".ui-2#config").hide();
+    $("#recently-closed-tabs-menu").hide();
+    $(".ui-2#about").hide();
 
-    $(".ui-2#editor").fadeOut();
+    $(".ui-2#editor").hide();
     $(".edit-shortcut-ui").remove();
   });
 
@@ -56,21 +55,21 @@
   $("#config-button, .ui-2.config").live("click", function(){
     _gaq.push([ '_trackEvent', 'Window', "Config" ]);
 
-    $(".ui-2#config").fadeToggle();
+    $(".ui-2#config").toggle();
 
-    $(".ui-2#widgets").fadeOut();
-    $(".ui-2#apps").fadeOut();
-    $("#recently-closed-tabs-menu").fadeOut();
-    $(".ui-2#about").fadeOut();
+    $(".ui-2#widgets").hide();
+    $(".ui-2#apps").hide();
+    $("#recently-closed-tabs-menu").hide();
+    $(".ui-2#about").hide();
 
-    $(".ui-2#editor").fadeOut();
+    $(".ui-2#editor").hide();
     $(".edit-shortcut-ui").remove();
   });
 
   $("#logo-button, .ui-2.logo").live("click", function(){
     _gaq.push([ '_trackEvent', 'Window', "About" ]);
 
-    $(".ui-2#about").fadeToggle();
+    $(".ui-2#about").toggle();
 
     if(options_init === true) {
       options_init = false;
@@ -99,12 +98,12 @@
       })();
     }
 
-    $(".ui-2#widgets").fadeOut();
-    $(".ui-2#apps").fadeOut();
-    $("#recently-closed-tabs-menu").fadeOut();
-    $(".ui-2#config").fadeOut();
+    $(".ui-2#widgets").hide();
+    $(".ui-2#apps").hide();
+    $("#recently-closed-tabs-menu").hide();
+    $(".ui-2#config").hide();
 
-    $(".ui-2#editor").fadeOut();
+    $(".ui-2#editor").hide();
     $(".edit-shortcut-ui").remove();
   });
 
@@ -384,11 +383,9 @@
           case 1:
             chrome.tabs.update(null, {url: (this.href)});
             return false;
-          break;
           case 2:
             chrome.tabs.create({url: (this.href)});
             return false;
-          break;
         }
       }
     }).live('click', function(e) {
@@ -468,7 +465,7 @@
 
   $("#reset-button").live("click", function(){
     var r=confirm("Are you sure you want to reset widget and app placements, stock widget preferences (notepad, coloring, etc.), and coloring preferences? Any customizations will be irrevocably lost.");
-    if (r==true) {
+    if ( r === true ) {
       reset();
       reload();
     }
