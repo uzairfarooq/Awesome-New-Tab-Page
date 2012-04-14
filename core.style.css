@@ -830,13 +830,10 @@ body > .widget-drawer-app img {
 
   position: absolute;
   right: 55px;
-  top: 260px;
+  top: 0px;
 }
 .ui-2#editor #fake-tile-wrapper {
   width: 325px;
-
-  position: absolute;
-  right: 55px;
 }
 .ui-2#editor #fake-tile-background {
   width: 325px;
