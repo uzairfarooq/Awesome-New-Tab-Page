@@ -112,12 +112,13 @@ $("#shortcut-edit").live("click", function(e){
     $(".ui-2#editor #preview-tile .app-favicon").hide();
   }
 
+  var editor_type;
   if ( is_shortcut ) {
-    var editor_type = "shortcut";
+    editor_type = "shortcut";
     $(".hide-if-app").show();
     $(".show-if-app").hide();
   } else {
-    var editor_type = "app";
+    editor_type = "app";
     $(".hide-if-app").hide();
     $(".show-if-app").show();
   }
@@ -269,6 +270,9 @@ function updateShortcut(e) {
       $(".ui-2#editor .app-name, #widget-holder #"+id+" .app-name").css("opacity", 1);
     }
 
+    if ( type === "app" ) {
+      favicon_show = false;
+    }
     widgets[id].favicon_show = favicon_show;
     if ( favicon_show !== false ) {
       $(".ui-2#editor #preview-tile .app-favicon, #"+id+" .app-favicon").show()
