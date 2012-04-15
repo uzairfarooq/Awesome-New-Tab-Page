@@ -172,10 +172,21 @@ if(localStorage.getItem("widgets") === null) {
 var widgets = JSON.parse(localStorage.getItem("widgets"));
 
 // Clears localStorage
-function reset() {
-  localStorage.clear();
-  _gaq.push(['_trackEvent', 'Reset', chrome.app.getDetails().version]);
-}
+  $("#reset-button").live("click", function(){
+    var reset = confirm( chrome.i18n.getMessage("ui_confirm_reset") );
+    if ( reset === true ) {
+      deleteShortcuts();
+      deleteRoot();
+      localStorage.clear();
+      _gaq.push(['_trackEvent', 'Reset', chrome.app.getDetails().version]);
+
+      setTimeout(function() {
+        reload();
+      }, 250);
+    } else {
+      $.jGrowl("Whew! Crisis aborted!", { header: "Reset Cancelled" });
+    }
+  });
 
 // Reload page
 function reload() {

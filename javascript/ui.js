@@ -467,14 +467,6 @@
     localStorage.setItem("bg-img-css", $(this).val() );
   });
 
-  $("#reset-button").live("click", function(){
-    var r=confirm("Are you sure you want to reset widget and app placements, stock widget preferences (notepad, coloring, etc.), and coloring preferences? Any customizations will be irrevocably lost.");
-    if ( r === true ) {
-      reset();
-      reload();
-    }
-  });
-
   /* END :: Configure */
 
 

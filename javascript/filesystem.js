@@ -163,7 +163,6 @@ function initFS() {
   window.webkitRequestFileSystem(window.PERSISTENT, 50 * 1024 * 1024, function(filesystem) {
     fs = filesystem;
     fs.root.getDirectory("/shortcut", { create: true }, function(dirEntry){
-      console.log("1", dirEntry);
       shortcuts = dirEntry;
     });
   }, errorHandler);
@@ -171,4 +170,57 @@ function initFS() {
 }
 if (window.webkitRequestFileSystem) {
   initFS();
+}
+
+var util = util || {};
+util.toArray = function(list) {
+  return Array.prototype.slice.call(list || [], 0);
+};
+
+function deleteShortcut(filename) {
+  shortcuts.getFile(filename, {}, function(fileEntry) {
+    fileEntry.remove(function() {}, errorHandler);
+  }, errorHandler);
+}
+
+function deleteShortcuts() {
+  var entries = [],
+  reader = shortcuts.createReader(),
+
+  readEntries = function() {
+    reader.readEntries(function(results) {
+      if (!results.length) {
+        entries = entries.sort();
+        $.each(entries, function(index, fileEntry) {
+          fileEntry.remove(function() {}, errorHandler);
+        });
+      } else {
+        entries = entries.concat(util.toArray(results));
+        readEntries();
+      }
+    }, errorHandler);
+  };
+
+  readEntries();
+}
+
+function deleteRoot() {
+  var entries = [],
+  reader = fs.root.createReader(),
+
+  readEntries = function() {
+    reader.readEntries(function(results) {
+      if (!results.length) {
+        entries = entries.sort();
+        $.each(entries, function(index, entry) {
+          entry.remove(function() {}, errorHandler);
+        });
+      } else {
+        entries = entries.concat(util.toArray(results));
+        readEntries();
+      }
+    }, errorHandler);
+  };
+
+  readEntries();
 }

@@ -20,6 +20,15 @@
 $("#delete").live("click", function(){
   var to_delete = $(this).parent().parent();
   if(to_delete) {
+    var id = $(to_delete).attr("id");
+    if ( widgets[id]
+      && widgets[id].type === "shortcut"
+      && (widgets[id].img).match("filesystem:") ) {
+
+      deleteShortcut( (widgets[id].img).match(/^(.*)\/(.*)/)[2] );
+
+    }
+
     $(".ui-2.x").trigger("click");
     removeWidget( $(to_delete).attr("id") );
 
