@@ -412,13 +412,13 @@
         return false;
       },
       onChange: function (hsb, hex, rgb) {
-        $(".bg-color").css('backgroundColor', '#' + hex);
+        $(".bg-color").css('background-color', '#' + hex);
         localStorage.setItem("color-bg", hex);
       }
     });
   });
 
-  $(".bg-color").css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
+  $(".bg-color").css("background-color", "#" + (localStorage.getItem("color-bg") || "221f20"));
 
   $("#toggleBmb").live("click", function(){
     if ($(this).is(':checked')) {
@@ -438,7 +438,7 @@
   });
 
   $("#toggle-app-names").live("click", function(){
-    if ($(this).is(':checked')) {
+    if ($(this).is(":checked")) {
       $("body").removeClass("hide-app-names");
       localStorage.setItem("hide-app-names", "no");
     } else {
@@ -448,7 +448,7 @@
   });
 
   $("#toggle-shortcut-names").live("click", function(){
-    if ($(this).is(':checked')) {
+    if ($(this).is(":checked")) {
       $("body").removeClass("hide-shortcut-names");
       localStorage.setItem("hide-shortcut-names", "no");
     } else {
@@ -457,12 +457,13 @@
     }
   });
 
-  $("#bg-img-css").live('keyup', function() {
-    $(".bg-color").css("background", "" );
-    $(".bg-color").css("background", $(this).val() );
+  $("#bg-img-css").live("keyup change", function() {
+    $("body").css("background", "" );
+    $("body").css("background", $(this).val() );
+    $(".bg-color").css("background-color", '#' + (localStorage.getItem("color-bg") || "221f20") );
 
     if($(this).val() === "") {
-      $(".bg-color").css('backgroundColor', '#' + (localStorage.getItem("color-bg") || "221f20"));
+      $(".bg-color").css("background-color", "#" + (localStorage.getItem("color-bg") || "221f20"));
     }
 
     localStorage.setItem("bg-img-css", $(this).val() );

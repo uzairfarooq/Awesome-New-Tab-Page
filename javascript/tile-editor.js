@@ -250,7 +250,7 @@ function addShortcut(widget, top, left) {
 }
 
 // Update tile, localStorage, and previews for Tile Editor changes
-$(".ui-2#editor input").live('keyup change', updateShortcut);
+$(".ui-2#editor input").live("keyup change", updateShortcut);
 
 function updateShortcut(e) {
   try {
