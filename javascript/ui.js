@@ -328,6 +328,7 @@
       $("#toggleBmb").attr('checked', 'checked');
       bookmark_bar_rendered = true;
       chrome.bookmarks.getTree(getBookmarks);
+      $("#bookmarksBar").css("display", "block");
     } else {
       $("#bookmarksBar").css("display", "none");
     }

@@ -32,6 +32,7 @@
 }
 
 #bookmarksBar {
+  display: none;
 	margin: 0;
 	padding: 0;
     width:5000px;
@@ -64,12 +65,12 @@
 	display: block;
 	padding:  0px 4px;
 	line-height:25px;
-	
+
 	border: 1px solid #DFDFDF;
     background-color: #DFDFDF;
     -webkit-border-radius: 6px;
     height:100%;
-    
+
     color:#062D75;
 }
 #bookmarksBar a img {
@@ -89,7 +90,7 @@
 
 /* sub levels link hover */
 #bookmarksBar ul li:hover a, #bookmarksBar li:hover li a {
-    
+
 }
 #bookmarksBar ul a:hover {
     border: 1px solid #CBCBCA;
@@ -154,11 +155,11 @@
 }
 #bookmarksBar {
 	display: inline-block;
-} 
+}
 html[xmlns] #bookmarksBar {
 	display: block;
 }
- 
+
 * html #bookmarksBar {
 	height: 1%;
 }
