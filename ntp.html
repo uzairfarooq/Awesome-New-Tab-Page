@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="/colorpicker/css/colorpicker.css" type="text/css" media="screen">
     <link rel="stylesheet" href="/css/jquery.jgrowl.css" type="text/css" media="screen">
 
-    <link rel="stylesheet" href="core.style.css?nocache=9" type="text/css" media="screen">
+    <link rel="stylesheet" href="core.style.css?nocache=10" type="text/css" media="screen">
   </head>
 
   <body class="bg-color">
@@ -255,11 +255,11 @@
           <div id="colorselector-bg" class="bubble ilb">
             <script>document.write(chrome.i18n.getMessage("ui_button_bgc"));</script>
           </div>
-          <input type="file" id="filesystem_bg_input" style="display: none;">
+          <input type="file" id="filesystem_bg_input" style="width:0; height: 0; opacity: 0;">
           <div id="filesystem_bg_ui" class="bubble ilb">
             Browse for Image
           </div>
-          <p>
+          <p class="tip">
             <script>document.write(chrome.i18n.getMessage("ui_config_bgimg1"));</script>
             <a href="http://www.w3schools.com/css/tryit.asp?filename=trycss_background_shorthand2">
               <u>Learn More</u>.
@@ -268,9 +268,9 @@
           <p>
             <input id="bg-img-css" type="text" name="bg-img-css" />
           </p>
+          <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_config_bgimg3"));</script></p>
           <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg2"));</script></p>
           <pre>url('http://mh.mycdn.co/labs/antp/m.png') repeat right top</pre>
-          <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg3"));</script></p>
         </div>
       </div>
       <div class="ui-2 bottom-overlay"></div>
@@ -481,8 +481,8 @@
             <h3>Icon & Background</h3>
             <p>Enter a web URL to an image, use the browse button, or drag & drop an image above to change the icon.</p>
             <input id="img_url" type="text" class="ilb" />
-            <input type="file" id="filesystem_icon_input" style="display: none;">
-            <div id="filesystem_icon_ui" type="file" class="bubble ilb">
+            <input type="file" id="filesystem_icon_input" style="width:0; height: 0; opacity: 0;">
+            <div id="filesystem_icon_ui" class="bubble ilb">
               Browse
             </div>
             <p class="tip">
@@ -496,8 +496,8 @@
 
     <script type="text/javascript" src="/javascript/jquery.js"></script>
 
-    <script type="text/javascript" src="/javascript/common.js?nocache=9"></script>
-    <script type="text/javascript" src="/javascript/tilesystem.js?nocache=9"></script>
+    <script type="text/javascript" src="/javascript/common.js?nocache=10"></script>
+    <script type="text/javascript" src="/javascript/tilesystem.js?nocache=10"></script>
     <script type="text/javascript" src="/javascript/hscroll.js"></script>
 
     <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
@@ -505,18 +505,18 @@
     <script type="text/javascript" src="/javascript/center.js"></script>
     <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
 
-    <script type="text/javascript" src="/javascript/tile-maintenance.js?nocache=9"></script>
-    <script type="text/javascript" src="/javascript/ui.js?nocache=9" async="async"></script>
+    <script type="text/javascript" src="/javascript/tile-maintenance.js?nocache=10"></script>
+    <script type="text/javascript" src="/javascript/ui.js?nocache=10" async="async"></script>
 
-    <script type="text/javascript" src="/javascript/apps-window.js?nocache=9" async="async"></script>
-    <script type="text/javascript" src="/javascript/widgets-window.js?nocache=9" async="async"></script>
-    <script type="text/javascript" src="/javascript/tile-editor.js?nocache=9" async="async"></script>
+    <script type="text/javascript" src="/javascript/apps-window.js?nocache=10" async="async"></script>
+    <script type="text/javascript" src="/javascript/widgets-window.js?nocache=10" async="async"></script>
+    <script type="text/javascript" src="/javascript/tile-editor.js?nocache=10" async="async"></script>
 
     <script type="text/javascript" src="/javascript/bookmarkbar.js"></script>
     <script type="text/javascript" src="/javascript/color-thief.js" async="async"></script>
     <script type="text/javascript" src="/javascript/quantize.js" async="async"></script>
     <script type="text/javascript" src="/javascript/google-analytics.js" async="async"></script>
 
-    <script type="text/javascript" src="/javascript/filesystem.js" async="async"></script>
+    <script type="text/javascript" src="/javascript/filesystem.js?nocache=10" async="async"></script>
   </body>
 </html>
