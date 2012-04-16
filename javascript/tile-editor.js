@@ -82,7 +82,7 @@ $(".unlocked .empty.add-shortcut").live("click", function() {
 });
 
 // Stop edit or delete buttons from interacting with the shortcut/app
-$("#delete,#shortcut-edit").live("mousedown mouseup move", function(e) {
+$("#delete,#shortcut-edit,#widget-config").live("mousedown mouseup move", function(e) {
   e.stopPropagation();
   e.preventDefault();
 });
