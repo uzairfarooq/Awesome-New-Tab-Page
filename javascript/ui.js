@@ -177,12 +177,14 @@
 
     if(recently_closed !== null) {
       $.each(recently_closed, function(id, tab) {
-        $(' <a class="rctm-item" href="'+tab.url+'" target="_top">\
-              <div class="rctm-icon">\
-                <img src="chrome://favicon/'+tab.url+'">\
-              </div>\
-              <div class="rctm-link">'+ util.htmlEntities(tab.title) +'</div>\
-            </a>').appendTo("#recently-closed-tabs-menu");
+        var rct_temp = $("<a></a>").addClass("rctm-item").attr({
+          "href": tab.url,
+          "target": "_top"
+        });
+        $("<div></div>").appendTo(rct_temp).addClass("rctm-icon")
+          .append("<img>").attr("src", "chrome://favicon/"+tab.url);
+        $("<div></div>").appendTo(rct_temp).addClass("rctm-link").html( util.htmlEntities(tab.title) );
+        rct_temp.appendTo("#recently-closed-tabs-menu");
       });
     }
   }
