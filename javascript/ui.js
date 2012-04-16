@@ -181,7 +181,7 @@
               <div class="rctm-icon">\
                 <img src="chrome://favicon/'+tab.url+'">\
               </div>\
-              <div class="rctm-link">'+ tab.title +'</div>\
+              <div class="rctm-link">'+ util.htmlEntities(tab.title) +'</div>\
             </a>').appendTo("#recently-closed-tabs-menu");
       });
     }
@@ -199,14 +199,8 @@
       show: 'mouseover',
       hide: 'mouseout',
       style: {
-        name: 'dark',
-        tip: 'leftMiddle'
-      },
-      position: {
-        corner: {
-           target: 'rightMiddle',
-           tooltip: 'leftMiddle'
-        }
+        name: 'light',
+        tip: 'topLeft'
       }
     };
 
@@ -214,7 +208,7 @@
       show: 'mouseover',
       hide: 'mouseout',
       style: {
-        name: 'dark',
+        name: 'light',
         tip: 'topMiddle'
       },
       position: {

@@ -269,11 +269,6 @@ if (window.webkitRequestFileSystem) {
   initFS();
 }
 
-var util = util || {};
-util.toArray = function(list) {
-  return Array.prototype.slice.call(list || [], 0);
-};
-
 function deleteShortcut(filename) {
   shortcuts.getFile(filename, {}, function(fileEntry) {
     fileEntry.remove(function() {}, errorHandler);

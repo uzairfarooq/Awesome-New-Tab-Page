@@ -16,6 +16,16 @@
   *       relationship with the authors of this project or the project itself.
 ***/
 
+// Utility Functions
+  var util = util || {};
+
+  util.toArray = function(list) {
+    return Array.prototype.slice.call(list || [], 0);
+  };
+
+  util.htmlEntities = function(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  };
 
 // Variables that are relatively static
 
@@ -31,7 +41,7 @@
       stock: true,
       img: "app.webstore.png",
       simg: "app.webstore.png",
-      appLaunchUrl: "https://chrome.google.com/webstore?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=awesomenewtabpage"
+      appLaunchUrl: "https://chrome.google.com/webstore?utm_source=featured&utm_medium=awesome-new-tab-page"
     },
     tutorial: {
       where: [0,0],
