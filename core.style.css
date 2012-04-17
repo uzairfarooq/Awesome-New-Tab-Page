@@ -276,7 +276,7 @@ body {
   top: 72px;
   margin-top: 35px;
   z-index: 1100;
-  min-width: 300px;
+  min-width: 275px;
   display: none;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -291,6 +291,9 @@ body {
   padding-bottom: 1px;
   padding-left: 5px;
 }
+.rctm-item:nth-child(even) {
+  background-color: #EEEEEE;
+}
 .rctm-item:hover {
   background-color: #C7C6BF;
 }
@@ -301,7 +304,7 @@ body {
 .rctm-link {
   position: relative;
   top: -3px;
-  margin-left: 2px;
+  margin-left: 5px;
   width: 262px;
   color: #0E3F96;
   overflow: hidden;
