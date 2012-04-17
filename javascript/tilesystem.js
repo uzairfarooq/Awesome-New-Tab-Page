@@ -767,6 +767,7 @@ $("#lock-button,#unlock-button").live("click", function() {
   } else {
     // Lock
     lock = true;
+    $(".resize-tile").hide();
 
     hscroll = true;
 
