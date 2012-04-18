@@ -362,8 +362,8 @@ function setStuff() {
             "max"  : resize_element.v2.max_height
           });
 
-          if ( new_height.height <= calcHeight({"is": 1}).height
-            || new_height.height >= calcHeight({"is": 2}).height ) return;
+          if ( new_height.height <= calcHeight({"is": resize_element.v2.min_height}).height
+            || new_height.height >= calcHeight({"is": resize_element.v2.max_height}).height ) return;
 
           resize_element.moved_top = ( resize_element.clientY - e.clientY );
 
@@ -402,8 +402,8 @@ function setStuff() {
             "max"  : resize_element.v2.max_width
           });
 
-          if ( new_width.width <= calcWidth({"is": 1}).width
-            || new_width.width >= calcWidth({"is": 2}).width ) return;
+          if ( new_width.width <= calcWidth({"is": resize_element.v2.min_width}).width
+            || new_width.width >= calcWidth({"is": resize_element.v2.max_width}).width ) return;
 
           resize_element.moved_left = ( resize_element.clientX - e.clientX );
 
