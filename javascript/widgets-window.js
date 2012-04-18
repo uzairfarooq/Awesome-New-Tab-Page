@@ -146,14 +146,25 @@ function setupInstalledWidgets() {
 function setupStockWidgets() {
   $.each(stock_widgets, function(id, widget) {
     if(widget.isApp === false && widget.type !== "shortcut" && widget.type !== "app") {
+
+      var poke = {};
+      poke.height = widget.size[0];
+      poke.width = widget.size[1]
+      poke.path = widget.path
+      poke.poke = 1;
+      if ( widget.poke === 2 ) {
+        poke.poke = 2;
+        poke.v2 = {};
+        poke.v2.resize = widget.resize;
+        poke.v2.min_width = widget.v2.min_width;
+        poke.v2.max_width = widget.v2.max_width;
+        poke.v2.min_height = widget.v2.min_height;
+        poke.v2.max_height = widget.v2.max_height;
+      }
+
       setupDrawerWidgets({
         request: {
-          body: {
-            height: widget.size[0],
-            width: widget.size[1],
-            path: widget.path,
-            poke: 1
-          },
+          body: poke,
           head: "mgmiemnjjchgkmgbeljfocdjjnpjnmcg-pokeback"
         },
         sender: {

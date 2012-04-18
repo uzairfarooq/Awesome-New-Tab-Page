@@ -18,7 +18,7 @@
 <script type="text/javascript">
 window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
 
-/* START :: Recently Closed Tabs */
+/* START :: Recently Closed Tabs & Tab Manager Widget */
   var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
   chrome.tabs.onRemoved.addListener( onRemoved );
   function onRemoved(tabId) {
@@ -55,8 +55,55 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
   }
   function getAllTabs_callback(data) {
     tabs = data;
+    localStorage.setItem("open_tabs", JSON.stringify( tabs ));
   }
   chrome.tabs.getAllInWindow(null, getAllTabs);
+
+  /* START :: Tab Manager Widget */
+
+    $(window).bind('storage', function (e) {
+      if ( e.originalEvent.key === "switch_to_tab" ) {
+        if (localStorage.getItem("switch_to_tab") != -1) {
+          var id = parseInt(localStorage.getItem("switch_to_tab"));
+
+          chrome.tabs.getSelected(null, function(tab){
+            if (id != tab.id) {
+              chrome.tabs.remove(tab.id);
+            }
+          });
+          chrome.tabs.update(id, {active: true});
+          localStorage.setItem("switch_to_tab", -1);
+        }
+      }
+
+      if ( e.originalEvent.key === "close_tab" ) {
+        var id = parseInt(localStorage.getItem("close_tab"));
+        if (localStorage.getItem("close_tab") !== "-1") {
+            chrome.tabs.remove(id);
+            localStorage.setItem("close_tab", "-1");
+        }
+      }
+
+      if ( e.originalEvent.key === "pin_toggle" ) {
+        var id  = parseInt(localStorage.getItem("pin_toggle"));
+        if ( typeof(id) === "null" ) {
+          return false;
+        }
+
+        var tab = tabs.filter(function (tab) { return tab.id === id; })[0];
+        if ( typeof(tab) === "undefined" ) {
+          console.error("Tab wasn't found");
+          return false;
+        }
+
+        // Invert pin state
+        chrome.tabs.update(id, { pinned: !tab.pinned });
+
+        localStorage.setItem("pin_toggle", "null");
+      }
+    });
+
+    /* END :: Tab Manager Widget */
 
   /* END :: Recently Closed Tabs */
 

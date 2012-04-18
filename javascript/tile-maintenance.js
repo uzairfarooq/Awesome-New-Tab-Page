@@ -409,7 +409,6 @@ function updateWidget(obj) {
 
 // Add widget to localStorage then refresh
 function addWidget(obj) {
-
   widgets = JSON.parse(localStorage.getItem("widgets"));
 
   if ( typeof(obj.height) === "undefined" || parseInt(obj.height) === "NaN" )
