@@ -183,7 +183,7 @@
         });
         $("<img></img>").appendTo(rct_temp).addClass("rctm-icon")
           .attr("src", "chrome://favicon/"+tab.url);
-        $("<div></div>").appendTo(rct_temp).addClass("rctm-link").html( util.htmlEntities(tab.title) );
+        $("<div></div>").appendTo(rct_temp).addClass("rctm-link").text(tab.title);
         rct_temp.appendTo("#recently-closed-tabs-menu");
       });
     }

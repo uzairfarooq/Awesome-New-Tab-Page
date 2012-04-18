@@ -23,10 +23,6 @@
     return Array.prototype.slice.call(list || [], 0);
   };
 
-  util.htmlEntities = function(str) {
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  };
-
 // Variables that are relatively static
 
   var stock_widgets = {
@@ -152,6 +148,23 @@
       name: "Hulu / Netflix (Stock)",
       id: "tv",
       path: "widgets/widget.tv.html"
+    },
+    tabs: {
+      id: "tabs",
+      isApp: false,
+      name: "Tab Manager (Stock)",
+      path: "widgets/tabs.html",
+      poke: 2,
+      resize: true,
+      size: [1,1],
+      type: "iframe",
+      v2: {
+        min_height: 1,
+        min_width : 1,
+        max_height: 3,
+        max_width : 3
+      },
+      where: [2,4]
     }
   };
 
