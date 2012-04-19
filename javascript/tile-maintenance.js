@@ -266,7 +266,7 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
       }
     }
 
-    if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter", "mgmiemnjjchgkmgbeljfocdjjnpjnmcg"]) === -1 ) {
+    if ( $.inArray(id, ["webstore", "amazon", "fandango", "facebook", "twitter", "tabs", "mgmiemnjjchgkmgbeljfocdjjnpjnmcg"]) === -1 ) {
       $(stitch).append(
         $("<div></div").addClass("ui-2 drawer-app-uninstall ilb")
           .html("Uninstall")

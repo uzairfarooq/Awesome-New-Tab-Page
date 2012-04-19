@@ -332,11 +332,13 @@ body {
   margin-left: 5px;
   width: 32px;
   height: 32px;
-  -webkit-transition: left 1s ease-in-out, top 1s ease-in-out;
+  -webkit-transition: left .2s ease-in-out, top .2s ease-in-out;
   margin-top: 2px;
   margin-bottom: 2px;
   display: block;
   opacity: .75;
+
+  position: relative;
 }
 #logo-button {
   margin-top: 0px;
@@ -354,36 +356,42 @@ body {
 }
 #config-button {
   background-color: transparent;
-  background-image: url("/images/ui-2/configure.png");
+  background-image: url("/images/ui-2/side-buttons.png");
+  background-position: 0 0;
   background-repeat: no-repeat;
 }
 #app-drawer-button {
   background-color: transparent;
-  background-image: url("/images/ui-2/apps-window.png");
+  background-image: url("/images/ui-2/side-buttons.png");
+  background-position: 0 -32px;
   background-repeat: no-repeat;
   border-color: transparent;
 }
 #widget-drawer-button {
   background-color: transparent;
-  background-image: url("/images/ui-2/widgets-window.png");
+  background-image: url("/images/ui-2/side-buttons.png");
+  background-position: 0 -64px;
   background-repeat: no-repeat;
   border-color: transparent;
 }
 #unlock-button {
   background-color: transparent;
-  background-image: url("/images/ui-2/lock.png");
+  background-image: url("/images/ui-2/side-buttons.png");
+  background-position: 0 -128px;
   background-repeat: no-repeat;
   border-color: transparent;
 }
 #lock-button {
   background-color: transparent;
-  background-image: url("/images/ui-2/unlocked.png");
+  background-image: url("/images/ui-2/side-buttons.png");
+  background-position: 0 -160px;
   background-repeat: no-repeat;
   border-color: transparent;
 }
 #recently-closed-tabs {
   background-color: transparent;
-  background-image: url("/images/ui-2/recently-closed-tabs.png");
+  background-image: url("/images/ui-2/side-buttons.png");
+  background-position: 0 -96px;
   background-repeat: no-repeat;
   border-color: transparent;
 }
