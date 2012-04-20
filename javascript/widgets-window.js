@@ -182,12 +182,12 @@ $("#widget-drawer-button").live("click", function(){
   loadFeatured();
   _gaq.push([ '_trackEvent', 'Window', "Widgets" ]);
 
-  $(".ui-2#widgets").fadeToggle();
+  $(".ui-2#widgets").toggle();
 
-  $(".ui-2#apps").fadeOut();
-  $(".ui-2#config").fadeOut();
-  $("#recently-closed-tabs-menu").fadeOut();
-  $(".ui-2#about").fadeOut();
+  $(".ui-2#apps").hide();
+  $(".ui-2#config").hide();
+  $("#recently-closed-tabs-menu").hide();
+  $(".ui-2#about").hide();
 
-  $(".ui-2#editor").fadeOut();
+  $(".ui-2#editor").hide();
 });
