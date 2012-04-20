@@ -5,9 +5,6 @@
   "ui_button_widgets": {
     "message": "Widgets"
   },
-  "ui_button_reset": {
-    "message": "Reset"
-  },
   "ui_button_unlock": {
     "message": "Unlock"
   },
@@ -17,20 +14,153 @@
   "ui_button_rct": {
     "message": "Recently Closed Tabs"
   },
-  "ui_button_bgc": {
-    "message": "Background Color"
-  },
-  "ui_button_download": {
-    "message": "Download Widgets"
-  },
   "ui_button_close": {
     "message": "Close"
   },
   "ui_button_about": {
     "message": "About"
   },
+  "ui_config": {
+    "message": "Configure"
+  },
+  "ui_c_learnmore": {
+    "message": "Learn more"
+  },
+  "ui_config_bg_changecolor": {
+    "message": "Change Background Color"
+  },
+  "ui_te": {
+    "message": "Tile Editor"
+  },
+  "ui_te_name": {
+    "message": "Name"
+  },
+  "ui_te_name_desc": {
+    "message": "What do you want to call it?"
+  },
+  "ui_te_shname": {
+    "message": "Show / Hide Name"
+  },
+  "ui_te_url_desc": {
+    "message": "Enter the URL you'd like to link to, such as http://www.google.com/"
+  },
+  "ui_te_url_tip": {
+    "message": "Tip: A valid URL contains a protocol - such as \"http://\" - before the domain. Without a valid protocol, your shortcut will not work."
+  },
+  "ui_te_shfavicon": {
+    "message": "Show / Hide Favicon"
+  },
+  "ui_te_bg_colorpicker": {
+    "message": "Open Color Picker"
+  },
+  "ui_te_bg_transparent": {
+    "message": "Completely transparent background"
+  },
+  "ui_te_bg_tip": {
+    "message": "Tip: If you check this box, you may also want to hide the name and favicon."
+  },
+  "ui_te_bg_note": {
+    "message": "Note: This option has no effect on the Icon & Background settings."
+  },
+  "ui_te_app_tip": {
+    "message": "Not all options are available for apps. If you'd like to get more options, create a custom shortcut instead. Simply click on an empty tile with the grid unlocked."
+  },
+  "ui_te_ib": {
+    "message": "Icon & Background"
+  },
+  "ui_te_ib_desc": {
+    "message": "Enter a web URL to an image, use the browse button, or drag & drop an image above to change the icon."
+  },
+  "ui_te_ib_browse": {
+    "message": "Browse"
+  },
+  "ui_te_ib_tip": {
+    "message": "Tip: Leave blank for no icon."
+  },
+  "ui_te_ib_advanced": {
+    "message": "Advanced: Hide the name and favicon and use an image that's 200px by 200px to completely customize a 1x1 tile."
+  },
+  "ui_config_general": {
+    "message": "General"
+  },
+  "ui_config_shbmb": {
+    "message": "Show / Hide Bookmark Bar"
+  },
+  "ui_config_shtlb": {
+    "message": "Show top left buttons only on area-hover"
+  },
+  "ui_config_shtlb_desc": {
+    "message": "When this option is checked, the top left buttons will slide out of the way. To access them again, simply mouse over where they normally are."
+  },
+  "ui_config_shgrid": {
+    "message": "Show / Hide Grid (when unlocked)"
+  },
+  "ui_config_amazonlocale":
+  {
+    "message": "For the <i>stock</i> Amazon shortcut, select your country."
+  },
+  "ui_config_reset": {
+    "message": "Reset"
+  },
+  "ui_config_reset_desc": {
+    "message": "This button will allow you to undo all changes you've made to Awesome New Tab Page."
+  },
   "ui_confirm_reset": {
-    "message": "Are you sure you want to reset widget and app placements, stock widget preferences (notepad, coloring, etc.), and coloring preferences? Any customizations will be irrevocably lost."
+    "message": "Are you sure you want to reset widget, app, and custom shortcut placements, stock widget preferences (notepad, etc.), and background preferences? Any customizations will be irrevocably lost."
+  },
+  "ui_config_bg": {
+    "message": "Background"
+  },
+  "ui_config_bg_upload": {
+    "message": "Upload Image"
+  },
+  "ui_config_bgimg1": {
+    "message": "<b>Advanced</b> (Shorthand Background CSS): Use an image on the web."
+  },
+  "ui_config_bgimg3": {
+    "message": "Erase the box to use the default background (solid color)."
+  },
+  "ui_config_bgimg2": {
+    "message": "Example (NO trailing semicolon!):"
+  },
+  "ui_about": {
+    "message": "About"
+  },
+  "ui_about_contrib": {
+    "message": "Contributors"
+  },
+  "ui_about_contrib_desc": {
+    "message": "This project wouldn't exist without the hard work, feedback, ideas, translations, and support of a few groups of some very awesome people."
+  },
+  "ui_about_dev": {
+    "message": "Developers"
+  },
+  "ui_about_contrib_translators": {
+    "message": "Translators"
+  },
+  "ui_about_contrib_users": {
+    "message": "Users"
+  },
+  "ui_about_contrib_cta": {
+    "message": "Click the links above to see (and maybe join) these awesome people in action!"
+  },
+  "ui_about_share": {
+    "message": "Share"
+  },
+  "ui_about_share1": {
+    "message": "Do you like Awesome New Tab Page? Why not share it with friends and family?"
+  },
+  "ui_about_rate": {
+    "message": "Rate"
+  },
+  "ui_about_rate_desc": {
+    "message": "Do you like this extension? Take a minute to give a positive review on the Chrome Web Store."
+  },
+  "ui_button_download": {
+    "message": "Download Widgets"
+  },
+  "ui_button_downloadapps": {
+    "message": "Download Apps"
   },
   "ui_confirm_uninstall": {
     "message": "Are you sure you want to uninstall $app$?",
@@ -41,38 +171,35 @@
       }
     }
   },
-  "ui_note_apps": {
-    "message": "\"Unlock\" to drag apps to your home screen, or quickly access them here. \"Lock\" to uninstall apps."
+  "ui_aw_what_h": {
+    "message": "What're apps?"
   },
-  "ui_note_widgets": {
-    "message": "\"Unlock\" to drag widgets to your home screen. Mouseover to see how wide/tall it is."
+  "ui_aw_what_b": {
+    "message": "Web-based applications are programs that are designed to be used entirely within the browser."
+  },
+  "ui_aw_lock_h": {
+    "message": "Lock & Unlock"
+  },
+  "ui_aw_lock_b": {
+    "message": "If you want to move one to your grid, unlock then drag it. Unlock using the lock icon on the left of the screen."
+  },
+  "ui_aw_whatw_h": {
+    "message": "What're widgets?"
+  },
+  "ui_aw_whatw_b": {
+    "message": "Widgets bring the full power of the web to your new tab page. Go ahead; get the featured widget on the right!"
+  },
+  "ui_aw_featured": {
+    "message": "Featured"
+  },
+  "ui_aw_wotw": {
+    "message": "Widget of the Week"
   },
   "ui_bmb_ob": {
     "message": "Other Bookmarks"
   },
   "app_webstore": {
     "message": "Chrome Web Store"
-  },
-  "widget_tv": {
-    "message": "Hulu / Netflix (Stock)"
-  },
-  "widget_amazon": {
-    "message": "Amazon (Stock)"
-  },
-  "widget_fandango": {
-    "message": "Fandango (Stock)"
-  },
-  "widget_google": {
-    "message": "Google (Wide) (Stock)"
-  },
-  "widget_notepad": {
-    "message": "Notepad (Stock)"
-  },
-  "widget_clock": {
-    "message": "Clock (Stock)"
-  },
-  "widget_tutorial": {
-    "message": "Tutorial (Stock)"
   },
   "tutorial_ui_next": {
     "message": "Next"
@@ -96,7 +223,7 @@
     "message": "No Longer Just <span class=\"ul\">Icons</span>"
   },
   "tutorial_2_desc1": {
-    "message": "Icons are out-dated. Technology is pacing forward, with extremely powerful and dynamic widgets found in Android, Windows Phone 7, and (soon) Windows 8."
+    "message": "Icons are out-dated. Technology is pacing forward, with extremely powerful, dynamic, and beautiful widgets found in Android, Windows Phone 7, and (soon) Windows 8."
   },
   "tutorial_2_desc2": {
     "message": "This extension is a start at bringing the same power to Chrome's New Tab Page."
@@ -136,36 +263,6 @@
   },
   "tutorial_5_desc3": {
     "message": "Make your own widgets! Find out how here:"
-  },
-  "ui_config_general": {
-    "message": "General"
-  },
-  "ui_config_shgrid": {
-    "message": "Show / Hide Grid (when unlocked)"
-  },
-  "ui_config_bmb": {
-    "message": "Show / Hide Bookmark Bar"
-  },
-  "ui_config_bg": {
-    "message": "Background"
-  },
-  "ui_config_bgimg1": {
-    "message": "<b>Advanced</b> (CSS): Use your own image (hosted elsewhere, like Flickr or Picasa). The image should at least be your monitor's resolution."
-  },
-  "ui_config_bgimg2": {
-    "message": "Example (NO trailing semicolon!):"
-  },
-  "ui_config_bgimg3": {
-    "message": "Erase the box to use the default background (solid color)."
-  },
-  "ui_config_share": {
-    "message": "Share"
-  },
-  "ui_config_share1": {
-    "message": "Do you like Awesome New Tab Page? Why not share it with friends and family?"
-  },
-  "ui_config_contrib": {
-    "message": "Contributors"
   },
   "ui_shortcut_img": {
     "message": "Image URL must be exactly 128px by 128px, preferably in PNG format with alpha transparency. To reset to default, just erase everything in the field."
