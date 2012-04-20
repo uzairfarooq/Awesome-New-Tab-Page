@@ -22,7 +22,7 @@ var extensions;
 chrome.management.getAll( function(data) {
   extensions = data;
   // Setup the Apps window
-  setTimeout(setupDrawerApps, 1000);
+  setTimeout(setupDrawerApps, 800);
 });
 
 function setupDrawerApps() {

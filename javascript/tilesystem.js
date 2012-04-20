@@ -18,7 +18,7 @@
 
 
 $(document).ready(function($) {
-  $("#toggle-grid").live("click", updateGridOpacity);
+  $("#toggle-grid,#grid-holder").live("click", updateGridOpacity);
 
   if(localStorage.getItem("perm-grid") === null) {
     localStorage.setItem("perm-grid", "yes");
@@ -26,7 +26,7 @@ $(document).ready(function($) {
 
   if(localStorage.getItem("perm-grid") === "yes") {
     $("body").addClass("perm-grid");
-    $("#toggle-grid").attr('checked', 'checked');
+    $("#toggle-grid,#grid-holder").attr('checked', 'checked');
   }
 
   placeGrid();
@@ -36,7 +36,7 @@ $(document).ready(function($) {
 var GRID_MIN_HEIGHT     = 3,
     GRID_MIN_WIDTH      = 7,
     GRID_MARGIN_TOP     = function() { return localStorage.getItem("showbmb") === "yes" ? 27 : 0; },
-    GRID_MARGIN_LEFT    = 27,
+    GRID_MARGIN_LEFT    = function() { return localStorage.getItem("hideLeftButtons") === "yes" ? 0 : 27; },
     GRID_TILE_SIZE      = 200,  // NEVER CHANGE
     GRID_TILE_PADDING   = 3,    // NEVER CHANGE
 
@@ -62,17 +62,17 @@ function updateGridOpacity() {
 function moveGrid(pref) {
   if ( pref.animate_top === false ) {
     $("#widget-holder,#grid-holder").css({
-      "-webkit-transition": "left .77s ease-in-out"
+      "-webkit-transition": "left .2s ease-in-out"
     });
   } else {
     $("#widget-holder,#grid-holder").css({
-      "-webkit-transition": "left .77s ease-in-out, top .77s ease-in-out"
+      "-webkit-transition": "left .2s ease-in-out, top .2s ease-in-out"
     });
   }
 
   $("#widget-holder,#grid-holder").css({
     "top" : GRID_MARGIN_TOP(),
-    "left": GRID_MARGIN_LEFT
+    "left": GRID_MARGIN_LEFT()
   });
 
   updateGridOpacity();
@@ -89,7 +89,7 @@ function placeGrid() {
   if ( typeof(window.innerHeight) !== "undefined"
     && typeof(window.innerWidth) !== "undefined" ) {
     var res_height = Math.floor( ( window.innerHeight - GRID_MARGIN_TOP() ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
-    var res_width  = Math.floor( ( window.innerWidth  - GRID_MARGIN_LEFT  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
+    var res_width  = Math.floor( ( window.innerWidth  - GRID_MARGIN_LEFT()  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
 
     if(res_height > height) {
       height = res_height;
@@ -101,8 +101,8 @@ function placeGrid() {
 
   if ( typeof(screen.width) !== "undefined"
     && typeof(screen.height) !== "undefined" ) {
-    var res_height2 = Math.floor( ( screen.height - 190 - GRID_MARGIN_LEFT  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
-    var res_width2  = Math.floor( ( screen.width        - GRID_MARGIN_LEFT  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
+    var res_height2 = Math.floor( ( screen.height - 180 - GRID_MARGIN_TOP()  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) );
+    var res_width2  = Math.floor( ( screen.width        - GRID_MARGIN_LEFT()  ) / ( GRID_TILE_SIZE + ( GRID_TILE_PADDING * 2 ) ) ) + 3;
 
     if(res_height2 > height) {
       height = res_height2;
@@ -190,18 +190,11 @@ function findClosest(tile){
   return closestElm;
 }
 
-// var cache = {};
 function getCovered(tile) {
   var toRet = {};
   toRet.clear = true;
   toRet.tiles = [];
   var closestElm = findClosest(tile);
-
-  // if(cache && cache.closest === closestElm && cache.tile === tile && cache.toRet) {
-  //   return cache.toRet;
-  // } else {
-  //   cache = {}; cache.closest = closestElm; cache.tile = tile;
-  // }
 
   var top  = parseInt( $(closestElm).attr("land-top")  , 10);
   var left = parseInt( $(closestElm).attr("land-left") , 10);
@@ -225,8 +218,6 @@ function getCovered(tile) {
       }
     }
   }
-
-  // cache.toRet = toRet;
 
   return toRet;
 }
@@ -254,6 +245,7 @@ function setStuff() {
         .toggleClass("empty", false);
     });
   });
+}
 
   // Trigger mouseup on escape key
   $(document).keyup(function(e) {
@@ -272,7 +264,9 @@ function setStuff() {
   });
 
   $(window).mouseup("mouseup", function(e) {
-    $(".resize-tile > div").trigger("mouseup");
+    if ( typeof(resize_element.element) === "object" ) {
+      $(".resize-tile > div").trigger("mouseup");
+    }
   });
 
   /* START :: Resize */
@@ -551,236 +545,257 @@ function setStuff() {
 
     /* END :: Resize */
 
-  var held_element = {};
-  held_element.element = false;
-  // When a tile is picked up
-  $(".widget").live("mousedown", function(e) {
-    if(lock === true) {
-      held_element.element = false;
-      return false;
-    }
+  /* START :: Move */
 
-    $(".ui-2.x").trigger("click");
-
-    $(".widget").css("z-index", "1");
-
-    held_element.offsetX = e.offsetX;
-    held_element.offsetY = e.offsetY;
-    held_element.oldX    = $(this).position().left;
-    held_element.oldY    = $(this).position().top;
-    held_element.width   = $(this).width();
-    held_element.height  = $(this).height();
-
-    if( $(this).attr("app-source") === "from-drawer" ) {
-      held_element.element = $(this).clone()
-        .addClass("widget-drag").css({
-          "left": $(this).offset().left,
-          "top" : $(this).offset().top,
-          "position": "absolute",
-          "z-index" : "100"
-      }).prependTo("body");
-
-      // Ensure that it's always droppable
-      held_element.offsetX_required = $(held_element.element).width()  / 2;
-      held_element.offsetY_required = $(held_element.element).height() / 2;
-
-      $(".ui-2#apps,.ui-2#widgets").css("display", "none");
-    } else {
-      var tiles = getCovered(this);
-      $(tiles.tiles).each(function(ind, elem){
-        $(elem).toggleClass("empty", true);
-      });
-
-      $(this).addClass("widget-drag")
-        .css("z-index", "100");
-
-      held_element.element = this;
-    }
-
-    $(".resize-tile").css("display", "none");
-    $(this).find(".resize-tile").css("display", "block");
-
-    if ( e.preventDefault ) {
-      e.preventDefault();
-    }
-  });
-
-  // When a tile is released
-  $(".widget").live("mouseup", function(e) {
-    if ( lock === true ) {
-      held_element.element = false;
-      return false;
-    }
-
-    if ( held_element.element === false ) {
-      return false;
-    }
-
-    update = true;
-
-    var closestElm = findClosest(this);
-    var tiles = getCovered(this);
-
-    if ( tiles.clear === true ) {
-      if( $(this).attr("app-source") === "from-drawer" && $(this).attr("tile-widget") === "true" ) {
-        var is_widget = true,
-            src       = $(this).attr("tile-widget-src"),
-            width     = $(this).attr("tile-width"),
-            height    = $(this).attr("tile-height"),
-            poke      = $(this).attr("poke"),
-            stock     = stock_widgets[$(this).attr("stock")];
-      } else if ( $(this).attr("app-source") === "from-drawer" && $(this).attr("widget") === undefined ) {
-        var is_widget = false,
-            src       = undefined,
-            width     = 1,
-            height    = 1,
-            poke      = undefined,
-            stock     = $(this).attr("stock");
-      }
-
-      if ( $(this).attr("app-source") === "from-drawer" ) {
-        addWidget({
-          "is_widget" : is_widget,
-          "widget"    : $(this).attr("id"),
-          "top"       : $(closestElm).attr("land-top"),
-          "left"      : $(closestElm).attr("land-left"),
-          "src"       : src,
-          "width"     : width,
-          "height"    : height,
-          "stock"     : stock,
-          "poke"      : poke,
-          "resize"    : $(this).attr("resize"),
-          "min_width" : parseInt($(this).attr("min_width")),
-          "max_width" : parseInt($(this).attr("max_width")),
-          "min_height": parseInt($(this).attr("min_height")),
-          "max_height": parseInt($(this).attr("max_height"))
-        })
-      }
-
-      if ( $(this).attr("app-source") !== "from-drawer" ) {
-        updateWidget({
-          "id"  : $(this).attr("id"),
-          "top" : $(closestElm).attr("land-top"),
-          "left": $(closestElm).attr("land-left")
-        });
-      }
-
-      $(this).removeClass("widget-drag").css({
-        "left": $(closestElm).position().left,
-        "top" : $(closestElm).position().top,
-        "z-index": "2"
-      });
-
-      $(tiles.tiles).each(function(ind, elem){
-          $(elem).toggleClass("empty", false);
-      });
-
-    } else { // If the tile was full
-
-      $(this).removeClass("widget-drag").css({
-        "left": held_element.oldX,
-        "top" : held_element.oldY,
-        "z-index": "2"
-      });
-
-      tiles = getCovered(this);
-
-      $(tiles.tiles).each(function(ind, elem){
-        $(elem).toggleClass("empty", false);
-      });
-    }
-
-    if( $(this).attr("app-source") === "from-drawer") {
-      $(this).remove();
-    }
+    var held_element = {};
 
     held_element.element = false;
-    $(".tile").removeClass("tile-green tile-red")
-      .css("z-index", "0");
-  });
-
-  // When a tile is held and moved
-  $(document).live("mousemove", function(e) {
-    if(lock === true) {
-      held_element.element = false;
-      return false;
-    }
-
-    if ( typeof(held_element.element) === "object" ) {
-      if(update === true){
-        update = false;
-      } else {
-        held_left = held_element.width / 2;
-        held_top = held_element.height / 2;
-
-        if( held_element.offsetX_required )
-          held_left = held_element.offsetX_required;
-        if( held_element.offsetY_required)
-          held_top  = held_element.offsetY_required;
-
-        $(held_element.element).css({
-          "left": e.pageX - held_left - GRID_MARGIN_LEFT,
-          "top" : e.pageY - held_top  - GRID_MARGIN_TOP()
-        });
+    // When a tile is picked up
+    $(".widget").live("mousedown", function(e) {
+      if(lock === true) {
+        held_element.element = false;
+        return false;
       }
 
-      hscroll = true;
+      $(".ui-2.x").trigger("click");
 
-      var closestElm = findClosest(held_element.element);
-      var tiles = getCovered(held_element.element);
+      $(".widget").css("z-index", "1");
 
-      $(".tile").removeClass("tile-green tile-red")
-        .css("z-index", "0");
+      held_element.offsetX = e.offsetX;
+      held_element.offsetY = e.offsetY;
+      held_element.oldX    = $(this).position().left;
+      held_element.oldY    = $(this).position().top;
+      held_element.width   = $(this).width();
+      held_element.height  = $(this).height();
+
+      if( $(this).attr("app-source") === "from-drawer" ) {
+        held_element.element = $(this).clone()
+          .addClass("widget-drag").css({
+            "left": $(this).offset().left,
+            "top" : $(this).offset().top,
+            "position": "absolute",
+            "z-index" : "100"
+        }).prependTo("body");
+
+        // Ensure that it's always droppable
+        held_element.offsetX_required = $(held_element.element).width()  / 2;
+        held_element.offsetY_required = $(held_element.element).height() / 2;
+
+        $(".ui-2#apps,.ui-2#widgets").css("display", "none");
+      } else {
+        var tiles = getCovered(this);
+        $(tiles.tiles).each(function(ind, elem){
+          $(elem).toggleClass("empty", true);
+        });
+
+        $(this).addClass("widget-drag")
+          .css("z-index", "100");
+
+        held_element.element = this;
+      }
+
+      $(".resize-tile").css("display", "none");
+      $(this).find(".resize-tile").css("display", "block");
+
+      if ( e.preventDefault ) {
+        e.preventDefault();
+      }
+    });
+
+    // When a tile is released
+    $(".widget").live("mouseup", function(e) {
+      if ( lock === true ) {
+        held_element.element = false;
+        return false;
+      }
+
+      update = true;
+
+      var closestElm = findClosest(this);
+      var tiles = getCovered(this);
 
       if ( tiles.clear === true ) {
-        $(tiles.tiles).each(function(ind, elem){
-          $(elem).addClass("tile-green")
-            .css("z-index", "2");
+        if( $(this).attr("app-source") === "from-drawer" && $(this).attr("tile-widget") === "true" ) {
+          var is_widget = true,
+              src       = $(this).attr("tile-widget-src"),
+              width     = $(this).attr("tile-width"),
+              height    = $(this).attr("tile-height"),
+              poke      = $(this).attr("poke"),
+              stock     = stock_widgets[$(this).attr("stock")];
+        } else if ( $(this).attr("app-source") === "from-drawer" && $(this).attr("widget") === undefined ) {
+          var is_widget = false,
+              src       = undefined,
+              width     = 1,
+              height    = 1,
+              poke      = undefined,
+              stock     = $(this).attr("stock");
+        }
+
+        if ( $(this).attr("app-source") === "from-drawer" ) {
+          addWidget({
+            "is_widget" : is_widget,
+            "widget"    : $(this).attr("id"),
+            "top"       : $(closestElm).attr("land-top"),
+            "left"      : $(closestElm).attr("land-left"),
+            "src"       : src,
+            "width"     : width,
+            "height"    : height,
+            "stock"     : stock,
+            "poke"      : poke,
+            "resize"    : $(this).attr("resize"),
+            "min_width" : parseInt($(this).attr("min_width")),
+            "max_width" : parseInt($(this).attr("max_width")),
+            "min_height": parseInt($(this).attr("min_height")),
+            "max_height": parseInt($(this).attr("max_height"))
+          })
+        }
+
+        if ( $(this).attr("app-source") !== "from-drawer" ) {
+          updateWidget({
+            "id"  : $(this).attr("id"),
+            "top" : $(closestElm).attr("land-top"),
+            "left": $(closestElm).attr("land-left")
+          });
+        }
+
+        $(this).removeClass("widget-drag").css({
+          "left": $(closestElm).position().left,
+          "top" : $(closestElm).position().top,
+          "z-index": "2"
         });
-      } else {
+
         $(tiles.tiles).each(function(ind, elem){
-          $(elem).addClass("tile-red")
-            .css("z-index", "2");
+            $(elem).toggleClass("empty", false);
+        });
+
+      } else { // If the tile was full
+
+        $(held_element.element).removeClass("widget-drag").css({
+          "left": held_element.oldX,
+          "top" : held_element.oldY,
+          "z-index": "2"
+        });
+
+        tiles = getCovered(this);
+
+        $(tiles.tiles).each(function(ind, elem){
+          $(elem).toggleClass("empty", false);
         });
       }
-    }
-  });
-} // End of setStuff
 
-lock = true;
-$("#lock-button,#unlock-button").live("click", function() {
-  if(lock === true) {
-    // Unlock
-    lock = false;
-    $("body").addClass("unlocked").removeClass("locked");
-    localStorage.setItem("lock", false );
-    $(".iframe-mask").removeClass("hidden");
-    $("#lock-button").css("display", "block");
-    $("#unlock-button").css("display", "none");
-    $(".tile").addClass("tile-grid");
+      if ( $(held_element.element).attr("app-source") === "from-drawer") {
+        $(held_element.element).remove();
+      }
+      $("body > .widget-drag").remove();
 
-    $(".ui-2#apps .drawer-app .url").removeClass("url").addClass("disabled-url");
-    setTimeout(function() {
-      $(".ui-2#apps .drawer-app .url").removeClass("url").addClass("disabled-url");
-    }, 1100);
+      held_element.element = false;
+      $(".tile").removeClass("tile-green tile-red")
+        .css("z-index", "0");
+    });
 
-  } else {
-    // Lock
+    // When a tile is held and moved
+    $(document).live("mousemove", function(e) {
+      if(lock === true) {
+        held_element.element = false;
+        return false;
+      }
+
+      if ( typeof(held_element.element) === "object" ) {
+        if(update === true){
+          update = false;
+        } else {
+          held_left = held_element.width / 2;
+          held_top = held_element.height / 2;
+
+          if( held_element.offsetX_required )
+            held_left = held_element.offsetX_required;
+          if( held_element.offsetY_required)
+            held_top  = held_element.offsetY_required;
+
+          $(held_element.element).css({
+            "left": e.pageX - held_left - GRID_MARGIN_LEFT(),
+            "top" : e.pageY - held_top  - GRID_MARGIN_TOP()
+          });
+        }
+
+        hscroll = true;
+
+        var closestElm = findClosest(held_element.element);
+        var tiles = getCovered(held_element.element);
+
+        $(".tile").removeClass("tile-green tile-red")
+          .css("z-index", "0");
+
+        if ( tiles.clear === true ) {
+          $(tiles.tiles).each(function(ind, elem){
+            $(elem).addClass("tile-green")
+              .css("z-index", "2");
+          });
+        } else {
+          $(tiles.tiles).each(function(ind, elem){
+            $(elem).addClass("tile-red")
+              .css("z-index", "2");
+          });
+        }
+      }
+    });
+    /* END :: Move */
+
+
+  /* START :: Lock */
+    $(document).ready(function() {
+      if(localStorage.getItem("lock") === "false") {
+        $('#unlock-button').trigger('click');
+      } else {
+        $("body").addClass("locked").removeClass("unlocked");
+      }
+    });
+
     lock = true;
-    $(".resize-tile").hide();
+    $("#lock-button,#unlock-button").live("click", function() {
+      if(lock === true) {
+        // Unlock
+        lock = false;
+        $("body").addClass("unlocked").removeClass("locked");
+        localStorage.setItem("lock", false );
+        $(".iframe-mask").removeClass("hidden");
+        $("#lock-button").css("display", "block");
+        $("#unlock-button").css("display", "none");
+        $(".tile").addClass("tile-grid");
 
-    hscroll = true;
+        $(".ui-2#apps .drawer-app .url").removeClass("url").addClass("disabled-url");
+        setTimeout(function() {
+          $(".ui-2#apps .drawer-app .url").removeClass("url").addClass("disabled-url");
+        }, 1100);
 
-    $("body").addClass("locked").removeClass("unlocked");
-    localStorage.setItem("lock", true );
-    $(".iframe-mask").addClass("hidden");
-    $("#unlock-button").css("display", "block");
-    $("#lock-button").css("display", "none");
-    $(".tile").removeClass("tile-grid");
+        if ( localStorage.getItem("hideLeftButtons") === "yes" ) {
+          $(".side-button").css("left", "0px");
+          $("#widget-holder,#grid-holder").css("left", "27px");
+        }
+      } else {
+        // Lock
+        lock = true;
+        $(".resize-tile").hide();
 
-    $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
-    setTimeout(function() {
-      $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
-    }, 1100);
-  }
-});
+        hscroll = true;
+
+        $("body").addClass("locked").removeClass("unlocked");
+        localStorage.setItem("lock", true );
+        $(".iframe-mask").addClass("hidden");
+        $("#unlock-button").css("display", "block");
+        $("#lock-button").css("display", "none");
+        $(".tile").removeClass("tile-grid");
+
+        $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
+        setTimeout(function() {
+          $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
+        }, 1100);
+
+        if ( localStorage.getItem("hideLeftButtons") === "yes" ) {
+          $(".side-button").css("left", "-50px");
+          $("#widget-holder,#grid-holder").css("left", "0px");
+        }
+      }
+    });
+
+    /* END :: Lock */

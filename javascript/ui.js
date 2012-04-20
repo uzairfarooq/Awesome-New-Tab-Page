@@ -112,11 +112,17 @@
 /* START :: Top Left Buttons */
 
   function moveLeftButtons() {
-    if ( localStorage.getItem("hideLeftButtons") === "yes" ) {
+    if ( localStorage.getItem("hideLeftButtons") === "yes" &&
+      localStorage.getItem("lock") !== "false" ) {
       $(".side-button").css("left", "-50px");
+      $("#widget-holder,#grid-holder").css("left", "0px");
+    }
+    if ( localStorage.getItem("hideLeftButtons") === "yes") {
       $("#hideLeftButtons").attr('checked', 'checked');
-    } else {
+    }
+    if ( localStorage.getItem("hideLeftButtons") !== "yes" ) {
       $(".side-button").css("left", "0px");
+      $("#widget-holder,#grid-holder").css("left", "27px");
     }
   }
 
@@ -136,12 +142,20 @@
 
   $("#top-buttons").live({
     mouseenter: function() {
-      if ( localStorage.getItem("hideLeftButtons") === "yes" )
+      if ( localStorage.getItem("hideLeftButtons") === "yes" ) {
+
         $(".side-button").css("left", "0px");
+        $("#widget-holder,#grid-holder").css("left", "27px");
+      }
+
     },
     mouseleave: function() {
-      if ( localStorage.getItem("hideLeftButtons") === "yes" )
+      if ( localStorage.getItem("hideLeftButtons") === "yes"
+        && localStorage.getItem("lock") === "true" ) {
+
         $(".side-button").css("left", "-50px");
+        $("#widget-holder,#grid-holder").css("left", "0px");
+      }
     }
   });
 
@@ -228,44 +242,41 @@
       $.extend({}, qtipUI2, { content: "Widgets not showing up? Refresh manually." })
     );
     $(".ui-2.x").qtip(
-      $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_close") || "Close" })
+      $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_close") })
     );
     $(".ui-2.help").qtip(
       $.extend({}, qtipUI2, { content: "Help" })
     );
 
-    $(".ui-2.config").qtip(
-      $.extend({}, qtipUI2, { content: "Configure" })
+    $(".ui-2.config,#config-button").qtip(
+      $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_config") })
     );
 
     $(".ui-2#apps .download").qtip(
-      $.extend({}, qtipUI2, { content: "Download Apps" })
+      $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_downloadapps") })
     );
 
     $(".ui-2#widgets .download").qtip(
-      $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_download") || "Download Widgets" })
+      $.extend({}, qtipUI2, { content: chrome.i18n.getMessage("ui_button_download") })
     );
 
     $("#logo-button").qtip(
-      $.extend({}, qtipShared, { content: "About Awesome New Tab Page" })
-    );
-    $("#config-button").qtip(
-      $.extend({}, qtipShared, { content: "Configure" })
+      $.extend({}, qtipShared, { content: "About" })
     );
     $("#app-drawer-button").qtip(
-      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_apps") || "Apps" })
+      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_apps") })
     );
     $("#widget-drawer-button").qtip(
-      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_widgets") || "Widgets" })
+      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_widgets") })
     );
     $("#unlock-button").qtip(
-      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_unlock") || "Unlock" })
+      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_unlock") })
     );
     $("#lock-button").qtip(
-      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_lock") || "Lock to Interact with Apps and Widgets" })
+      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_lock") })
     );
     $("#recently-closed-tabs").qtip(
-      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") || "Recently Closed Tabs" })
+      $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") })
     );
 
   });
@@ -327,32 +338,6 @@
       $("#bookmarksBar").css("display", "block");
     } else {
       $("#bookmarksBar").css("display", "none");
-    }
-
-    if(localStorage.getItem("hide-app-names") === null) {
-      localStorage.setItem("hide-app-names", "no");
-    }
-
-    if(localStorage.getItem("hide-app-names") === "yes") {
-      $("body").addClass("hide-app-names");
-    } else {
-      $("#toggle-app-names").attr('checked', 'checked');
-    }
-
-    if(localStorage.getItem("hide-shortcut-names") === null) {
-      localStorage.setItem("hide-shortcut-names", "no");
-    }
-
-    if(localStorage.getItem("hide-shortcut-names") === "yes") {
-      $("body").addClass("hide-shortcut-names");
-    } else {
-      $("#toggle-shortcut-names").attr('checked', 'checked');
-    }
-
-    if(localStorage.getItem("lock") === "false") {
-      $('#unlock-button').trigger('click');
-    } else {
-      $("body").addClass("locked").removeClass("unlocked");
     }
 
     if(localStorage.getItem("bg-img-css") && localStorage.getItem("bg-img-css") !== "") {
@@ -430,26 +415,6 @@
       $("#bookmarksBar").hide();
       localStorage.setItem("showbmb", "no");
       moveGrid({ "animate_top": true });
-    }
-  });
-
-  $("#toggle-app-names").live("click", function(){
-    if ($(this).is(":checked")) {
-      $("body").removeClass("hide-app-names");
-      localStorage.setItem("hide-app-names", "no");
-    } else {
-      $("body").addClass("hide-app-names");
-      localStorage.setItem("hide-app-names", "yes");
-    }
-  });
-
-  $("#toggle-shortcut-names").live("click", function(){
-    if ($(this).is(":checked")) {
-      $("body").removeClass("hide-shortcut-names");
-      localStorage.setItem("hide-shortcut-names", "no");
-    } else {
-      $("body").addClass("hide-shortcut-names");
-      localStorage.setItem("hide-shortcut-names", "yes");
     }
   });
 

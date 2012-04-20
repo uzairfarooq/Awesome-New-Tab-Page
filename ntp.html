@@ -42,27 +42,13 @@
     <div id="widget-holder"></div>
 
     <div id="top-buttons">
-      <div id="logo-button" class="side-button">
-        &nbsp;
-      </div>
-      <div id="config-button" class="side-button">
-        &nbsp;
-      </div>
-      <div id="app-drawer-button" class="side-button">
-        &nbsp;
-      </div>
-      <div id="widget-drawer-button" class="side-button">
-        &nbsp;
-      </div>
-      <div id="recently-closed-tabs" class="side-button">
-        &nbsp;
-      </div>
-      <div id="lock-button" class="side-button hidden">
-        &nbsp;
-      </div>
-      <div id="unlock-button" class="side-button">
-        &nbsp;
-      </div>
+      <div id="logo-button" class="side-button">&nbsp;</div>
+      <div id="config-button" class="side-button">&nbsp;</div>
+      <div id="app-drawer-button" class="side-button">&nbsp;</div>
+      <div id="widget-drawer-button" class="side-button">&nbsp;</div>
+      <div id="recently-closed-tabs" class="side-button">&nbsp;</div>
+      <div id="lock-button" class="side-button hidden">&nbsp;</div>
+      <div id="unlock-button" class="side-button">&nbsp;</div>
     </div>
 
     <div id="recently-closed-tabs-menu"></div>
@@ -74,7 +60,7 @@
           <div class="ui-2 name">
             Awesome New Tab Page
             <span class="ui-2 crumb">&nbsp;</span>
-            <span class="ui-2 subname">About</span>
+            <span class="ui-2 subname"><script>document.write(chrome.i18n.getMessage("ui_about"));</script></span>
           </div>
         </div>
         <div class="ui-2 right">
@@ -87,37 +73,35 @@
 
       <div class="ui-2 contents">
         <div id="about-contrib" class="ui-2">
-          <h3><script>document.write(chrome.i18n.getMessage("ui_config_contrib"));</script></h3>
-          <p>
-            This project wouldn't exist without the hard work, feedback, ideas, translations, and
-            support of a few groups of very awesome people.
-          </p>
+          <h3><script>document.write(chrome.i18n.getMessage("ui_about_contrib"));</script></h3>
+          <p><script>document.write(chrome.i18n.getMessage("ui_about_contrib_desc"));</script></p>
           <p class="ilb">
             <a href="https://github.com/NewTabPage/Awesome-New-Tab-Page/contributors" class="bubble">
-              Developers
+              <script>document.write(chrome.i18n.getMessage("ui_about_dev"));</script>
             </a>
           </p>
           <p class="ilb">
             <a href="http://crowdin.net/project/antp" class="bubble">
-              Translators
+              <script>document.write(chrome.i18n.getMessage("ui_about_contrib_translators"));</script>
             </a>
           </p>
           <p class="ilb">
             <a href="https://ntp.uservoice.com/forums/136895-feedback" class="bubble">
-              Users
+              <script>document.write(chrome.i18n.getMessage("ui_about_contrib_users"));</script>
             </a>
           </p>
-          <p>
-            Click the links above to see these awesome people in action!
-          </p>
+          <p><script>document.write(chrome.i18n.getMessage("ui_about_contrib_cta"));</script></p>
         </div>
 
         <div id="about-dev" class="ui-2">
-          <h3>Developers</h3>
+          <h3><script>document.write(chrome.i18n.getMessage("ui_about_dev"));</script></h3>
 
           <p class="ilb">
             <a href="https://github.com/NewTabPage/Awesome-New-Tab-Page/contributors" class="bubble">
-              Fork Awesome New Tab Page
+              Fork ANTP
+            </a>
+            <a href="https://github.com/NewTabPage/Awesome-New-Tab-Page/wiki" class="bubble">
+              Visit Wiki
             </a>
           </p>
 
@@ -130,40 +114,36 @@
         <div id="about-flattr" class="ui-2">
           <h3>Flattr</h3>
           <p class="ilb">
-            Support Awesome New Tab Page with Flattr.
+            Support Awesome New Tab Page's development with Flattr.
           </p>
           <p class="ilb">
             <a class="FlattrButton" style="display:none;" href="http://antp.co/"></a>
           </p>
         </div>
 
+        <div id="about-share" class="ui-2">
+          <h3><script>document.write(chrome.i18n.getMessage("ui_about_share"));</script></h3>
+          <p><script>document.write(chrome.i18n.getMessage("ui_about_share1"));</script></p>
+          <g:plusone expandTo="top" size="medium"
+          href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></g:plusone>
+          <a href="https://twitter.com/share" class="twitter-share-button"
+            data-url="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"
+            data-text="Awesome New Tab Page: The Chrome New Tab Page should be awesome, just like you."
+            data-count="horizontal" data-via="NewTabPage" data-related="HartMichael:Developer">Tweet</a>
+          <br />
+          <g:plus href="https://plus.google.com/101062285048075360930" width="300" height="131" theme="light"></g:plus>
+        </div>
+
         <div id="about-rate" class="ui-2">
-          <h3>Rate</h3>
+          <h3><script>document.write(chrome.i18n.getMessage("ui_about_rate"));</script></h3>
           <p>
-            Do you like this extension? Take a minute to give a positive review on the Chrome Web Store.
+            <script>document.write(chrome.i18n.getMessage("ui_about_rate_desc"));</script>
           </p>
           <p>
             <a href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg/reviews" class="bubble">
               <img src="/images/ui-2/stars.png">
             </a>
           </p>
-        </div>
-
-        <div id="about-share" class="ui-2">
-          <h3><script>document.write(chrome.i18n.getMessage("ui_config_share"));</script></h3>
-          <p><script>document.write(chrome.i18n.getMessage("ui_config_share1"));</script></p>
-          <g:plusone expandTo="top" size="medium"
-          href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></g:plusone>
-
-          <a href="https://twitter.com/share" class="twitter-share-button"
-            data-url="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"
-            data-text="Awesome New Tab Page: Making the New Tab Page in Google Chrome awesome."
-            data-count="horizontal" data-via="NewTabPage" data-related="HartMichael:Developer">Tweet</a>
-
-
-          <br />
-
-          <g:plus href="https://plus.google.com/101062285048075360930" width="300" height="131" theme="light"></g:plus>
         </div>
       </div>
       <div class="ui-2 bottom-overlay"></div>
@@ -176,7 +156,7 @@
           <div class="ui-2 name">
             Awesome New Tab Page
             <span class="ui-2 crumb">&nbsp;</span>
-            <span class="ui-2 subname">Configure</span>
+            <span class="ui-2 subname"><script>document.write(chrome.i18n.getMessage("ui_config"));</script></span>
           </div>
         </div>
         <div class="ui-2 right">
@@ -192,40 +172,20 @@
           <h3><script>document.write(chrome.i18n.getMessage("ui_config_general"));</script></h3>
           <div id="toggleBmb-holder">
             <input id="toggleBmb" type="checkbox" name="show" value="true" />
-            <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_bmb"));</script></p>
+            <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_shbmb"));</script></p>
           </div>
-          <p class="tip">This bookmark bar isn't as polished as it could be. I'm hoping Chrome's developers
-            hear my begging for an API to use the same in-page bookmark bar that the original NTP uses, but until then...</p>
 
           <div id="hideLeftButtons-holder">
             <input id="hideLeftButtons" type="checkbox" name="show" value="true" />
-            <p class="ilb">Show top left buttons only on area-hover</p>
+            <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_shtlb"));</script></p>
           </div>
 
-          <p class="tip">Using this option, it can be easy to forget when ANTP is unlocked. Always remember to lock ANTP when you're
-            done customizing your grid.</p>
+          <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_config_shtlb_desc"));</script></p>
 
           <div id="toggle-grid-holder">
             <input id="toggle-grid" type="checkbox" name="show" value="true" />
             <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_shgrid"));</script></p>
           </div>
-
-          <div id="toggle-app-names-holder">
-            <input id="toggle-app-names" type="checkbox" name="show" value="true" />
-            <p class="ilb">Show / Hide App Names (On NTP Only)</p>
-          </div>
-
-          <div id="toggle-shortcut-names-holder">
-            <input id="toggle-shortcut-names" type="checkbox" name="show" value="true" />
-            <p class="ilb">Show / Hide Shortcut Names + Favicons (On NTP Only)</p>
-          </div>
-
-          <div id="reset-button" class="bubble ilb">
-            <script>document.write(chrome.i18n.getMessage("ui_button_reset"));</script>
-          </div>
-          <p class="ilb">
-            This button will allow you to undo all changes you've made to Awesome New Tab Page.
-          </p>
 
           <div id="amazon-locale">
             <select id="amazon-locale-selection">
@@ -241,10 +201,16 @@
               <option value="amazon.es">Spain (Amazon.es)</option>
             </select>
             <p class="ilb">
-              For the <i>stock</i> Amazon shortcut, select your country.
-              <a href="http://www.amazon.com/gp/feature.html?docId=487250&tag=sntp-20"><u>Learn more</u></a>.
+              <script>document.write(chrome.i18n.getMessage("ui_config_amazonlocale"));</script>
+              <a href="http://www.amazon.com/gp/feature.html?docId=487250&tag=sntp-20">
+                <u><script>document.write(chrome.i18n.getMessage("ui_c_learnmore"));</script></u></a>.
             </p>
           </div>
+
+          <div id="reset-button" class="bubble ilb">
+            <script>document.write(chrome.i18n.getMessage("ui_config_reset"));</script>
+          </div>
+          <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_reset_desc"));</script></p>
         </div>
 
         <div id="config-background" class="ui-2">
@@ -254,16 +220,16 @@
             &nbsp;&nbsp;&nbsp;&nbsp;
           </div>
           <div id="colorselector-bg" class="bubble ilb">
-            <script>document.write(chrome.i18n.getMessage("ui_button_bgc"));</script>
+            <script>document.write(chrome.i18n.getMessage("ui_config_bg_changecolor"));</script>
           </div>
           <input type="file" id="filesystem_bg_input" style="width:0; height: 0; opacity: 0;">
           <div id="filesystem_bg_ui" class="bubble ilb">
-            Browse for Image
+            <script>document.write(chrome.i18n.getMessage("ui_config_bg_upload"));</script>
           </div>
           <p class="tip">
             <script>document.write(chrome.i18n.getMessage("ui_config_bgimg1"));</script>
             <a href="http://www.w3schools.com/css/tryit.asp?filename=trycss_background_shorthand2">
-              <u>Learn More</u>.
+              <u><script>document.write(chrome.i18n.getMessage("ui_c_learnmore"));</script></u>.
             </a>
           </p>
           <p>
@@ -271,7 +237,7 @@
           </p>
           <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_config_bgimg3"));</script></p>
           <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg2"));</script></p>
-          <pre>url('http://mh.mycdn.co/labs/antp/m.png') repeat right top</pre>
+          <pre>url(https://cdn.antp.co/misc/bg/ics.png) repeat right top</pre>
         </div>
       </div>
       <div class="ui-2 bottom-overlay"></div>
@@ -290,7 +256,7 @@
           </div>
         </div>
         <div class="ui-2 right">
-          <div class="ui-2 download url" data-url="https://chrome.google.com/webstore/?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=antp-download-apps"></div>
+          <div class="ui-2 download url" data-url="https://chrome.google.com/webstore/?utm_source=download-apps&amp;utm_medium=awesome-new-tab-page"></div>
           <div class="ui-2 config"></div>
           <div class="ui-2 help url" data-url="https://ntp.uservoice.com/"></div>
           <div class="ui-2 vr"></div>
@@ -301,24 +267,23 @@
       <div class="ui-2 contents">
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head">What're apps?</div>
+            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_what_h"));</script></div>
             <div class="faw-body">
-              Web-based applications are programs that are designed to be used entirely within the browser.
-              <a href="http://support.google.com/chrome/bin/answer.py?answer=1050586"><u>Learn more</u></a>.
+              <script>document.write(chrome.i18n.getMessage("ui_aw_what_b"));</script>
+              <a href="http://support.google.com/chrome/bin/answer.py?answer=1050586"><u>
+                <script>document.write(chrome.i18n.getMessage("ui_c_learnmore"));</script></u></a>.
             </div>
           </div>
         </div>
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head">Lock &amp; Unlock</div>
-            <div class="faw-body">
-              If you want to move one to your grid, unlock then drag it. Unlock using the lock icon on the left of the screen.
-            </div>
+            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_lock_h"));</script></div>
+            <div class="faw-body"><script>document.write(chrome.i18n.getMessage("ui_aw_lock_b"));</script></div>
           </div>
         </div>
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head">Featured</div>
+            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_featured"));</script></div>
             <div class="faw-body faw-featured">
               <img src="/icon128.png" />
               <div class="faw-title">Loading...</div>
@@ -344,7 +309,7 @@
         </div>
         <div class="ui-2 right">
           <div class="ui-2 widgets-refresh"></div>
-          <div class="ui-2 download url" data-url="https://chrome.google.com/webstore/search/%22Awesome New Tab Page%22?utm_source=google-chrome-extension&utm_medium=awesomenewtabpage&utm_campaign=antp-download-widgets"></div>
+          <div class="ui-2 download url" data-url="https://chrome.google.com/webstore/search/%22Awesome New Tab Page%22?utm_source=download-widgets&amp;utm_medium=awesome-new-tab-page"></div>
           <div class="ui-2 config"></div>
           <div class="ui-2 help url" data-url="https://ntp.uservoice.com/"></div>
           <div class="ui-2 vr"></div>
@@ -355,23 +320,19 @@
       <div class="ui-2 contents" id="widget-drawer">
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head">What're widgets?</div>
-            <div class="faw-body">
-              Widgets bring the full power of the web to your new tab page. Go ahead; get the featured widget on the right!
-            </div>
+            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_whatw_h"));</script></div>
+            <div class="faw-body"><script>document.write(chrome.i18n.getMessage("ui_aw_whatw_b"));</script></div>
           </div>
         </div>
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head">Lock &amp; Unlock</div>
-            <div class="faw-body">
-              If you want to move one to your grid, unlock then drag it. Unlock using the lock icon on the left of the screen.
-            </div>
+            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_lock_h"));</script></div>
+            <div class="faw-body"><script>document.write(chrome.i18n.getMessage("ui_aw_lock_b"));</script></div>
           </div>
         </div>
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head">Featured</div>
+            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_wotw"));</script></div>
             <div class="faw-body faw-featured">
               <img src="/icon128.png" />
               <div class="faw-title">Loading...</div>
@@ -392,7 +353,7 @@
             Awesome New Tab Page
             <span class="ui-2 crumb">&nbsp;</span>
             <span class="ui-2 subname">
-              Tile Editor
+              <script>document.write(chrome.i18n.getMessage("ui_te"));</script>
             </span>
             <span class="ui-2 crumb">&nbsp;</span>
             <span class="ui-2 subname" id="editor-name">
@@ -410,43 +371,40 @@
 
       <div class="ui-2 contents">
         <div id="tile-editor-right">
-            <h3>Name</h3>
-            <p>What do you want to call it?</p>
+            <h3><script>document.write(chrome.i18n.getMessage("ui_te_name"));</script></h3>
+            <p><script>document.write(chrome.i18n.getMessage("ui_te_name_desc"));</script></p>
             <input id="shortcut_name" type="text" />
             <p>
               <input id="shortcut_name_show" type="checkbox" />
-              Show / Hide Name
+              <script>document.write(chrome.i18n.getMessage("ui_te_shname"));</script>
             </p>
           <div class="hide-if-app">
             <h3>URL</h3>
-            <p>Enter the URL you'd like to link to, such as http://www.google.com/</p>
+            <p><script>document.write(chrome.i18n.getMessage("ui_te_url_desc"));</script></p>
             <input id="shortcut_url" type="text" />
-            <p class="tip">
-              Tip: A valid URL contains a protocol - such as "http://" - before the domain.
-              Without a valid protocol, your shortcut will not work.
-            </p>
+            <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_url_tip"));</script></p>
             <p>
               <input id="shortcut_favicon_show" type="checkbox" />
-              Show / Hide Favicon
+              <script>document.write(chrome.i18n.getMessage("ui_te_shfavicon"));</script>
             </p>
           </div>
 
-          <h3>Change Background Color</h3>
+          <h3><script>document.write(chrome.i18n.getMessage("ui_config_bg_changecolor"));</script></h3>
           <div id="shortcut_colorpicker" class="bubble ilb">
-            Open Color Picker
+            <script>document.write(chrome.i18n.getMessage("ui_te_bg_colorpicker"));</script>
           </div>
           <div id="swatches"></div>
 
           <p>
             <input id="shortcut_background_transparent" type="checkbox" />
-            Completely transparent background
+            <script>document.write(chrome.i18n.getMessage("ui_te_bg_transparent"));</script>
           </p>
           <p class="tip">
-            Tip: If you check this box, you may also want to hide the name and favicon.
+            <script>document.write(chrome.i18n.getMessage("ui_te_bg_tip"));</script>
           </p>
           <div class="hide-if-app">
           <p class="tip">
-            Note: This option has no effect on the Icon & Background settings.
+            <script>document.write(chrome.i18n.getMessage("ui_te_bg_note"));</script>
           </p>
           </div>
 
@@ -473,54 +431,49 @@
           </div>
 
           <div class="show-if-app">
-            <p class="tip">
-              Not all options are available for apps. If you'd like to get more options, create
-              a custom shortcut instead. Simply click on an empty tile with the grid unlocked.
-            </p>
+            <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_app_tip"));</script></p>
           </div>
           <div class="hide-if-app">
-            <h3>Icon & Background</h3>
-            <p>Enter a web URL to an image, use the browse button, or drag & drop an image above to change the icon.</p>
+            <h3><script>document.write(chrome.i18n.getMessage("ui_te_ib"));</script></h3>
+            <p><script>document.write(chrome.i18n.getMessage("ui_te_ib_desc"));</script></p>
             <input id="img_url" type="text" class="ilb" />
             <input type="file" id="filesystem_icon_input" style="width:0; height: 0; opacity: 0;">
             <div id="filesystem_icon_ui" class="bubble ilb">
-              Browse
+              <script>document.write(chrome.i18n.getMessage("ui_te_ib_browse"));</script>
             </div>
-            <p class="tip">
-              Tip: Leave blank for no icon.
-            </p>
-            <p class="tip">
-              Advanced: Hide the name and favicon and use an image that's 200px by 200px to completely
-              customize a 1x1 tile.
-            </p>
+            <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_ib_tip"));</script></p>
+            <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_ib_advanced"));</script></p>
           </div>
         </div>
       </div>
     </div>
 
-    <script type="text/javascript" src="/javascript/jquery.js"></script>
+    <!-- Helps keep Chrome's Developer Tools / Elements tab pretty -->
+    <div id="script_holder">
+      <script type="text/javascript" src="/javascript/jquery.js"></script>
 
-    <script type="text/javascript" src="/javascript/common.js?nocache=10"></script>
-    <script type="text/javascript" src="/javascript/tilesystem.js?nocache=10"></script>
-    <script type="text/javascript" src="/javascript/hscroll.js"></script>
+      <script type="text/javascript" src="/javascript/common.js?nocache=10"></script>
+      <script type="text/javascript" src="/javascript/tilesystem.js?nocache=10"></script>
+      <script type="text/javascript" src="/javascript/hscroll.js"></script>
 
-    <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
-    <script type="text/javascript" src="/javascript/jquery.jgrowl.js" async="async"></script>
-    <script type="text/javascript" src="/javascript/center.js"></script>
-    <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
+      <script type="text/javascript" src="/javascript/jquery.qtip-1.0.0-rc3.min.js"></script>
+      <script type="text/javascript" src="/javascript/jquery.jgrowl.js" async="async"></script>
+      <script type="text/javascript" src="/javascript/center.js"></script>
+      <script type="text/javascript" src="/colorpicker/js/colorpicker.js"></script>
 
-    <script type="text/javascript" src="/javascript/tile-maintenance.js?nocache=10"></script>
-    <script type="text/javascript" src="/javascript/ui.js?nocache=10" async="async"></script>
+      <script type="text/javascript" src="/javascript/tile-maintenance.js?nocache=10"></script>
+      <script type="text/javascript" src="/javascript/ui.js?nocache=10" async="async"></script>
 
-    <script type="text/javascript" src="/javascript/apps-window.js?nocache=10" async="async"></script>
-    <script type="text/javascript" src="/javascript/widgets-window.js?nocache=10" async="async"></script>
-    <script type="text/javascript" src="/javascript/tile-editor.js?nocache=10" async="async"></script>
+      <script type="text/javascript" src="/javascript/apps-window.js?nocache=10" async="async"></script>
+      <script type="text/javascript" src="/javascript/widgets-window.js?nocache=10" async="async"></script>
+      <script type="text/javascript" src="/javascript/tile-editor.js?nocache=10" async="async"></script>
 
-    <script type="text/javascript" src="/javascript/bookmarkbar.js"></script>
-    <script type="text/javascript" src="/javascript/color-thief.js" async="async"></script>
-    <script type="text/javascript" src="/javascript/quantize.js" async="async"></script>
-    <script type="text/javascript" src="/javascript/google-analytics.js" async="async"></script>
+      <script type="text/javascript" src="/javascript/bookmarkbar.js"></script>
+      <script type="text/javascript" src="/javascript/color-thief.js" async="async"></script>
+      <script type="text/javascript" src="/javascript/quantize.js" async="async"></script>
+      <script type="text/javascript" src="/javascript/google-analytics.js" async="async"></script>
 
-    <script type="text/javascript" src="/javascript/filesystem.js?nocache=10" async="async"></script>
+      <script type="text/javascript" src="/javascript/filesystem.js?nocache=10" async="async"></script>
+    </div>
   </body>
 </html>

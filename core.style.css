@@ -399,12 +399,6 @@ body {
   background-color: rgba(0, 0, 0, .2);
   opacity: 1 !important;
 }
-.hide-app-names #widget-holder .app:not(.shortcut) .app-name {
-  display:none;
-}
-.hide-shortcut-names #widget-holder .shortcut .app-name {
-  display:none;
-}
 .hidden {
   display: none
 }
@@ -600,13 +594,13 @@ body {
 .ui-2#about-dev {
   position: absolute;
   left: 55px;
-  top: 180px;
+  top: 185px;
   width: 325px;
 }
 .ui-2#about-flattr {
   position: absolute;
   left: 55px;
-  top: 325px;
+  top: 330px;
   width: 325px;
 }
 .ui-2#about-rate {
@@ -614,7 +608,6 @@ body {
   right: 55px;
   top: 225px;
   width: 325px;
-  white-space:nowrap;
 }
 .ui-2#about-share {
   position: absolute;
@@ -763,7 +756,7 @@ body > .widget-drawer-app img {
 .ui-2#apps .faw-box .faw-featured,
 .ui-2#widgets .faw-box .faw-featured {
   width: 205px;
-  height: 72px;
+  height: 90px;
   position: absolute;
   top: 0;
 }
@@ -771,12 +764,12 @@ body > .widget-drawer-app img {
 .ui-2#widgets .faw-box .faw-featured img {
   width: 50px;
   height: 50px;
-  top: 13px;
+  top: 20px;
 }
 .ui-2#apps .faw-box .faw-featured .faw-title,
 .ui-2#widgets .faw-box .faw-featured .faw-title {
   position: absolute;
-  top: 20px;
+  top: 25px;
   right: 0;
 }
 .ui-2#apps .faw-box .faw-featured .faw-href,
