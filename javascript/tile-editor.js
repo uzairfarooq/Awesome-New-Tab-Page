@@ -89,6 +89,8 @@ $("#delete,#shortcut-edit,#widget-config").live("mousedown mouseup move", functi
 
 // Edit shortcut or app
 $("#shortcut-edit").live("click", function(e){
+  $("body > .ui-2").hide();
+
   var shortcut_parent = $(this).parent().parent()[0];
   if(!shortcut_parent) { console.warn("!shortcut_parent", this, shortcut_parent); return; }
 
