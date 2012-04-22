@@ -226,7 +226,7 @@ body {
   margin-bottom: auto;
   right: -19px;
 }
-.locked .widget:active.app,
+.locked #widget-holder > .widget.app:active,
 .ui-2#editor #preview-tile:active {
   -webkit-transform: scale(0.95);
 }
