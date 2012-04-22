@@ -161,12 +161,7 @@ $("#filesystem_bg_input").change(function() {
       saveImage(file, "background");
     } else {
       error = "No file selected to upload.";
-
-      // Only show errors when relevant windows are open
-      if ( $(".ui-2#editor,.ui-2#config").is(":visible") === true ) {
-        $.jGrowl(error, { header: "Filesystem Error" });
-      }
-
+      $.jGrowl(error, { header: "Filesystem Error" });
       console.error("filesystem:", error);
     }
 });
@@ -256,7 +251,11 @@ function errorHandler(e) {
     break;
   }
 
-  $.jGrowl(msg, { header: "Filesystem Error" });
+  // Only show errors when relevant windows are open
+  if ( $(".ui-2#editor,.ui-2#config").is(":visible") === true ) {
+    $.jGrowl(msg, { header: "Filesystem Error" });
+  }
+
   console.error("filesystem: " + msg);
 }
 
