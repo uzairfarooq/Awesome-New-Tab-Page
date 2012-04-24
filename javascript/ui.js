@@ -25,6 +25,12 @@
     $(window).bind('resize scroll', function() {
       $(".ui-2.container").center();
     });
+
+    (function() {
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+      po.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    })();
   });
 
   $(".close,.ui-2.x").live("click", function(){
@@ -73,12 +79,6 @@
 
     if(options_init === true) {
       options_init = false;
-
-      (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-      })();
 
       (function() {
         var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];

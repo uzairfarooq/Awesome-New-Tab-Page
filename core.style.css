@@ -492,13 +492,21 @@ body {
   left: 0px;
   top: 0px;
 }
+.ui-2.plus-share {
+  height: 24px;
+  white-space: nowrap;
+
+  position: absolute;
+  left: 85px;
+  top: 48px;
+}
 .ui-2.name {
   height: 24px;
   white-space: nowrap;
 
   position: absolute;
   left: 85px;
-  top: 42px;
+  top: 25px;
 }
 .ui-2.crumb {
   background: url("/images/ui-2/crumb.png");
