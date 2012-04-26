@@ -288,14 +288,6 @@
     &&   data.go_teim
     &&   data.go_teim === "yep" ) {
       $(".ui-2#contest .contents").css("overflow", "hidden");
-      $("<iframe></iframe>").appendTo(".ui-2#contest .contents")
-        .attr({
-          "src" : "https://cdn.antp.co/api/contest/inner.html?nocache=" + new Date().getDate() + new Date().getHours(),
-          "frameborder" : 0,
-          "align"       : "center",
-          "height"      : "500px",
-          "width"       : "800px"
-        });
 
       $("#tmp-contest").fadeIn();
     }
@@ -305,9 +297,17 @@
     $("#tmp-contest").click(function() {
       _gaq.push([ '_trackEvent', 'Window', "Contest" ]);
 
-      $(".ui-2#contest").toggle();
+      $("<iframe></iframe>").appendTo(".ui-2#contest .contents")
+        .attr({
+          "src" : "http://antp.co/api/contest/inner.html?nocache=" + new Date().getDate() + new Date().getHours(),
+          "frameborder" : 0,
+          "align"       : "center",
+          "height"      : "500px",
+          "width"       : "800px"
+        });
 
       closeButton(".ui-2#contest");
+      $(".ui-2#contest").toggle();
     });
 
     if(window.location.hash) {
