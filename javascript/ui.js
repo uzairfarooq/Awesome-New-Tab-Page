@@ -33,48 +33,42 @@
     })();
   });
 
-  $(".close,.ui-2.x").live("click", function(){
-    $("body > .ui-2,#recently-closed-tabs-menu").hide();
+  $(".close,.ui-2.x").live("click", closeButton);
 
-    $(".edit-shortcut-ui").remove();
+  function closeButton(exclude) {
+
+    if ( exclude && typeof(exclude) === "string" ) {
+      $("body > .ui-2,#recently-closed-tabs-menu")
+        .not(exclude)
+        .hide();
+    } else {
+      $("body > .ui-2,#recently-closed-tabs-menu").hide();
+    }
 
     window.location.hash = "";
     hscroll = true;
-  });
+  }
 
   $("#app-drawer-button").live("click", function(){
     loadFeatured();
     _gaq.push([ '_trackEvent', 'Window', "Apps" ]);
 
+    closeButton(".ui-2#apps");
     $(".ui-2#apps").toggle();
-
-    $(".ui-2#widgets").hide();
-    $(".ui-2#config").hide();
-    $("#recently-closed-tabs-menu").hide();
-    $(".ui-2#about").hide();
-
-    $(".ui-2#editor").hide();
-    $(".edit-shortcut-ui").remove();
   });
 
   var options_init = true;
   $("#config-button, .ui-2.config").live("click", function(){
     _gaq.push([ '_trackEvent', 'Window', "Config" ]);
 
+    closeButton(".ui-2#config");
     $(".ui-2#config").toggle();
-
-    $(".ui-2#widgets").hide();
-    $(".ui-2#apps").hide();
-    $("#recently-closed-tabs-menu").hide();
-    $(".ui-2#about").hide();
-
-    $(".ui-2#editor").hide();
-    $(".edit-shortcut-ui").remove();
   });
 
-  $("#logo-button, .ui-2.logo").live("click", function(){
+  $("#logo-button,.ui-2.logo").live("click", function(){
     _gaq.push([ '_trackEvent', 'Window', "About" ]);
 
+    closeButton(".ui-2#about");
     $(".ui-2#about").toggle();
 
     if(options_init === true) {
@@ -97,14 +91,6 @@
         s.parentNode.insertBefore(twitterScriptTag, s);
       })();
     }
-
-    $(".ui-2#widgets").hide();
-    $(".ui-2#apps").hide();
-    $("#recently-closed-tabs-menu").hide();
-    $(".ui-2#config").hide();
-
-    $(".ui-2#editor").hide();
-    $(".edit-shortcut-ui").remove();
   });
 
   /* END :: Windows */
@@ -168,13 +154,10 @@
   });
 
   $("#recently-closed-tabs").live('click', function() {
-    $("#recently-closed-tabs-menu").toggle();
-
-    $(".ui-2#widgets").hide();
-    $(".ui-2#config").hide();
-    $(".ui-2#apps").hide();
-    $(".ui-2#about").hide();
     _gaq.push([ '_trackEvent', 'Window', "Recently Closed Tabs" ]);
+
+    closeButton("#recently-closed-tabs-menu");
+    $("#recently-closed-tabs-menu").toggle();
   });
 
   $(window).bind('storage', function (e) {
@@ -279,9 +262,64 @@
       $.extend({}, qtipShared, { content: chrome.i18n.getMessage("ui_button_rct") })
     );
 
+    $("#tmp-contest").qtip(
+      $.extend({}, qtipShared, { content: "Giveaway of Awesomeness" })
+    );
+
   });
 
   /* END :: Tooltips */
+
+/* START :: Contest */
+
+  function checkIfGoTeim() {
+    $.ajax({
+      url: "https://cdn.antp.co/api/contest/?nocache=" + new Date().getDate() + new Date().getHours(),
+      dataType: "jsonp",
+      cache: true,
+      jsonpCallback: "isItGoTeim"
+    });
+  }
+
+  setTimeout(checkIfGoTeim, 1300);
+
+  function isItGoTeim(data) {
+    if ( data
+    &&   data.go_teim
+    &&   data.go_teim === "yep" ) {
+      $(".ui-2#contest .contents").css("overflow", "hidden");
+      $("<iframe></iframe>").appendTo(".ui-2#contest .contents")
+        .attr({
+          "src" : "https://cdn.antp.co/api/contest/inner.html?nocache=" + new Date().getDate() + new Date().getHours(),
+          "frameborder" : 0,
+          "align"       : "center",
+          "height"      : "500px",
+          "width"       : "800px"
+        });
+
+      $("#tmp-contest").fadeIn();
+    }
+  }
+
+  $(document).ready(function(){
+    $("#tmp-contest").click(function() {
+      _gaq.push([ '_trackEvent', 'Window', "Contest" ]);
+
+      $(".ui-2#contest").toggle();
+
+      closeButton(".ui-2#contest");
+    });
+
+    if(window.location.hash) {
+      switch(window.location.hash) {
+        case "#winning":
+          $("#tmp-contest").trigger("click");
+          break;
+      }
+    }
+  });
+
+  /* END :: Contest */
 
 /* START :: Featured */
   var loaded_featured = false;
@@ -298,6 +336,7 @@
   }
 
   function setupFeatured(data) {
+    console.log(data);
     loaded_featured = true;
 
     if( typeof(data.a) === "object" ) {

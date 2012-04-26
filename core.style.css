@@ -98,7 +98,7 @@ body {
   cursor: pointer;
   z-index: 900;
   width: 35px;
-  height: 200px;
+  height: 100%;
 }
 #widget-holder > .widget {
   margin: 3px;
@@ -346,6 +346,11 @@ body {
 }
 .side-button:hover {
   opacity: 1;
+}
+#tmp-contest {
+  background-color: transparent;
+  background-image: url("/images/ui-2/tmp_contest.png");
+  background-repeat: no-repeat;
 }
 #logo-button {
   background-color: transparent;
