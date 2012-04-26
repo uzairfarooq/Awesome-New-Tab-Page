@@ -790,11 +790,6 @@ function setStuff() {
         setTimeout(function() {
           $(".ui-2#apps .drawer-app .disabled-url").removeClass("disabled-url").addClass("url");
         }, 1100);
-
-        if ( localStorage.getItem("hideLeftButtons") === "yes" ) {
-          $(".side-button").css("left", "-50px");
-          $("#widget-holder,#grid-holder").css("left", "0px");
-        }
       }
     });
 
