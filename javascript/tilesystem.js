@@ -608,6 +608,9 @@ function setStuff() {
         held_element.element = false;
         return false;
       }
+      if ( held_element.element === false ) {
+        return false;
+      }
 
       update = true;
 
@@ -697,6 +700,9 @@ function setStuff() {
     $(document).live("mousemove", function(e) {
       if(lock === true) {
         held_element.element = false;
+        return false;
+      }
+      if ( held_element.element === false ) {
         return false;
       }
 
