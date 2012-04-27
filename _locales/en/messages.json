@@ -41,6 +41,9 @@
   "ui_te_shname": {
     "message": "Show / Hide Name"
   },
+  "ui_te_pin": {
+    "message": "Pin on left click"
+  },
   "ui_te_url_desc": {
     "message": "Enter the URL you'd like to link to, such as http://www.google.com/"
   },

@@ -17,9 +17,6 @@
 ***/
 
 
-var gradient = ", -webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .04)), color-stop(0, rgba(255, 255, 255, 0.35)) )";
-var amazon_regex = new RegExp("amazon\.(com|cn|co\.uk|at|fr|de|it|co\.jp|es)[/]{0,1}[\?]{0,1}");
-
 var resize_template = '<div class="resize-tile"> \
     <div class="resize-tile-top"></div> \
     <div class="resize-tile-bottom"></div> \
@@ -203,7 +200,7 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
   }
 
   if ( type === "shortcut" || type === "app" ) {
-    var favicon;
+    var favicon, pin;
     if ( type === "shortcut"
       && widgets[id].favicon_show !== false
       && url.match("http") !== null ) {
@@ -212,9 +209,19 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
       favicon = $("<img></img>").attr("src", "chrome://favicon/"+url).addClass("app-favicon force-hide");
     }
 
+    if ( widgets[id] && widgets[id].pin && widgets[id].pin === true ) {
+      pin = "pin";
+    } else {
+      pin = null;
+    }
+
     $(stitch).append(
       $("<div></div>").addClass("app-name "+name_show).html(name),
-      $("<a/>").attr("href", url),
+      $("<a></a>").attr({
+        "class"   : "url",
+        "data-url":  url ,
+        "pin"     :  pin
+      }),
       favicon
     );
   }
@@ -288,7 +295,8 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
         $(stitch).find(".iframe-mask").append(
           $("<div></div").attr({
             "id" : "widget-config",
-            "url": optionsUrl
+            "class" : "url",
+            "data-url": optionsUrl
           })
         );
       }

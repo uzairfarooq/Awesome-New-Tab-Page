@@ -43,10 +43,6 @@ $("#delete").live("click", function(){
   }
 });
 
-$("#widget-config").live("click", function(){
-  window.location = $(this).attr("url");
-});
-
 // Create shortcut on click
 $(".unlocked .empty.add-shortcut").live("click", function() {
   var new_shortcut_id = new_guid();
@@ -192,12 +188,18 @@ $("#shortcut-edit").live("click", function(e){
   $(".ui-2#editor #editor-name, .ui-2#editor #preview-tile .app-name").html( widgets[id].name );
   $(".ui-2#editor #shortcut_name").val( widgets[id].name );
 
-  if(typeof( widgets[id] ) != "undefined" && widgets[id].name_show === false) {
+  if( typeof( widgets[id] ) !== "undefined" && widgets[id].name_show && widgets[id].name_show === false) {
     $(".ui-2#editor #shortcut_name_show").prop("checked", false);
     $(".ui-2#editor .app-name").css("opacity", 0);
   } else {
     $(".ui-2#editor #shortcut_name_show").prop("checked", true);
     $(".ui-2#editor .app-name").css("opacity", 1);
+  }
+
+  if( typeof( widgets[id] ) !== "undefined" && widgets[id].pin && widgets[id].pin === true) {
+    $(".ui-2#editor #shortcut_pin").prop("checked", true);
+  } else {
+    $(".ui-2#editor #shortcut_pin").prop("checked", false);
   }
 
   $(".ui-2#editor #img_url").val( widgets[id].img );
@@ -260,6 +262,7 @@ function updateShortcut(e) {
     var id   = $(".ui-2#editor").attr("active-edit-id");
     var type = $(".ui-2#editor").attr("active-edit-type")
     var name = $(".ui-2#editor #shortcut_name").val();
+    var pin  = $(".ui-2#editor #shortcut_pin").is(':checked')
     var url  = $(".ui-2#editor #shortcut_url").val();
     var img  = $(".ui-2#editor #img_url").val();
     var name_show  = $(".ui-2#editor #shortcut_name_show").is(':checked');
@@ -281,6 +284,15 @@ function updateShortcut(e) {
       $(".ui-2#editor .app-name, #widget-holder #"+id+" .app-name").css("opacity", 1);
     }
 
+    widgets[id].pin = pin;
+    if ( pin === true ) {
+      $(".ui-2#editor #shortcut_name_show").prop("checked", true);
+      $("#widget-holder #"+id+" .url").attr("pin", "pin");
+    } else {
+      $(".ui-2#editor #shortcut_name_show").prop("checked", true);
+      $("#widget-holder #"+id+" .url").attr("pin", null);
+    }
+
     if ( type === "app" ) {
       favicon_show = false;
     }
@@ -298,7 +310,7 @@ function updateShortcut(e) {
     if(type === "shortcut") {
       widgets[id].img = img;
 
-      $("#" + id + " a").attr("href", url);
+      $("#" + id + " a").attr("data-url", url);
       widgets[id].appLaunchUrl = url;
       widgets[id].url = url;
     }

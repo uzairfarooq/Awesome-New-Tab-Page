@@ -182,6 +182,9 @@
       "rgba(0,    171,  169,   1)"
     ];
 
+  var gradient = ", -webkit-gradient( linear, right bottom, left top, color-stop(1, rgba(255, 255, 255, .04)), color-stop(0, rgba(255, 255, 255, 0.35)) )";
+  var amazon_regex = new RegExp("amazon\.(com|cn|co\.uk|at|fr|de|it|co\.jp|es)[/]{0,1}[\?]{0,1}");
+
   // For Google Analytics
   var _gaq = _gaq || [];
 
@@ -238,17 +241,66 @@ function _e(_eNum) {
   _gaq.push(['_trackEvent', 'Error', _eNum]);
 }
 
-$(".url").live("mouseup", function(e){
-  switch(e.which)
-  {
-      case 1:
-        window.location = $(this).attr("data-url");
-      break;
-      case 2:
-        window.open($(this).attr("data-url"));
-      break;
-      case 3:
-          // do nothing
-      break;
-  }
-});
+/* URL Handler :: Start */
+
+  var url_handler = false;
+  $(document).on("mousedown", ".url", function(e) {
+
+    var url = $(this).attr("data-url");
+
+    if ( url && typeof(url) === "string" && url !== "" ) {
+      url_handler = url;
+    } else {
+      url_handler = false;
+    }
+
+    e.preventDefault();
+  });
+
+  $(document).on("mouseup", document, function(e) {
+    url_handler = false;
+  });
+
+  $(document).on("mouseup", ".url", function(e) {
+
+    var url = $(this).attr("data-url");
+
+    if ( url && typeof(url) === "string" && url !== ""
+    &&   url_handler && url_handler === url ) {
+
+      // Update Amazon.com URLs to TLD of user-preference
+      if( url.match(amazon_regex)
+      &&   localStorage["amazon-locale"] !== null
+      &&   localStorage["amazon-locale"] !== ""
+      &&   typeof(localStorage["amazon-locale"]) !== "undefined" ) {
+        url = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
+      }
+
+      switch(e.which)
+      {
+        case 1:
+          if ( $(this).attr("pin") === "pin" ) {
+            chrome.tabs.getCurrent(function(tab) {
+              chrome.tabs.create({ url: (url), pinned: true });
+              chrome.tabs.remove( tab.id );
+            });
+          } else if ( url.match(/^(http:|https:|chrome-extension:)/) ) {
+            window.location = url;
+          } else {
+            // Left click, open a new one and close the current one
+            chrome.tabs.getCurrent(function(tab) {
+              chrome.tabs.create({ url: (url) });
+              chrome.tabs.remove( tab.id );
+            });
+          }
+          return;
+        case 2:
+          chrome.tabs.create({ url: (url) });
+          return;
+      }
+    }
+
+    url_handler = false;
+  });
+
+  /* URL Handler :: End */

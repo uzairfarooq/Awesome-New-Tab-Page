@@ -391,36 +391,6 @@
       localStorage.setItem("amazon-locale", $(this).val());
     });
 
-    $("#widget-holder > .app > a").live('mouseup', function(e) {
-      if( (this.href).match(amazon_regex) ) {
-        if (localStorage["amazon-locale"] !== null
-          && localStorage["amazon-locale"] !== ""
-          && typeof(localStorage["amazon-locale"]) !== "undefined") {
-          this.href = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
-        } else {
-          $(this).attr("data-url", "http://www.amazon.com/?tag=sntp-20");
-        }
-      }
-
-      if( (this.href).indexOf("file://") != -1 ) {
-        switch(e.which)
-        {
-          case 1:
-            chrome.tabs.update(null, {url: (this.href)});
-            return false;
-          case 2:
-            chrome.tabs.create({url: (this.href)});
-            return false;
-        }
-      }
-    }).live('click', function(e) {
-      if( (this.href).indexOf("file://") != -1 ) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-    });
-
     $("#colorselector-bg").ColorPicker({
       color: '#' + ( localStorage.getItem("color-bg") || "221f20") ,
       onShow: function (colpkr) {
