@@ -4,7 +4,7 @@
   "chrome_url_overrides" : {
     "newtab": "ntp.html"
   },
-  "version": "2012.104.127.102",
+  "version": "2012.104.128.100",
   "name": "Awesome New Tab Page",
   "description": "Enhance your New Tab Page with ultimate customizability and power. Awesome, like you. [ANTP]",
   "options_page": "options.html",
