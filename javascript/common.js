@@ -295,7 +295,7 @@ function _e(_eNum) {
           }
           return;
         case 2:
-          chrome.tabs.create({ url: (url) });
+          chrome.tabs.create({ url: (url), active: false });
           return;
       }
     }
