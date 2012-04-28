@@ -254,6 +254,8 @@ function _e(_eNum) {
       url_handler = false;
     }
 
+    $(this).attr("href", url);
+
     if ( ( e.which === 2 )
     ||   ( e.ctrlKey === true && e.which !== 3 ) ) {
       $(this).attr("href", null);
@@ -284,13 +286,8 @@ function _e(_eNum) {
         e.which = 2;
       }
 
-      // Shift Click = Open in new window
-      if ( e.shiftKey === true ) {
-        return;
-      }
-
-      switch (e.which) {
-        case 1:
+      if ( e.shiftKey !== true ) {
+        if ( e.which === 1 ) {
           if ( $(this).attr("pin") === "pin" ) {
             chrome.tabs.getCurrent(function(tab) {
               chrome.tabs.create({ url: (url), pinned: true });
@@ -305,12 +302,9 @@ function _e(_eNum) {
               chrome.tabs.remove( tab.id );
             });
           }
-
-          break;
-        case 2:
+        } else if ( e.which === 2 ) {
           chrome.tabs.create({ url: (url), active: false });
-
-          break;
+        }
       }
     }
 
