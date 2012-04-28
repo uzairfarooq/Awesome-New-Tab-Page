@@ -286,10 +286,10 @@ function updateShortcut(e) {
 
     widgets[id].pin = pin;
     if ( pin === true ) {
-      $(".ui-2#editor #shortcut_name_show").prop("checked", true);
+      $(".ui-2#editor #shortcut_pin").prop("checked", true);
       $("#widget-holder #"+id+" .url").attr("pin", "pin");
     } else {
-      $(".ui-2#editor #shortcut_name_show").prop("checked", true);
+      $(".ui-2#editor #shortcut_pin").prop("checked", false);
       $("#widget-holder #"+id+" .url").attr("pin", null);
     }
 
