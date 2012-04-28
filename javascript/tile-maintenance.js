@@ -220,6 +220,7 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
       $("<a></a>").attr({
         "class"   : "url",
         "data-url":  url ,
+        "href"    :  url ,
         "pin"     :  pin
       }),
       favicon
