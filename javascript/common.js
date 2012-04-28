@@ -37,7 +37,7 @@
       stock: true,
       img: "app.webstore.png",
       simg: "app.webstore.png",
-      appLaunchUrl: "https://chrome.google.com/webstore?utm_source=featured&utm_medium=awesome-new-tab-page"
+      appLaunchUrl: "https://chrome.google.com/webstore?utm_source=webstore-app&utm_medium=awesome-new-tab-page"
     },
     tutorial: {
       where: [0,0],
