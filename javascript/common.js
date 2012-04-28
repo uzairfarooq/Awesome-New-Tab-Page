@@ -254,7 +254,10 @@ function _e(_eNum) {
       url_handler = false;
     }
 
-    e.preventDefault();
+    if ( ( e.which === 2 )
+    ||   ( e.ctrlKey === true && e.which !== 3 ) ) {
+      $(this).attr("href", null);
+    }
   });
 
   $(document).on("mouseup", document, function(e) {
@@ -276,8 +279,17 @@ function _e(_eNum) {
         url = "http://www." + localStorage["amazon-locale"] + "/?tag=sntp-20";
       }
 
-      switch(e.which)
-      {
+      // Ctrl + Click = Open in new tab
+      if ( e.which !== 3 && e.ctrlKey === true ) {
+        e.which = 2;
+      }
+
+      // Shift Click = Open in new window
+      if ( e.shiftKey === true ) {
+        return;
+      }
+
+      switch (e.which) {
         case 1:
           if ( $(this).attr("pin") === "pin" ) {
             chrome.tabs.getCurrent(function(tab) {
@@ -293,12 +305,18 @@ function _e(_eNum) {
               chrome.tabs.remove( tab.id );
             });
           }
-          return;
+
+          break;
         case 2:
           chrome.tabs.create({ url: (url), active: false });
-          return;
+
+          break;
       }
     }
+
+    $(this).delay(100).queue(function() {
+      $(this).attr("href", url);
+    });
 
     url_handler = false;
   });
