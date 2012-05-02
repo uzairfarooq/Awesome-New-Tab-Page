@@ -34,9 +34,9 @@
       #google {
         width: 100%;
         height: 100%;
-        background-image:url('widget.google.png');
-        background-repeat:no-repeat;
-        background-position:center center;
+        background-image: url(widget.google.png);
+        background-repeat: no-repeat;
+        background-position: center center;
         z-index: 5;
       }
       a {
@@ -62,150 +62,103 @@
         height: 35px;
         width: 35px;
         opacity: .77;
+
+        background-image: url(widget.google.products.png);
+        background-color: transparent;
+        background-repeat: no-repeat;
       }
       .SVC:hover {
         opacity: 1;
       }
-      /* TOP */
       #PLUS {
-        background: url(plus.google.png) no-repeat 0 0;
+        background-position: -462px 0;
       }
       #GWS {
-        background: url(webhp.png) no-repeat 0 0;
+        background-position: -762px 0;
       }
       #IMG {
-        background: url(images-32.png) no-repeat 0 0;
+        background-position: -126px 0;
       }
       #GMAIL {
-        background: url(mail.png) no-repeat 0 0;
+        background-position: -168px 0;
       }
       #VOICE {
-        background: url(voice.google.png) no-repeat 0 0;
+        background-position: -678px 0;
       }
       #YT {
-        background: url(www.youtube.png) no-repeat 0 0;
+        background-position: -804px 0;
       }
       #DRIVE {
-        background: url(drive.png) no-repeat 0 0;
+        background-position: -42px 0;
       }
       #CAL {
-        background: url(calendar.png) no-repeat 0 0;
+        background-position: 0 0;
       }
       #MAPS {
-        background: url(maps.google.png) no-repeat 0 0;
+        background-position: -210px 0;
       }
       #READER {
-        background: url(view.png) no-repeat 0 0;
+        background-position: -636px 0;
       }
-
-      /* BOTTOM */
       #NEWS {
-        background: url(news.png) no-repeat 0 0;
+        background-position: -294px 0;
       }
       #TRANSLATE {
-        background: url(translate.google.png) no-repeat 0 0;
+        background-position: -594px 0;
       }
       #MUSIC {
-        background: url(music.google.png) no-repeat 0 0;
+        background-position: -252px 0;
       }
       #BMKS {
-        background: url(star_lit_2x.png) no-repeat 0 0;
-        background-size: 34px;
+        background-position: -546px 0;
       }
       #PICASA {
-        background: url(picasa.png) no-repeat 0 0;
+        background-position: -378px 0;
       }
       #FINANCE {
-        background: url(finance-32.png) no-repeat 0 0;
+        background-position: -84px 0;
       }
       #PROD {
-        background: url(products.png) no-repeat 0 0;
+        background-position: -504px 0;
       }
       #OFFERS {
-        background: url(offers.png) no-repeat 0 0;
+        background-position: -336px 0;
       }
       #WALLET {
-        background: url(wallet.png) no-repeat 0 0;
+        background-position: -720px 0;
       }
-      #MARKET {
-        background: url(play.png) no-repeat 0 0;
+      #PLAY {
+        background-position: -420px 0;
       }
     </style>
-
-    <script>
-      $(document).ready(function($) {
-        var qtipShared = {
-          show: 'mouseover',
-          hide: 'mouseout',
-          style: {
-            name: 'light',
-            tip: 'topMiddle',
-          },
-          position: {
-            corner: {
-               target: 'bottomMiddle',
-               tooltip: 'topMiddle'
-            },
-            adjust: {
-              screen: true
-            }
-          }
-        }
-
-
-        $('#PLUS').qtip( $.extend({}, qtipShared, { content: 'Google+' }) );
-        $('#GWS').qtip( $.extend({}, qtipShared, { content: 'Search' }) );
-        $('#IMG').qtip( $.extend({}, qtipShared, { content: 'Image Search' }) );
-        $('#GMAIL').qtip( $.extend({}, qtipShared, { content: 'Gmail' }) );
-        $('#VOICE').qtip( $.extend({}, qtipShared, { content: 'Voice' }) );
-        $('#YT').qtip( $.extend({}, qtipShared, { content: 'YouTube' }) );
-        $('#DRIVE').qtip( $.extend({}, qtipShared, { content: 'Google Drive (Google Docs)' }) );
-        $('#CAL').qtip( $.extend({}, qtipShared, { content: 'Calendar' }) );
-        $('#MAPS').qtip( $.extend({}, qtipShared, { content: 'Maps' }) );
-        $('#READER').qtip( $.extend({}, qtipShared, { content: 'Reader' }) );
-
-        $('#NEWS').qtip( $.extend({}, qtipShared, { content: 'News' }) );
-        $('#TRANSLATE').qtip( $.extend({}, qtipShared, { content: 'Translate' }) );
-        $('#MUSIC').qtip( $.extend({}, qtipShared, { content: 'Music' }) );
-        $('#BMKS').qtip( $.extend({}, qtipShared, { content: 'Google Bookmarks' }) );
-        $('#PICASA').qtip( $.extend({}, qtipShared, { content: 'Picasa Web' }) );
-        $('#FINANCE').qtip( $.extend({}, qtipShared, { content: 'Finance' }) );
-        $('#PROD').qtip( $.extend({}, qtipShared, { content: 'Product Search' }) );
-        $('#OFFERS').qtip( $.extend({}, qtipShared, { content: 'Offers' }) );
-        $('#WALLET').qtip( $.extend({}, qtipShared, { content: 'Wallet' }) );
-        $('#MARKET').qtip( $.extend({}, qtipShared, { content: 'Google Play' }) );
-
-
-      });
-    </script>
   </head>
 
   <body>
     <a href="http://www.google.com/" target="_parent"><div id="google">&nbsp;</div></a>
     <div id="services" class="s-top">
-      <a class="SVC" id="PLUS" href="https://plus.google.com/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="GWS" href="https://www.google.com/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="IMG" href="https://www.google.com/imghp" target="_parent">&nbsp;</a>
-      <a class="SVC" id="GMAIL" href="https://mail.google.com/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="VOICE" href="https://www.google.com/voice/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="YT" href="https://www.youtube.com/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="DRIVE" href="https://drive.google.com/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="CAL" href="https://www.google.com/calendar/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="MAPS" href="https://www.google.com/maps" target="_parent">&nbsp;</a>
-      <a class="SVC" id="READER" href="https://reader.google.com/" target="_parent">&nbsp;</a>
+      <a class="SVC" id="PLUS"      href="https://plus.google.com/"           title="Google Plus"             target="_parent">&nbsp;</a>
+      <a class="SVC" id="GWS"       href="https://www.google.com/"            title="Google.com"              target="_parent">&nbsp;</a>
+      <a class="SVC" id="IMG"       href="https://www.google.com/imghp"       title="Google Image Search"     target="_parent">&nbsp;</a>
+      <a class="SVC" id="MAPS"      href="https://www.google.com/maps"        title="Google Maps"             target="_parent">&nbsp;</a>
+      <a class="SVC" id="NEWS"      href="https://news.google.com"            title="Google News"             target="_parent">&nbsp;</a>
+      <a class="SVC" id="READER"    href="https://reader.google.com/"         title="Google Reader"           target="_parent">&nbsp;</a>
+      <a class="SVC" id="FINANCE"   href="https://www.google.com/finance"     title="Google Finance"          target="_parent">&nbsp;</a>
+      <a class="SVC" id="PROD"      href="https://www.google.com/products"    title="Google Product Search"   target="_parent">&nbsp;</a>
+      <a class="SVC" id="BMKS"      href="https://www.google.com/bookmarks"   title="Google Bookmarks"        target="_parent">&nbsp;</a>
+      <a class="SVC" id="TRANSLATE" href="https://www.google.com/translate"   title="Google Translate"        target="_parent">&nbsp;</a>
     </div>
 
     <div id="services" class="s-bottom">
-      <a class="SVC" id="NEWS" href="https://news.google.com" target="_parent">&nbsp;</a>
-      <a class="SVC" id="TRANSLATE" href="https://www.google.com/translate" target="_parent">&nbsp;</a>
-      <a class="SVC" id="MUSIC" href="https://music.google.com/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="BMKS" href="https://www.google.com/bookmarks" target="_parent">&nbsp;</a>
-      <a class="SVC" id="PICASA" href="https://picasaweb.google.com/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="FINANCE" href="https://www.google.com/finance" target="_parent">&nbsp;</a>
-      <a class="SVC" id="PROD" href="https://www.google.com/products" target="_parent">&nbsp;</a>
-      <a class="SVC" id="OFFERS" href="https://www.google.com/offers/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="WALLET" href="https://wallet.google.com/manage/" target="_parent">&nbsp;</a>
-      <a class="SVC" id="MARKET" href="https://play.google.com/" target="_parent">&nbsp;</a>
+      <a class="SVC" id="GMAIL"     href="https://mail.google.com/"           title="Gmail"                   target="_parent">&nbsp;</a>
+      <a class="SVC" id="DRIVE"     href="https://drive.google.com/"          title="Google Drive"            target="_parent">&nbsp;</a>
+      <a class="SVC" id="VOICE"     href="https://www.google.com/voice/"      title="Google Voice"            target="_parent">&nbsp;</a>
+      <a class="SVC" id="PLAY"      href="https://play.google.com/"           title="Google Play"             target="_parent">&nbsp;</a>
+      <a class="SVC" id="MUSIC"     href="https://music.google.com/"          title="Google Play Music"       target="_parent">&nbsp;</a>
+      <a class="SVC" id="YT"        href="https://www.youtube.com/"           title="YouTube"                 target="_parent">&nbsp;</a>
+      <a class="SVC" id="PICASA"    href="https://picasaweb.google.com/"      title="Picasa"                  target="_parent">&nbsp;</a>
+      <a class="SVC" id="CAL"       href="https://www.google.com/calendar/"   title="Google Calendar"         target="_parent">&nbsp;</a>
+      <a class="SVC" id="OFFERS"    href="https://www.google.com/offers/"     title="Google Offers"           target="_parent">&nbsp;</a>
+      <a class="SVC" id="WALLET"    href="https://wallet.google.com/manage/"  title="Google Wallet"           target="_parent">&nbsp;</a>
     </div>
   </body>
 </html>
