@@ -111,7 +111,7 @@
       }
     </style>
     <script type="text/javascript" src="/javascript/jquery.js"></script>
-    <script type="text/javascript" src="/javascript/qs_score.js"></script>
+    <script type="text/javascript" src="/javascript/string_score.js"></script>
     <script type="text/javascript">
       $(document).ready(function($) {
 
@@ -160,40 +160,63 @@
         $("input#query").live("keyup", searchTabs);
 
         function searchTabs() {
-          var query = $("input#query").val();
-          var open_tabs = JSON.parse(localStorage.getItem("open_tabs"));
-          $("#tabs").html("");
-
-          var names = $.map(open_tabs, function (tab) { return tab.title });
-          var filtered = $.map(names, function (item) {
-            var score = item.toLowerCase().score(query.toLowerCase());
-            if (score > 0) return {
-              'name': item,
-              'value': score
+          var
+          open_tabs_html = [];
+          query     = $("input#query").val(),
+          open_tabs = JSON.parse(localStorage.getItem("open_tabs")),
+          tab_names = $.map(open_tabs, function (tab) {
+            return {
+              "title" : tab.title,
+              "id"    : tab.id
+            }
+          }),
+          filtered  = $.map(tab_names, function (tab) {
+            var score = (tab.title).score(query);
+            if ( score > 0 ) {
+              return {
+                "title" : tab.title,
+                "id"    : tab.id ,
+                "score" : score
+              }
             }
           });
 
           if ( typeof(query) === "string"
-            && query !== "" ) {
+          &&   query !== "" ) {
             filtered.sort(function(a, b) {
-            return b.value - a.value
-          });
+              return b.score - a.score
+            });
           }
 
-          $.map(filtered, function(item) {
-            $.each(open_tabs, function(id, tab) {
-              if ( tab.incognito === false && tab.status == "complete" && item.name == tab.title) {
-              var open_temp = $("<div></div>").addClass("tab-item");
+          $.each(open_tabs, function(id, tab) {
+            if ( typeof(query) === "string"
+            &&   query !== ""
+            &&   filtered.filter(function (_tab) { return _tab.id === tab.id }).length !== 1) {
+              return;
+            }
+
+            if ( tab.incognito === false ) {
+              var pin,
+                open_temp  = $("<div></div>").addClass("tab-item");
               $("<img></img>").appendTo(open_temp).addClass("tab-icon")
                 .attr({
-                "src": "chrome://favicon/"+tab.url,
-                "height": 16,
-                "width": 16
+                  "src"   : "chrome://favicon/" + tab.url,
+                  "height": 16,
+                  "width" : 16
                 });
-              var highlighted = tab.title;
-              highlighted = highlighted.replace(new RegExp(query, "gi"), "<b>$&</b>");
-              $("<div></div>").appendTo(open_temp).addClass("tab-link").html( highlighted ).attr("id", tab.id);
-              var pin = $("<span></span>").attr("id", tab.id).addClass("button");
+
+              if ( typeof(query) === "string"
+              &&   query !== "" ) {
+                tab.title = (tab.title).replace(new RegExp(escape(query), "gi"), "<b>$&</b>");
+              }
+
+              $("<div></div>").appendTo(open_temp).addClass("tab-link")
+                .attr({
+                  "id"    : tab.id   ,
+                  "title" : tab.title
+                })
+                .html( tab.title );
+              pin = $("<span></span>").attr("id", tab.id).addClass("button");
               if (tab.pinned === false) {
                 pin.appendTo(open_temp).html( "<img src='pin.png' title='Pin'>" ).addClass("pin");
               } else {
@@ -201,10 +224,16 @@
               }
               $("<span></span>").appendTo(open_temp).html( "<img src='close.png' title='Close'>" )
                 .attr("id", tab.id).addClass("close button");
-              open_temp.appendTo("#tabs");
-              }
-            });
+
+              open_tabs_html.push( $(open_temp) );
+            }
           });
+
+          $("#tabs").empty();
+          $.each(open_tabs_html, function(i, e) {
+            $(e).appendTo("#tabs");
+          });
+
           restyle();
         }
 

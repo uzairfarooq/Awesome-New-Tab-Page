@@ -45,9 +45,10 @@ window.setTimeout(' window.location = window.location; ', 1*60*60*1000);
     getAllTabs();
   }
 
+  chrome.tabs.onMoved.addListener( getAllTabs );
   chrome.tabs.onCreated.addListener( getAllTabs );
   chrome.tabs.onUpdated.addListener( getAllTabs );
-  chrome.tabs.onHighlightChanged.addListener( getAllTabs );
+  chrome.tabs.onHighlighted.addListener( getAllTabs );
 
   var tabs = null;
   function getAllTabs() {
