@@ -50,14 +50,14 @@ $(".ui-2#editor").bind({
         console.error("filesystem:", error);
         return false;
       }
-      if ( file.size >  150 * 1024 ) {
-        error = "File size too great: Size: "+ ((file.size)/1024).toFixed(2) + " KB.<br /> Please limit to 150 KB";
-        $.jGrowl(error, { header: "Filesystem Error" });
-        console.error("filesystem:", error);
+      if ( validateImageFile(file, 150, "KB") == false ) {
         return false;
       }
 
-      saveImage(file, "shortcut");
+      readFile(file, function (dataURI) {
+        var fileExt = extractExtension(file.name);
+        saveImage(dataURI, fileExt, "shortcut");
+      });
     } else {
       error = "No file to upload.";
       $.jGrowl(error, { header: "Filesystem Error" });
@@ -69,10 +69,11 @@ $(".ui-2#editor").bind({
   }
 });
 
+// when icon browse button clicked
 $("#filesystem_icon_ui").click(function() {
   $("#filesystem_icon_input").click();
 });
-
+// when icon file is selected
 $("#filesystem_icon_input").change(function() {
   var error;
   var files = $("#filesystem_icon_input")[0].files;
@@ -87,19 +88,64 @@ $("#filesystem_icon_input").change(function() {
           console.error("filesystem:", error);
           return false;
         }
-        if ( file.size >  150 * 1024 ) {
-          error = "File size too great: Size: "+ ((file.size)/1024).toFixed(2) + " KB.<br /> Please limit to 150 KB.";
-          $.jGrowl(error, { header: "Filesystem Error" });
-          console.error("filesystem:", error);
-          return false;
+        if (validateImageFile(file, 150, "KB") == false) {
+            return false;
         }
 
-      saveImage(file, "shortcut");
+        readFile(file, function (dataURI) {
+          var fileExt = extractExtension(file.name);
+          saveImage(dataURI, fileExt, "shortcut");
+        });
     } else {
       error = "No file selected to upload.";
       $.jGrowl(error, { header: "Filesystem Error" });
       console.error("filesystem:", error);
     }
+});
+
+// upon click on Use Screenshot button
+$("#filesystem_icon_screenshot_bt").click(function () {
+  var shortcutURL = $("#shortcut_url").val();
+  chrome.tabs.create({ url: shortcutURL }, function (tab) {
+    chrome.tabs.onUpdated.addListener(function (tabid, tabInfo, tabToCapture) {   // wait until page is completely loaded
+      if (tabid == tab.id && tabInfo.status == "complete") {
+        if (tabToCapture.active) {
+          chrome.tabs.captureVisibleTab(function (dataUrl) {
+            chrome.tabs.remove(tab.id, function() {
+              chrome.tabs.getCurrent(function(tab){
+                chrome.tabs.update(tab.id, {active: true});
+              });
+            });
+            saveImage(dataUrl, "jpeg", "shortcut");
+          });
+        }
+        else {
+          // if user switched to some other tab, activate the tab again to take screenshot
+          chrome.tabs.update(tab.id, { active: true }, function (tab) { 
+            var handler = setInterval(function () {    // wait 400ms before taking screenshot for page to render completely, otherwise blank page appears
+              chrome.tabs.get(tab.id, function (tab){
+                if (tab.active)
+                {
+                  clearInterval(handler);
+                  chrome.tabs.captureVisibleTab(function (dataUrl) {
+                    chrome.tabs.remove(tab.id, function() {
+                      chrome.tabs.getCurrent(function(tab){
+                        chrome.tabs.update(tab.id, {active: true});
+                      });
+                    });
+                    saveImage(dataUrl, "jpeg", "shortcut");
+                  });
+                }
+                else{
+                  chrome.tabs.update(tab.id, { active: true });   // if tab is switched again, activate tab again
+                }
+              });
+            }, 400);
+          });
+        }
+      }
+    });
+  });
 });
 
 /**
@@ -120,14 +166,14 @@ $(".ui-2#config").bind({
       && files[0].type ) {
       var file = files[0];
 
-      if ( file.size >  5 * 1024 * 1024 ) {
-        error = "File size too great: Size: "+ ((file.size)/1024/1024).toFixed(2) + " MB.<br /> Please limit to 5 MB.";
-        $.jGrowl(error, { header: "Filesystem Error" });
-        console.error("filesystem:", error);
+      if ( validateImageFile(file, 5, "MB") == false ) {
         return false;
       }
 
-      saveImage(file, "background");
+      readFile(file, function (dataURI) {
+        var fileExt = extractExtension(file.name);
+        saveImage(dataURI, fileExt, "background");
+      });
     } else {
       error = "No file to upload.";
       $.jGrowl(error, { header: "Filesystem Error" });
@@ -139,10 +185,11 @@ $(".ui-2#config").bind({
   }
 });
 
+// when background browse button clicked
 $("#filesystem_bg_ui").click(function() {
   $("#filesystem_bg_input").click();
 });
-
+// when background file is selected
 $("#filesystem_bg_input").change(function() {
   var error;
   var files = $("#filesystem_bg_input")[0].files;
@@ -150,15 +197,14 @@ $("#filesystem_bg_input").change(function() {
       && files[0]
       && files[0].type ) {
         var file = files[0];
-
-        if ( file.size >  5 * 1024 * 1024 ) {
-          error = "File size too great: Size: "+ ((file.size)/1024/1024).toFixed(2) + " MB.<br /> Please limit to 5 MB.";
-          $.jGrowl(error, { header: "Filesystem Error" });
-          console.error("filesystem:", error);
+        if (validateImageFile(file, 5, "MB") == false) {
           return false;
         }
 
-      saveImage(file, "background");
+        readFile(file, function (dataURI) {
+          var fileExt = extractExtension(file.name);
+          saveImage(dataURI, fileExt, "background");
+        });
     } else {
       error = "No file selected to upload.";
       $.jGrowl(error, { header: "Filesystem Error" });
@@ -166,52 +212,79 @@ $("#filesystem_bg_input").change(function() {
     }
 });
 
-function saveImage(file, type) {
-  var error;
 
-  if ( (file.type).match("image/") === null ) {
-    error = "Not an image.<br /> Type: "+ file.type;
+// checks if file is an image file and size is less than 150kb
+function validateImageFile(file, sizeLimit, sizeUnit) {
+    var originalLimit = sizeLimit;
+    var error;
+    if ((file.type).match("image/") === null) {
+        error = "Not an image.<br /> Type: " + file.type;
+        $.jGrowl(error, { header: "Filesystem Error" });
+        console.error("filesystem:", error);
+        return false;
+    }
+
+    var fileSize = file.size / 1024;
+    sizeLimit *= 1024;
+    if (sizeUnit == "MB") {
+        sizeLimit = sizeLimit * 1024;
+        fileSize /= 1024;
+    }
+    if (file.size > sizeLimit) {
+        error = "File size too great: Size: " + (fileSize).toFixed(2) + " " + sizeUnit + ".<br /> Please limit to " + originalLimit + " " + sizeUnit + ".";
+        $.jGrowl(error, { header: "Filesystem Error" });
+        console.error("filesystem:", error);
+        return false;
+    }
+    return true;
+}
+
+function readFile(file, callback) {
+    var reader = new FileReader();
+    reader.onload = function (event) {
+        callback(event.target.result);
+    };
+    reader.readAsDataURL(file);
+}
+
+function extractExtension(filename) {
+    var extension = filename;
+    extension = extension.split(".");
+    extension = extension.pop();
+    return extension;
+}
+
+function saveImage(dataURI, fileExtension, saveTo) {
+  var error,
+    file_name;
+
+  if ( saveTo === "shortcut" ) {
+    destination = shortcuts;
+    file_name = $(".ui-2#editor").attr("active-edit-id") + "." + fileExtension;
+  } else if (saveTo === "background") {
+    destination = fs.root;
+    file_name = "background." + fileExtension;
+  } else {
+    error = "Not shortcut or background.";
     $.jGrowl(error, { header: "Filesystem Error" });
     console.error("filesystem:", error);
     return false;
   }
 
-  var reader = new FileReader();
-  reader.onload = function (event) {
-    var extension = file.name;
-    extension = extension.split(".");
-    extension = extension.pop();
-
-    var file_name;
-    if ( type === "shortcut" ) {
-      destination = shortcuts;
-      file_name = $(".ui-2#editor").attr("active-edit-id") + "." + extension;
-    } else if ( type === "background" ) {
-      destination = fs.root;
-      file_name = "background." + extension;
-    } else {
-      error = "Not shortcut or background.";
-      $.jGrowl(error, { header: "Filesystem Error" });
-      console.error("filesystem:", error);
-      return false;
-    }
-
-    destination.getFile(file_name, {create: true}, function(fileEntry) {
-      fileEntry.createWriter(function(fileWriter) {
-        fileWriter.onwriteend = function(e) {
-          if ( type === "shortcut" ) {
-            $("#img_url").val(fileEntry.toURL())
-              .change();
-          } else if ( type === "background" ) {
-            $("#bg-img-css").val( "url("+fileEntry.toURL()+")" )
-              .change();
-          }
-        };
-        fileWriter.write(dataURItoBlob(event.target.result));
-      }, errorHandler);
+  destination.getFile(file_name, {create: true}, function(fileEntry) {
+    fileEntry.createWriter(function(fileWriter) {
+      fileWriter.onwriteend = function(e) {
+        if (saveTo === "shortcut") {
+          $("#img_url").val(fileEntry.toURL())
+            .change();
+          } else if (saveTo === "background") {
+          $("#bg-img-css").val( "url("+fileEntry.toURL()+")" )
+            .change();
+        }
+      };
+      fileWriter.write(dataURItoBlob(dataURI));
     }, errorHandler);
-  };
-  reader.readAsDataURL(file);
+  }, errorHandler);
 }
 
 function dataURItoBlob(dataURI) {

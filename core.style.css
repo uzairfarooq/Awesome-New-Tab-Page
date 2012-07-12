@@ -928,7 +928,7 @@ body > .widget-drawer-app img {
  * Drop Area Styling (for drop uploading images)
  */
 
-  #filesystem_icon_ui, #filesystem_bg_ui {
+  #filesystem_icon_ui, #filesystem_bg_ui, #filesystem_icon_screenshot_bt {
     cursor: pointer;
   }
 
