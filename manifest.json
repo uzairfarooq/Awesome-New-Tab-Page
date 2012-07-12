@@ -1,10 +1,11 @@
 {
 "update_url":"http://clients2.google.com/service/update2/crx",
+  "minimum_chrome_version": "18",
   "background_page": "background.html",
   "chrome_url_overrides" : {
     "newtab": "ntp.html"
   },
-  "version": "2012.105.102.100",
+  "version": "2012.105.105.100",
   "name": "Awesome New Tab Page",
   "description": "Enhance your New Tab Page with ultimate customizability and power. Awesome, like you. [ANTP]",
   "options_page": "options.html",
@@ -17,7 +18,6 @@
     "bookmarks",
     "tabs",
     "unlimitedStorage",
-    "chrome://favicon/",
-    "http://newtabpage.org/"
+	"<all_urls>"
   ]
 }

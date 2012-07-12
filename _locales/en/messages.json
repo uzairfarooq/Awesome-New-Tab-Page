@@ -77,6 +77,9 @@
   "ui_te_ib_browse": {
     "message": "Browse"
   },
+  "ui_te_ib_screenshot": {
+	"message": "Use Screenshot"
+  }, 
   "ui_te_ib_tip": {
     "message": "Tip: Leave blank for no icon."
   },
