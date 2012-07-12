@@ -1,11 +1,11 @@
 {
 "update_url":"http://clients2.google.com/service/update2/crx",
-  "minimum_chrome_version": "18",
+  "minimum_chrome_version": "19",
   "background_page": "background.html",
   "chrome_url_overrides" : {
     "newtab": "ntp.html"
   },
-  "version": "2012.105.105.100",
+  "version": "2012.107.112.100",
   "name": "Awesome New Tab Page",
   "description": "Enhance your New Tab Page with ultimate customizability and power. Awesome, like you. [ANTP]",
   "options_page": "options.html",
@@ -17,7 +17,8 @@
     "management",
     "bookmarks",
     "tabs",
+    "storage",
     "unlimitedStorage",
-	"<all_urls>"
+    "<all_urls>"
   ]
 }
