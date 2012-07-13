@@ -54,7 +54,7 @@ function updateGridOpacity() {
   } else {
     $("body").removeClass("perm-grid");
     localStorage.setItem("perm-grid", "no");
-    $(".tile").animate({opacity: 0});
+    $(".tile").css({opacity: 0});
   }
 }
 
