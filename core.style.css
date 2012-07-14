@@ -347,11 +347,6 @@ body {
 .side-button:hover {
   opacity: 1;
 }
-#tmp-contest {
-  background-color: transparent;
-  background-image: url("/images/ui-2/tmp_contest.png");
-  background-repeat: no-repeat;
-}
 #logo-button {
   background-color: transparent;
   background-image: url("/images/antp.png");

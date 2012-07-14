@@ -270,90 +270,6 @@
 
   /* END :: Tooltips */
 
-/* START :: Contest */
-
-  function checkIfGoTeim() {
-    $.ajax({
-      url: "https://cdn.antp.co/api/contest/?nocache=" + new Date().getDate() + new Date().getHours(),
-      dataType: "jsonp",
-      cache: true,
-      jsonpCallback: "isItGoTeim"
-    });
-  }
-
-  setTimeout(checkIfGoTeim, 1300);
-
-  function isItGoTeim(data) {
-    if ( data
-    &&   data.go_teim
-    &&   data.go_teim === "yep" ) {
-      $(".ui-2#contest .contents").css("overflow", "hidden");
-
-      $("#tmp-contest").fadeIn();
-    }
-  }
-
-  $(document).ready(function(){
-    $("#tmp-contest").click(function() {
-      _gaq.push([ '_trackEvent', 'Window', "Contest" ]);
-
-      $("<iframe></iframe>").appendTo(".ui-2#contest .contents")
-        .attr({
-          "src" : "http://antp.co/api/contest/inner.html?nocache=" + new Date().getDate() + new Date().getHours(),
-          "frameborder" : 0,
-          "align"       : "center",
-          "height"      : "500px",
-          "width"       : "800px"
-        });
-
-      closeButton(".ui-2#contest");
-      $(".ui-2#contest").toggle();
-    });
-
-    if(window.location.hash) {
-      switch(window.location.hash) {
-        case "#winning":
-          $("#tmp-contest").trigger("click");
-          break;
-      }
-    }
-  });
-
-  /* END :: Contest */
-
-/* START :: Featured */
-  var loaded_featured = false;
-  function loadFeatured() {
-    if(loaded_featured === false) {
-      $.ajax({
-        url: "https://cdn.antp.co/getFeatured/?nocache-day=" + new Date().getDate(),
-        dataType: "jsonp",
-        cache: true,
-        jsonpCallback: "setupFeatured",
-        success: setupFeatured
-      });
-    }
-  }
-
-  function setupFeatured(data) {
-    console.log(data);
-    loaded_featured = true;
-
-    if( typeof(data.a) === "object" ) {
-      if( typeof(data.a.app) === "object" ) {
-        $(".ui-2#apps .faw-box .faw-featured img").attr("src", data.a.app.img);
-        $(".ui-2#apps .faw-box .faw-featured .faw-title").html(data.a.app.title);
-        $(".ui-2#apps .faw-box .faw-featured .faw-href").attr("href", data.a.app.href).css("display", "block");
-      }
-      if( typeof(data.a.widget) === "object" ) {
-        $(".ui-2#widgets .faw-box .faw-featured img").attr("src", data.a.widget.img);
-        $(".ui-2#widgets .faw-box .faw-featured .faw-title").html(data.a.widget.title);
-        $(".ui-2#widgets .faw-box .faw-featured .faw-href").attr("href", data.a.widget.href).css("display", "block");
-      }
-    }
-  }
-  /* END :: Featured */
-
 /* START :: Configure */
 
   $(document).ready(function($) {
@@ -440,7 +356,4 @@
   });
 
   /* END :: Configure */
-
-
-
 
