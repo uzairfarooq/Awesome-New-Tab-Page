@@ -49,14 +49,6 @@
     hscroll = true;
   }
 
-  $("#app-drawer-button").live("click", function(){
-    loadFeatured();
-    _gaq.push([ '_trackEvent', 'Window', "Apps" ]);
-
-    closeButton(".ui-2#apps");
-    $(".ui-2#apps").toggle();
-  });
-
   var options_init = true;
   $("#config-button, .ui-2.config").live("click", function(){
     _gaq.push([ '_trackEvent', 'Window', "Config" ]);

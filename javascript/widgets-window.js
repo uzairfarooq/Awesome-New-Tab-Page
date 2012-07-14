@@ -179,7 +179,6 @@ function setupStockWidgets() {
 }
 
 $("#widget-drawer-button").live("click", function(){
-  loadFeatured();
   _gaq.push([ '_trackEvent', 'Window', "Widgets" ]);
 
   $(".ui-2#widgets").toggle();

@@ -65,6 +65,13 @@ function setupDrawerApps() {
   }
 }
 
+$("#app-drawer-button").live("click", function(){
+  _gaq.push([ '_trackEvent', 'Window', "Apps" ]);
+
+  closeButton(".ui-2#apps");
+  $(".ui-2#apps").toggle();
+});
+
 $(".ui-2 .drawer-app-uninstall").live("click", function(e){
   var to_delete = null;
   var to_delete_name = null;
