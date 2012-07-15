@@ -434,6 +434,7 @@
           <div id="fake-tile-wrapper">
             <div id="fake-tile-background" class="bg-color">
               <div class="fake-tile" id="preview-tile">
+                <img id="invisible-tile-img" style="display: none;"/> <!-- this element is to just get width and height of tile icon -->
                 <div class="app-name"></div>
                 <img class="app-favicon"></img>
                 <div class="iframe-mask"></div>
@@ -454,6 +455,25 @@
             <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_app_tip"));</script></p>
           </div>
           <div class="hide-if-app">
+            <div id="icon-resize-scale-controls">
+              <div>
+                <span class="align-top"><script>document.write(chrome.i18n.getMessage("ui_resize_zoom"));</script>: </span>
+                <input id="zoom-slider" type="range" value="300" min="0" max="300" />
+              </div>
+              <div id="reset-bt" class="bubble ilb">
+                <script>document.write(chrome.i18n.getMessage("ui_resize_reset"));</script>
+              </div>
+              <div id="center-bt" class="bubble ilb">
+                <script>document.write(chrome.i18n.getMessage("ui_resize_center"));</script>
+              </div>
+              <div id="cover-bt" class="bubble ilb">
+                <script>document.write(chrome.i18n.getMessage("ui_resize_cover"));</script>
+              </div>
+              <div id="contain-bt" class="bubble ilb">
+                <script>document.write(chrome.i18n.getMessage("ui_resize_contain"));</script>
+              </div>
+          </div>
+
             <h3><script>document.write(chrome.i18n.getMessage("ui_te_ib"));</script></h3>
             <p><script>document.write(chrome.i18n.getMessage("ui_te_ib_desc"));</script></p>
             <div id="filesystem_icon_screenshot_bt" class="bubble ilb">

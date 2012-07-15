@@ -226,8 +226,7 @@ body {
   margin-bottom: auto;
   right: -19px;
 }
-.locked #widget-holder > .widget.app:active,
-.ui-2#editor #preview-tile:active {
+.locked #widget-holder > .widget.app:active {
   -webkit-transform: scale(0.95);
 }
 .widget.widget-drag {
@@ -251,6 +250,7 @@ body {
   color: white;
 }
 .bubble {
+  cursor: pointer;
   max-height: 35px;
   overflow: hidden;
   display: inline-block;
@@ -941,4 +941,18 @@ body > .widget-drawer-app img {
     text-align: center;
     color: black;
     display: none;
+  }
+
+  /**
+   * Resize and scale controls
+   */
+  #icon-resize-scale-controls {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  }
+
+  .align-top {
+    vertical-align: top;
+    margin-top: 4px;
   }
