@@ -375,6 +375,7 @@ IconResizing = {
   }, 
 
   calculateVars: function (callback) {
+    var previousId = IconResizing.id;
     IconResizing.id = $(".ui-2#editor").attr("active-edit-id");
     IconResizing.previewTile = $(".ui-2#editor #preview-tile, #widget-holder #" + IconResizing.id), 
     IconResizing.tileImg = $("#invisible-tile-img");
@@ -383,10 +384,21 @@ IconResizing = {
 
     // keep on getting image width, height until get correct one
     var handler = setInterval(function() {
-      IconResizing.imgWidth = IconResizing.tileImg.width();
-      IconResizing.imgHeight = IconResizing.tileImg.height();
-      if (IconResizing.imgWidth != 0) {
-        IconResizing.sizeRatio = IconResizing.imgWidth / IconResizing.imgHeight;
+      var newImgWidth = IconResizing.tileImg.width();
+      var newImgHeight = IconResizing.tileImg.height();
+      if (newImgWidth != 0) {
+        // if image is changed then reset its position and zoom level
+        if (IconResizing.id == previousId && (IconResizing.imgWidth != newImgWidth || IconResizing.imgHeight != newImgHeight)) {
+          IconResizing.imgWidth = newImgWidth;
+          IconResizing.imgHeight = newImgHeight;
+          IconResizing.sizeRatio = IconResizing.imgWidth / IconResizing.imgHeight;
+          IconResizing.resetTileIcon();
+        }
+        else {
+          IconResizing.imgWidth = newImgWidth;
+          IconResizing.imgHeight = newImgHeight;
+          IconResizing.sizeRatio = IconResizing.imgWidth / IconResizing.imgHeight;
+        }
         clearInterval(handler);
         if (callback) {
           callback();
@@ -444,7 +456,7 @@ IconResizing = {
       }
     }
 
-    IconResizing.previewTile.css("background-size", imgWidth + "px " + imgHeight + "px");
+    IconResizing.previewTile.css("background-size", imgWidth + "px " + imgHeight + "px, 100% 100%");
 
     IconResizing.updateSlider();
     IconResizing.savePosition();
@@ -453,16 +465,28 @@ IconResizing = {
   // recalculates zoom slider position
   updateSlider: function() {
     var slider = $("#icon-resize-scale-controls #zoom-slider");
-    var imgWidth = extractNumber(IconResizing.previewTile.filter(":eq(0)").css("background-size").split(" ")[0]);
-    var zoomPerStep = IconResizing.getZoomPerStep(slider.attr("max"));
-    var step;
-    if (IconResizing.imgWidth >= IconResizing.tileWidth) {
-      step = (imgWidth - IconResizing.tileWidth) / zoomPerStep;
+    var backgroundWidth = IconResizing.previewTile.filter(":eq(0)").css("background-size").split(" ")[0];
+    if (backgroundWidth == "auto,") {
+      if (IconResizing.imgWidth > IconResizing.tileWidth) {
+        slider.val(slider.attr("max"));
+      }
+      else {
+        slider.val(slider.attr("min"));
+      }
+
     }
     else {
-      step = (IconResizing.tileWidth - IconResizing.imgWidth) / zoomPerStep;
+      var currentImgWidth = extractNumber(backgroundWidth);
+      var zoomPerStep = IconResizing.getZoomPerStep(slider.attr("max"));
+      var step;
+      if (IconResizing.imgWidth >= IconResizing.tileWidth) {
+        step = (currentImgWidth - IconResizing.tileWidth) / zoomPerStep;
+      }
+      else {
+        step = (currentImgWidth - IconResizing.imgWidth) / zoomPerStep;
+      }
+      slider.val(step);
     }
-    slider.val(step);
   }, 
 
   changeZoomLevel: function() {
@@ -476,7 +500,7 @@ IconResizing = {
       imgWidth = IconResizing.tileWidth + (step * zoomPerStep);
     }
     var imgHeight = imgWidth / IconResizing.sizeRatio;
-    IconResizing.previewTile.css("background-size", imgWidth + "px " + imgHeight + "px");
+    IconResizing.previewTile.css("background-size", imgWidth + "px " + imgHeight + "px, 100% 100%");
     IconResizing.savePosition();
   }, 
 
@@ -545,7 +569,7 @@ IconDragging = {
     var newBackgroundPos = {};
     newBackgroundPos.X = (IconDragging.backgroundPos.X + event.clientX - IconDragging.mouseStartPos.X) + "px";
     newBackgroundPos.Y = (IconDragging.backgroundPos.Y + event.clientY - IconDragging.mouseStartPos.Y) + "px";
-    IconDragging.tile.css("background-position", newBackgroundPos.X + " " + newBackgroundPos.Y);
+    IconDragging.tile.css("background-position", newBackgroundPos.X + " " + newBackgroundPos.Y + ", 100% 100%");
   }, 
 
   stopDragging: function(event) {
