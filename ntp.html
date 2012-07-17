@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
   <head>
   <!-- Awesome New Tab Page
      -   antp.co
@@ -29,9 +29,12 @@
     <link rel="stylesheet" href="/css/jquery.jgrowl.css" type="text/css" media="screen">
 
     <link rel="stylesheet" href="core.style.css?nocache=10" type="text/css" media="screen">
+
+    <script type="text/javascript" src="/javascript/angular-1.0.1.min.js"></script>
+    <script type="text/javascript" src="/javascript/i18nController.js"></script>
   </head>
 
-  <body class="bg-color">
+  <body class="bg-color" ng-controller="i18nCtrl">
     <!-- Fixes an issue where scrolling sometimes didn't work. -->
     <div class="scroll-helper"></div>
 
@@ -61,7 +64,7 @@
           <div class="ui-2 name">
             Awesome New Tab Page
             <span class="ui-2 crumb">&nbsp;</span>
-            <span class="ui-2 subname"><script>document.write(chrome.i18n.getMessage("ui_about"));</script></span>
+            <span class="ui-2 subname"> {{i18nMsg('ui_about')}} </span>
           </div>
           <div class="ui-2 plus-share">
             <div class="g-plus" data-action="share" data-href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></div>
@@ -77,28 +80,28 @@
 
       <div class="ui-2 contents">
         <div id="about-contrib" class="ui-2">
-          <h3><script>document.write(chrome.i18n.getMessage("ui_about_contrib"));</script></h3>
-          <p><script>document.write(chrome.i18n.getMessage("ui_about_contrib_desc"));</script></p>
+          <h3>{{i18nMsg('ui_about_contrib')}}</h3>
+          <p>{{i18nMsg('ui_about_contrib_desc')}}</p>
           <p class="ilb">
             <a href="https://github.com/NewTabPage/Awesome-New-Tab-Page/contributors" class="bubble">
-              <script>document.write(chrome.i18n.getMessage("ui_about_dev"));</script>
+              {{i18nMsg('ui_about_dev')}}
             </a>
           </p>
           <p class="ilb">
             <a href="http://crowdin.net/project/antp" class="bubble">
-              <script>document.write(chrome.i18n.getMessage("ui_about_contrib_translators"));</script>
+              {{i18nMsg('ui_about_contrib_translators')}}
             </a>
           </p>
           <p class="ilb">
             <a href="https://ntp.uservoice.com/forums/136895-feedback" class="bubble">
-              <script>document.write(chrome.i18n.getMessage("ui_about_contrib_users"));</script>
+              {{i18nMsg('ui_about_contrib_users')}}
             </a>
           </p>
-          <p><script>document.write(chrome.i18n.getMessage("ui_about_contrib_cta"));</script></p>
+          <p>{{i18nMsg('ui_about_contrib_cta')}}</p>
         </div>
 
         <div id="about-dev" class="ui-2">
-          <h3><script>document.write(chrome.i18n.getMessage("ui_about_dev"));</script></h3>
+          <h3>{{i18nMsg('ui_about_dev')}}</h3>
 
           <p class="ilb">
             <a href="https://github.com/NewTabPage/Awesome-New-Tab-Page/contributors" class="bubble">
@@ -126,8 +129,8 @@
         </div>
 
         <div id="about-share" class="ui-2">
-          <h3><script>document.write(chrome.i18n.getMessage("ui_about_share"));</script></h3>
-          <p><script>document.write(chrome.i18n.getMessage("ui_about_share1"));</script></p>
+          <h3>{{i18nMsg('ui_about_share')}}</h3>
+          <p>{{i18nMsg('ui_about_share1')}}</p>
           <g:plusone expandTo="top" size="medium"
           href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></g:plusone>
           <a href="https://twitter.com/share" class="twitter-share-button"
@@ -139,9 +142,9 @@
         </div>
 
         <div id="about-rate" class="ui-2">
-          <h3><script>document.write(chrome.i18n.getMessage("ui_about_rate"));</script></h3>
+          <h3>{{i18nMsg('ui_about_rate')}}</h3>
           <p>
-            <script>document.write(chrome.i18n.getMessage("ui_about_rate_desc"));</script>
+            {{i18nMsg('ui_about_rate_desc')}}
           </p>
           <p>
             <a href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg/reviews" class="bubble">
@@ -160,7 +163,7 @@
           <div class="ui-2 name">
             Awesome New Tab Page
             <span class="ui-2 crumb">&nbsp;</span>
-            <span class="ui-2 subname"><script>document.write(chrome.i18n.getMessage("ui_config"));</script></span>
+            <span class="ui-2 subname">{{i18nMsg('ui_config')}}</span>
           </div>
           <div class="ui-2 plus-share">
             <div class="g-plus" data-action="share" data-href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></div>
@@ -176,22 +179,22 @@
 
       <div class="ui-2 contents">
         <div id="config-general" class="ui-2">
-          <h3><script>document.write(chrome.i18n.getMessage("ui_config_general"));</script></h3>
+          <h3>{{i18nMsg('ui_config_general')}}</h3>
           <div id="toggleBmb-holder">
             <input id="toggleBmb" type="checkbox" name="show" value="true" />
-            <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_shbmb"));</script></p>
+            <p class="ilb">{{i18nMsg('ui_config_shbmb')}}</p>
           </div>
 
           <div id="hideLeftButtons-holder">
             <input id="hideLeftButtons" type="checkbox" name="show" value="true" />
-            <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_shtlb"));</script></p>
+            <p class="ilb">{{i18nMsg('ui_config_shtlb')}}</p>
           </div>
 
-          <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_config_shtlb_desc"));</script></p>
+          <p class="tip">{{i18nMsg('ui_config_shtlb_desc')}}</p>
 
           <div id="toggle-grid-holder">
             <input id="toggle-grid" type="checkbox" name="show" value="true" />
-            <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_shgrid"));</script></p>
+            <p class="ilb">{{i18nMsg('ui_config_shgrid')}}</p>
           </div>
 
           <div id="amazon-locale">
@@ -208,42 +211,42 @@
               <option value="amazon.es">Spain (Amazon.es)</option>
             </select>
             <p class="ilb">
-              <script>document.write(chrome.i18n.getMessage("ui_config_amazonlocale"));</script>
+              {{i18nMsg('ui_config_amazonlocale')}}
               <a href="http://www.amazon.com/gp/feature.html?docId=487250&tag=sntp-20">
-                <u><script>document.write(chrome.i18n.getMessage("ui_c_learnmore"));</script></u></a>.
+                <u>{{i18nMsg('ui_c_learnmore')}}</u></a>.
             </p>
           </div>
 
           <div id="reset-button" class="bubble ilb">
-            <script>document.write(chrome.i18n.getMessage("ui_config_reset"));</script>
+            {{i18nMsg('ui_config_reset')}}
           </div>
-          <p class="ilb"><script>document.write(chrome.i18n.getMessage("ui_config_reset_desc"));</script></p>
+          <p class="ilb">{{i18nMsg('ui_config_reset_desc')}}</p>
         </div>
 
         <div id="config-background" class="ui-2">
-          <h3><script>document.write(chrome.i18n.getMessage("ui_config_bg"));</script></h3>
+          <h3>{{i18nMsg('ui_config_bg')}}</h3>
 
           <div class="bubble ilb bg-color">
             &nbsp;&nbsp;&nbsp;&nbsp;
           </div>
           <div id="colorselector-bg" class="bubble ilb">
-            <script>document.write(chrome.i18n.getMessage("ui_config_bg_changecolor"));</script>
+            {{i18nMsg('ui_config_bg_changecolor')}}
           </div>
           <input type="file" id="filesystem_bg_input" style="width:0; height: 0; opacity: 0;">
           <div id="filesystem_bg_ui" class="bubble ilb">
-            <script>document.write(chrome.i18n.getMessage("ui_config_bg_upload"));</script>
+            {{i18nMsg('ui_config_bg_upload')}}
           </div>
           <p class="tip">
-            <script>document.write(chrome.i18n.getMessage("ui_config_bgimg1"));</script>
+            {{i18nMsg('ui_config_bgimg1')}}
             <a href="http://www.w3schools.com/css/tryit.asp?filename=trycss_background_shorthand2">
-              <u><script>document.write(chrome.i18n.getMessage("ui_c_learnmore"));</script></u>.
+              <u>{{i18nMsg('ui_c_learnmore')}}</u>.
             </a>
           </p>
           <p>
             <input id="bg-img-css" type="text" name="bg-img-css" />
           </p>
-          <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_config_bgimg3"));</script></p>
-          <p><script>document.write(chrome.i18n.getMessage("ui_config_bgimg2"));</script></p>
+          <p class="tip">{{i18nMsg('ui_config_bgimg3')}}</p>
+          <p>{{i18nMsg('ui_config_bgimg2')}}</p>
           <pre>url(https://cdn.antp.co/misc/bg/ics.png) repeat right top</pre>
         </div>
       </div>
@@ -258,7 +261,7 @@
             Awesome New Tab Page
             <span class="ui-2 crumb">&nbsp;</span>
             <span class="ui-2 subname">
-              <script>document.write(chrome.i18n.getMessage("ui_button_apps"));</script>
+              {{i18nMsg('ui_button_apps')}}
             </span>
           </div>
           <div class="ui-2 plus-share">
@@ -277,23 +280,23 @@
       <div class="ui-2 contents">
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_what_h"));</script></div>
+            <div class="faw-head">{{i18nMsg('ui_aw_what_h')}}</div>
             <div class="faw-body">
-              <script>document.write(chrome.i18n.getMessage("ui_aw_what_b"));</script>
+              {{i18nMsg('ui_aw_what_b')}}
               <a href="http://support.google.com/chrome/bin/answer.py?answer=1050586"><u>
-                <script>document.write(chrome.i18n.getMessage("ui_c_learnmore"));</script></u></a>.
+                {{i18nMsg('ui_c_learnmore')}}</u></a>.
             </div>
           </div>
         </div>
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_lock_h"));</script></div>
-            <div class="faw-body"><script>document.write(chrome.i18n.getMessage("ui_aw_lock_b"));</script></div>
+            <div class="faw-head">{{i18nMsg('ui_aw_lock_h')}}</div>
+            <div class="faw-body">{{i18nMsg('ui_aw_lock_b')}}</div>
           </div>
         </div>
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_featured"));</script></div>
+            <div class="faw-head">{{i18nMsg('ui_aw_featured')}}</div>
             <div class="faw-body faw-featured">
               <img src="/icon128.png" />
               <div class="faw-title">Loading...</div>
@@ -313,7 +316,7 @@
             Awesome New Tab Page
             <span class="ui-2 crumb">&nbsp;</span>
             <span class="ui-2 subname">
-              <script>document.write(chrome.i18n.getMessage("ui_button_widgets"));</script>
+              {{i18nMsg('ui_button_widgets')}}
             </span>
           </div>
           <div class="ui-2 plus-share">
@@ -333,19 +336,19 @@
       <div class="ui-2 contents" id="widget-drawer">
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_whatw_h"));</script></div>
-            <div class="faw-body"><script>document.write(chrome.i18n.getMessage("ui_aw_whatw_b"));</script></div>
+            <div class="faw-head">{{i18nMsg('ui_aw_whatw_h')}}</div>
+            <div class="faw-body">{{i18nMsg('ui_aw_whatw_b')}}</div>
           </div>
         </div>
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_lock_h"));</script></div>
-            <div class="faw-body"><script>document.write(chrome.i18n.getMessage("ui_aw_lock_b"));</script></div>
+            <div class="faw-head">{{i18nMsg('ui_aw_lock_h')}}</div>
+            <div class="faw-body">{{i18nMsg('ui_aw_lock_b')}}</div>
           </div>
         </div>
         <div class="drawer-app ui-2 ilb faw-box">
           <div class="faw-wrapper">
-            <div class="faw-head"><script>document.write(chrome.i18n.getMessage("ui_aw_wotw"));</script></div>
+            <div class="faw-head">{{i18nMsg('ui_aw_wotw')}}</div>
             <div class="faw-body faw-featured">
               <img src="/icon128.png" />
               <div class="faw-title">Loading...</div>
@@ -366,7 +369,7 @@
             Awesome New Tab Page
             <span class="ui-2 crumb">&nbsp;</span>
             <span class="ui-2 subname">
-              <script>document.write(chrome.i18n.getMessage("ui_te"));</script>
+              {{i18nMsg('ui_te')}}
             </span>
             <span class="ui-2 crumb">&nbsp;</span>
             <span class="ui-2 subname" id="editor-name">
@@ -387,44 +390,44 @@
 
       <div class="ui-2 contents">
         <div id="tile-editor-right">
-            <h3><script>document.write(chrome.i18n.getMessage("ui_te_name"));</script></h3>
-            <p><script>document.write(chrome.i18n.getMessage("ui_te_name_desc"));</script></p>
+            <h3>{{i18nMsg('ui_te_name')}}</h3>
+            <p>{{i18nMsg('ui_te_name_desc')}}</p>
             <input id="shortcut_name" type="text" />
             <p>
               <input id="shortcut_name_show" type="checkbox" />
-              <script>document.write(chrome.i18n.getMessage("ui_te_shname"));</script>
+              {{i18nMsg('ui_te_shname')}}
             </p>
             <p>
               <input id="shortcut_pin" type="checkbox" />
-              <script>document.write(chrome.i18n.getMessage("ui_te_pin"));</script>
+              {{i18nMsg('ui_te_pin')}}
             </p>
           <div class="hide-if-app">
             <h3>URL</h3>
-            <p><script>document.write(chrome.i18n.getMessage("ui_te_url_desc"));</script></p>
+            <p>{{i18nMsg('ui_te_url_desc')}}</p>
             <input id="shortcut_url" type="text" />
-            <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_url_tip"));</script></p>
+            <p class="tip">{{i18nMsg('ui_te_url_tip')}}</p>
             <p>
               <input id="shortcut_favicon_show" type="checkbox" />
-              <script>document.write(chrome.i18n.getMessage("ui_te_shfavicon"));</script>
+              {{i18nMsg('ui_te_shfavicon')}}
             </p>
           </div>
 
-          <h3><script>document.write(chrome.i18n.getMessage("ui_config_bg_changecolor"));</script></h3>
+          <h3>{{i18nMsg('ui_config_bg_changecolor')}}</h3>
           <div id="shortcut_colorpicker" class="bubble ilb">
-            <script>document.write(chrome.i18n.getMessage("ui_te_bg_colorpicker"));</script>
+            {{i18nMsg('ui_te_bg_colorpicker')}}
           </div>
           <div id="swatches"></div>
 
           <p>
             <input id="shortcut_background_transparent" type="checkbox" />
-            <script>document.write(chrome.i18n.getMessage("ui_te_bg_transparent"));</script>
+            {{i18nMsg('ui_te_bg_transparent')}}
           </p>
           <p class="tip">
-            <script>document.write(chrome.i18n.getMessage("ui_te_bg_tip"));</script>
+            {{i18nMsg('ui_te_bg_tip')}}
           </p>
           <div class="hide-if-app">
           <p class="tip">
-            <script>document.write(chrome.i18n.getMessage("ui_te_bg_note"));</script>
+            {{i18nMsg('ui_te_bg_note')}}
           </p>
           </div>
 
@@ -452,40 +455,40 @@
           </div>
 
           <div class="show-if-app">
-            <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_app_tip"));</script></p>
+            <p class="tip">{{i18nMsg('ui_te_app_tip')}}</p>
           </div>
           <div class="hide-if-app">
             <div id="icon-resize-scale-controls">
               <div>
-                <span class="align-top"><script>document.write(chrome.i18n.getMessage("ui_resize_zoom"));</script>: </span>
+                <span class="align-top">{{i18nMsg('ui_resize_zoom')}}: </span>
                 <input id="zoom-slider" type="range" value="0" min="0" max="300" />
               </div>
               <div id="reset-bt" class="bubble ilb">
-                <script>document.write(chrome.i18n.getMessage("ui_resize_reset"));</script>
+                {{i18nMsg('ui_resize_reset')}}
               </div>
               <div id="center-bt" class="bubble ilb">
-                <script>document.write(chrome.i18n.getMessage("ui_resize_center"));</script>
+                {{i18nMsg('ui_resize_center')}}
               </div>
               <div id="cover-bt" class="bubble ilb">
-                <script>document.write(chrome.i18n.getMessage("ui_resize_cover"));</script>
+                {{i18nMsg('ui_resize_cover')}}
               </div>
               <div id="contain-bt" class="bubble ilb">
-                <script>document.write(chrome.i18n.getMessage("ui_resize_contain"));</script>
+                {{i18nMsg('ui_resize_contain')}}
               </div>
           </div>
 
-            <h3><script>document.write(chrome.i18n.getMessage("ui_te_ib"));</script></h3>
-            <p><script>document.write(chrome.i18n.getMessage("ui_te_ib_desc"));</script></p>
+            <h3>{{i18nMsg('ui_te_ib')}}</h3>
+            <p>{{i18nMsg('ui_te_ib_desc')}}</p>
             <div id="filesystem_icon_screenshot_bt" class="bubble ilb">
-              <script>document.write(chrome.i18n.getMessage("ui_te_ib_screenshot"));</script>
+              {{i18nMsg('ui_te_ib_screenshot')}}
             </div>
             <input id="img_url" type="text" class="ilb" />
             <input type="file" id="filesystem_icon_input" style="width:0; height: 0; opacity: 0;">
             <div id="filesystem_icon_ui" class="bubble ilb">
-              <script>document.write(chrome.i18n.getMessage("ui_te_ib_browse"));</script>
+              {{i18nMsg('ui_te_ib_browse')}}
             </div>
-            <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_ib_tip"));</script></p>
-            <p class="tip"><script>document.write(chrome.i18n.getMessage("ui_te_ib_advanced"));</script></p>
+            <p class="tip">{{i18nMsg('ui_te_ib_tip')}}</p>
+            <p class="tip">{{i18nMsg('ui_te_ib_advanced')}}</p>
           </div>
         </div>
       </div>
