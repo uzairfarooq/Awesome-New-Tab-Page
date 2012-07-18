@@ -178,11 +178,8 @@
           "href": tab.url,
           "target": "_top"
         });
-        /*$("<img></img>").appendTo(rct_temp).addClass("rctm-icon")
-          .attr("src", "chrome://favicon/"+tab.url);*/
         var tempDiv = $("<div></div>").appendTo(rct_temp).addClass("rctm-link");
-        //var iconDiv = $("<div style='float: left;'></div>").appendTo(tempDiv);
-        var tempIcon = $("<img style='float: left;'></div></img>").appendTo(rct_temp).addClass("rctm-icon")
+        $("<img style='float: left;'></div></img>").appendTo(rct_temp).addClass("rctm-icon")
               .attr("src", "chrome://favicon/"+tab.url);
         $("<div style='float: left;'></div>").appendTo(tempDiv).text(tab.title);
         $('<div style="float: right; position: relative; top: 3px;"><img data-rctm_item_id="' + id + '" class="rctm_item_close_btn" src="widgets/close.png" title="Close"></div>').appendTo(tempDiv);
@@ -220,12 +217,12 @@
   }
 
   window.addEventListener("storage", storageEventHandlerForRct, false);
-  // END :: phptechs modified
 
   $(document).ready(function($) {
     setTimeout(resetRecentlyClosedTabs, 500);
   });
 
+/* END :: Recently Closed Tabs */
 
 /* START :: Tooltips */
 
