@@ -159,6 +159,14 @@
         resetRecentlyClosedTabs();
   });
 
+  function deleteRecentlyClosedTabById(id)
+  {
+    var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
+    recently_closed.splice(id, 1);
+    localStorage.setItem("recently_closed", JSON.stringify(recently_closed));
+    resetRecentlyClosedTabs();
+  }
+
   function resetRecentlyClosedTabs() {
     var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
 
@@ -170,18 +178,54 @@
           "href": tab.url,
           "target": "_top"
         });
-        $("<img></img>").appendTo(rct_temp).addClass("rctm-icon")
-          .attr("src", "chrome://favicon/"+tab.url);
-        $("<div></div>").appendTo(rct_temp).addClass("rctm-link").text(tab.title);
+        /*$("<img></img>").appendTo(rct_temp).addClass("rctm-icon")
+          .attr("src", "chrome://favicon/"+tab.url);*/
+        var tempDiv = $("<div></div>").appendTo(rct_temp).addClass("rctm-link");
+        //var iconDiv = $("<div style='float: left;'></div>").appendTo(tempDiv);
+        var tempIcon = $("<img style='float: left;'></div></img>").appendTo(rct_temp).addClass("rctm-icon")
+              .attr("src", "chrome://favicon/"+tab.url);
+        $("<div style='float: left;'></div>").appendTo(tempDiv).text(tab.title);
+        $('<div style="float: right; position: relative; top: 3px;"><img data-rctm_item_id="' + id + '" class="rctm_item_close_btn" src="widgets/close.png" title="Close"></div>').appendTo(tempDiv);
         rct_temp.appendTo("#recently-closed-tabs-menu");
+      });
+      $('<div style="width: 50%; margin: 0 auto;"><a href="#" id="rctm_clear_all">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + chrome.i18n.getMessage("rctm_clear_all_text") + '</a></div>').appendTo("#recently-closed-tabs-menu");
+      // setting event handlers
+      $('.rctm_item_close_btn').bind('click', function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        //
+        var sItemId = $(evt.target).attr('data-rctm_item_id');
+        deleteRecentlyClosedTabById(sItemId);
+      });
+
+      $('#rctm_clear_all').bind('click', function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        //
+        if (confirm(chrome.i18n.getMessage("rctm_clear_all_confirm")))
+        {
+          localStorage.removeItem("recently_closed");
+        }
+        resetRecentlyClosedTabs();
       });
     }
   }
+
+  function storageEventHandlerForRct(evt)
+  {
+    if ('recently_closed' === evt.key)
+    {
+      resetRecentlyClosedTabs();
+    }
+  }
+
+  window.addEventListener("storage", storageEventHandlerForRct, false);
+  // END :: phptechs modified
+
   $(document).ready(function($) {
     setTimeout(resetRecentlyClosedTabs, 500);
   });
 
-  /* END :: Recently Closed Tabs */
 
 /* START :: Tooltips */
 

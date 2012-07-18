@@ -290,5 +290,11 @@
   }, 
   "ui_resize_zoom": {
     "message": "Zoom"
+  },
+  "rctm_clear_all_text": {
+    "message": "Clear Everything"
+  },
+  "rctm_clear_all_confirm": {
+    "message": "Clearing the Recently Closed Tabs menu does not clear Chrome's browser history. This feature only clears this list."
   }
 }
