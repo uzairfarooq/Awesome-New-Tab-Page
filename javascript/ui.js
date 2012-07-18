@@ -359,6 +359,20 @@
 
   $(".bg-color").css("background-color", "#" + (localStorage.getItem("color-bg") || "221f20"));
 
+  $("#import-export-btn").bind("click", function() {
+    //alert('Ok');
+    //$("#config-contents>div:not(#import-export)").slideUp(700);
+    $("#config-contents>div:not(#import-export-contents)").slideUp(700);
+    $("#import-export-contents").slideDown(700);
+  });
+
+  $("#import-export-btn2").bind("click", function() {
+    //alert('Ok');
+    //$("#config-contents>div:not(#import-export)").slideUp(700);
+    $("#config-contents>div:not(#import-export-contents)").slideDown(700);
+    $("#import-export-contents").slideUp(700);
+});
+
   $("#toggleBmb").live("click", function(){
     if ($(this).is(':checked')) {
       if ( bookmark_bar_rendered === false ) {

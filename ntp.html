@@ -177,7 +177,7 @@
         </div>
       </div>
 
-      <div class="ui-2 contents">
+      <div id="config-contents" class="ui-2 contents">
         <div id="config-general" class="ui-2">
           <h3>{{i18nMsg('ui_config_general')}}</h3>
           <div id="toggleBmb-holder">
@@ -249,7 +249,32 @@
           <p>{{i18nMsg('ui_config_bgimg2')}}</p>
           <pre>url(https://cdn.antp.co/misc/bg/ics.png) repeat right top</pre>
         </div>
+
+				<div id="import-export" class="ui-2">
+					<h3 class="ng-binding">Import/Export</h3>
+					<div id="import-export-btn" class="bubble ilb ng-binding">
+						Import/Export
+					</div>
+				</div>
+
+				<div id="import-export-contents" class="ui-2">
+					<h3 class="ng-binding">Import/Export</h3>
+					<div id="import-export-btn2" class="bubble ilb ng-binding">
+						Hide Import/Export
+					</div>
+					<div>
+						<textarea rows="10" cols="50"></textarea>
+					</div>
+				</div>
       </div>
+			<!--div id="import-export-contents" class="ui-2 contents">
+				<div id="import-export" class="ui-2">
+					<h3 class="ng-binding">Import/Export</h3>
+					<div id="import-export-btn" class="bubble ilb ng-binding">
+						Import/Export
+					</div>
+				</div>
+			</div-->
       <div class="ui-2 bottom-overlay"></div>
     </div>
 
