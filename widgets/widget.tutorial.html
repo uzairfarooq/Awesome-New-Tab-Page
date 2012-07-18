@@ -1,5 +1,5 @@
 <DOCTYPE html>
-<html>
+<html ng-app="antp">
   <head>
     <script type='text/javascript' src='/javascript/jquery.js'></script>
     <style>
@@ -213,6 +213,11 @@
         $("#"+current).fadeIn();
       });
     </script>
+
+    <script type="text/javascript" src="/javascript/angular/angular-1.0.1.min.js"></script>
+    <script type="text/javascript" src="/javascript/angular/modules/filters.js"></script>
+    <script type="text/javascript" src="/javascript/angular/modules/directives.js"></script>
+    <script type="text/javascript" src="/javascript/angular/modules/antp.js"></script>
   </head>
 
   <body>
@@ -224,19 +229,19 @@
 
         <div id="1" class="screen">
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_1_welcome"));</script>
+            {{'tutorial_1_welcome' | i18n}}
           </p>
           <h1><span class="ul">Awesome</span> New Tab Page</h1>
           <hr>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_1_desc1"));</script>
+            {{'tutorial_1_desc1' | i18n}}
           </p>
           <p class="opacity-25">
-            <script>document.write(chrome.i18n.getMessage("tutorial_1_desc2"));</script>
+            {{'tutorial_1_desc2' | i18n}}
           </p>
           <p>&nbsp;</p>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_1_desc3"));</script>
+            <i18n message-id='tutorial_1_desc3' />
           </p>
 
           <div class="twitter-left">
@@ -251,17 +256,17 @@
           style="margin-top: 50px;"
         >
           <h1>
-            <script>document.write(chrome.i18n.getMessage("tutorial_2_title"));</script>
+            <i18n message-id='tutorial_2_title' />
           </h1>
           <hr>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_2_desc1"));</script>
+            {{'tutorial_2_desc1' | i18n}}
           </p>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_2_desc2"));</script>
+            {{'tutorial_2_desc2' | i18n}}
           </p>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_2_desc3"));</script>
+            <i18n message-id='tutorial_2_desc3' />
           </p>
         </div>
 
@@ -272,11 +277,11 @@
             style="position: fixed; left: -10px; top: 100px; -webkit-transform: rotate(-115deg);"
           />
           <h1>
-            <script>document.write(chrome.i18n.getMessage("tutorial_3_title"));</script>
+            <i18n message-id='tutorial_3_title' />
           </h1>
           <hr>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_3_desc1"));</script>
+            <i18n message-id='tutorial_3_desc1' />
           </p>
         </div>
 
@@ -287,37 +292,37 @@
             style="position: fixed; left: 35px; top: -20px; -webkit-transform: rotate(-110deg);"
           />
           <h1>
-            <script>document.write(chrome.i18n.getMessage("tutorial_4_title"));</script>
+            {{'tutorial_4_title' | i18n}}
           </h1>
           <hr>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_4_desc1"));</script>
+            {{'tutorial_4_desc1' | i18n}}
           </p>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_4_desc2"));</script>
+            {{'tutorial_4_desc2' | i18n}}
           </p>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_4_desc3"));</script>
+            {{'tutorial_4_desc3' | i18n}}
           </p>
         </div>
 
         <div id="5" class="screen hidden">
           <h1>
-            <script>document.write(chrome.i18n.getMessage("tutorial_5_title1"));</script>
+            {{'tutorial_5_title1' | i18n}}
           </h1>
           <hr>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_5_desc1"));</script>
+            {{'tutorial_5_desc1' | i18n}}
           </p>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_5_desc2"));</script>
+            <i18n message-id="tutorial_5_desc2" />
           </p>
           <h1>
-            <script>document.write(chrome.i18n.getMessage("tutorial_5_title2"));</script>
+            {{'tutorial_5_title2' | i18n}}
           </h1>
           <hr>
           <p>
-            <script>document.write(chrome.i18n.getMessage("tutorial_5_desc3"));</script>
+            {{'tutorial_5_desc3' | i18n}}
           </p>
           <p>
             <a href="http://wiki.antp.co/" target="_top" style="color: #A5CB39;">
@@ -373,10 +378,10 @@
 
         <div class="control">
           <div id="back" class="bubble hidden">
-            <script>document.write(chrome.i18n.getMessage("tutorial_ui_back"));</script>
+            {{'tutorial_ui_back' | i18n}}
           </div>
           <div id="next" class="bubble">
-            <script>document.write(chrome.i18n.getMessage("tutorial_ui_next"));</script>
+            {{'tutorial_ui_next' | i18n}}
           </div>
         </div>
       </div>
