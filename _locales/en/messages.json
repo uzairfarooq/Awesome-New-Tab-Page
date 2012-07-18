@@ -177,29 +177,26 @@
       }
     }
   },
-  "ui_aw_what_h": {
-    "message": "What're apps?"
+  "ui_faw_unlock_drag": {
+    "message": "Unlock & Drag"
   },
-  "ui_aw_what_b": {
-    "message": "Web-based applications are programs that are designed to be used entirely within the browser."
+  "ui_faw_unlock_drag_apps": {
+    "message": "Unlock the grid and <b>drag</b> your installed apps to an empty slot."
   },
-  "ui_aw_lock_h": {
-    "message": "Lock & Unlock"
+  "ui_faw_unlock_drag_widgets": {
+    "message": "Unlock the grid and <b>drag</b> your installed widgets to an empty slot."
   },
-  "ui_aw_lock_b": {
-    "message": "If you want to move one to your grid, unlock then drag it. Unlock using the lock icon on the left of the screen."
+  "ui_faw_get_more_apps": {
+    "message": "Get More Apps"
   },
-  "ui_aw_whatw_h": {
-    "message": "What're widgets?"
+  "ui_faw_get_more_apps_body": {
+    "message": "Get more apps from the <a href='https://chrome.google.com/webstore/?utm_source=download-apps&utm_medium=awesome-new-tab-page'>Chrome Web Store</a>."
   },
-  "ui_aw_whatw_b": {
-    "message": "Widgets bring the full power of the web to your new tab page. Go ahead; get the featured widget on the right!"
+  "ui_faw_get_more_widgets": {
+    "message": "Get More Widgets"
   },
-  "ui_aw_featured": {
-    "message": "Featured"
-  },
-  "ui_aw_wotw": {
-    "message": "Widget of the Week"
+  "ui_faw_get_more_widgets_body": {
+    "message": "Get more widgets from the <a href='https://chrome.google.com/webstore/search/%22Awesome New Tab Page%22?utm_source=download-widgets&amp;utm_medium=awesome-new-tab-page'>Chrome Web Store</a>."
   },
   "ui_bmb_ob": {
     "message": "Other Bookmarks"

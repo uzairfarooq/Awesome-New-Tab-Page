@@ -540,17 +540,6 @@ body {
   right: 70px;
   top: 36px;
 }
-.ui-2.download {
-  background: url("/images/ui-2/plus.png");
-  width: 24px;
-  height: 24px;
-
-  cursor: pointer;
-
-  position: absolute;
-  right: 100px;
-  top: 36px;
-}
 .ui-2.widgets-refresh {
   background: url("/images/ui-2/refresh.png");
   width: 24px;
@@ -559,7 +548,7 @@ body {
   cursor: pointer;
 
   position: absolute;
-  right: 130px;
+  right: 100px;
   top: 36px;
 }
 .ui-2.vr {
@@ -735,57 +724,42 @@ body > .widget-drawer-app img {
   cursor: pointer;
   margin: 0;
 }
+
+/* Apps/Widgets Header Boxes */
+.faw-box a {
+  border-bottom: 1px dotted white;
+}
 .ui-2#apps .faw-box,
 .ui-2#widgets .faw-box {
-  width: 215px;
+  width: 328px;
   height: 90px;
   background-color: #C7C6BF;
-  margin: 5px 6px 2px 0px;
+  margin: 4px 6px 2px 0px;
 }
-.ui-2#apps .faw-box .faw-wrapper,
-.ui-2#widgets .faw-box .faw-wrapper {
+.faw-box .faw-wrapper {
   position: absolute;
-  padding: 5px;
+  height: 100%;
+  width: 100%;
 }
-.ui-2#apps .faw-box .faw-head,
-.ui-2#widgets .faw-box .faw-head {
-  padding-right: 5px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-size: 11px;
-  display: inline;
-  color: rgba(0, 0, 0, .5);
+.faw-box .faw-head {
+  padding-left: 6px;
+  padding-right: 6px;
+  font-size: 22px;
 }
-.ui-2#apps .faw-box .faw-body,
-.ui-2#widgets .faw-box .faw-body {
-  font-size: 12px;
-  display: inline;
+.faw-box .faw-icon-information,
+.faw-box .faw-icon-download {
+  background-repeat: no-repeat;
+  background-position: 280px 38px;
 }
-.ui-2#apps .faw-box .faw-featured,
-.ui-2#widgets .faw-box .faw-featured {
-  width: 205px;
-  height: 90px;
-  position: absolute;
-  top: 0;
+.faw-box .faw-icon-information {
+  background-image: url(/images/ui-2/information.png);
 }
-.ui-2#apps .faw-box .faw-featured img,
-.ui-2#widgets .faw-box .faw-featured img {
-  width: 50px;
-  height: 50px;
-  top: 20px;
+.faw-box .faw-icon-download {
+  background-image: url(/images/ui-2/download.png);
 }
-.ui-2#apps .faw-box .faw-featured .faw-title,
-.ui-2#widgets .faw-box .faw-featured .faw-title {
-  position: absolute;
-  top: 25px;
-  right: 0;
-}
-.ui-2#apps .faw-box .faw-featured .faw-href,
-.ui-2#widgets .faw-box .faw-featured .faw-href {
-  position: absolute;
-  bottom: 0px;
-  right: 0;
-  display: none;
+.faw-box .faw-body {
+  padding-left: 6px;
+  padding-right: 25px;
   font-size: 15px;
 }
 
