@@ -909,9 +909,10 @@ body > .widget-drawer-app img {
     display: none;
   }
 
-  /**
-   * Resize and scale controls
-   */
+/**
+ * Resize and scale controls
+ */
+
   #icon-resize-scale-controls {
   text-align: center;
   margin-left: auto;

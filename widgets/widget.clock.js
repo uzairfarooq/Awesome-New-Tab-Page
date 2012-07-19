@@ -37,7 +37,7 @@
           thisW = parseInt($this.innerWidth(), 10),
           thisH = parseInt($this.innerHeight(), 10),
           $targets = $this.find(options.targets),
-          increase = (Math.PI * 2) / $targets.length, // Rad cheeseCake  
+          increase = (Math.PI * 2) / $targets.length, // Rad cheeseCake
           angle = Math.PI * (options.startAngle / 180); // convert from DEG to RAD
         $targets.each(function () {
           var $target = $(this),

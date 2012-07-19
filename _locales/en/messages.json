@@ -79,7 +79,7 @@
   },
   "ui_te_ib_screenshot": {
     "message": "Use Screenshot"
-  }, 
+  },
   "ui_te_ib_tip": {
     "message": "Tip: Leave blank for no icon."
   },
@@ -272,19 +272,19 @@
   },
   "notepad_default": {
     "message": "Type anything here. Everything you type will be saved on every keystroke.\n\nBe careful though; there are NO backups, and the Reset button *DOES* reset this widget!"
-  }, 
+  },
   "ui_resize_reset": {
     "message": "Reset"
-  }, 
+  },
   "ui_resize_center": {
     "message": "Center"
-  }, 
+  },
   "ui_resize_cover": {
     "message": "Cover"
-  }, 
+  },
   "ui_resize_contain": {
     "message": "Contain"
-  }, 
+  },
   "ui_resize_zoom": {
     "message": "Zoom"
   }
