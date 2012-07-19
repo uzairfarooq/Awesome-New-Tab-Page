@@ -420,7 +420,25 @@ body {
 
 
 #import-export-contents {
-    display: none;
+  display: none;
+}
+
+#import-export-btn-import-run-div {
+  display: none;
+}
+
+#import-export-btn-import {
+  position: relative;
+  left: 60px;
+}
+
+#import-export-btn-export {
+  position: relative;
+  left: 70px;
+}
+
+#import-export-textarea-div {
+  display: none;
 }
 
 /* UI-2 */

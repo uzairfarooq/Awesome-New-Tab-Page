@@ -177,7 +177,7 @@
         </div>
       </div>
 
-      <div id="config-contents" class="ui-2 contents">
+      <div class="ui-2 contents" id="config-contents">
         <div id="config-general" class="ui-2">
           <h3>{{i18nMsg('ui_config_general')}}</h3>
           <div id="toggleBmb-holder">
@@ -250,31 +250,35 @@
           <pre>url(https://cdn.antp.co/misc/bg/ics.png) repeat right top</pre>
         </div>
 
-				<div id="import-export" class="ui-2">
-					<h3 class="ng-binding">Import/Export</h3>
+        <div id="import-export" class="ui-2">
+					<h3 class="ng-binding">{{i18nMsg('ui_import_export_header')}}</h3>
 					<div id="import-export-btn" class="bubble ilb ng-binding">
-						Import/Export
+            {{i18nMsg('ui_import_export_btn')}}
 					</div>
 				</div>
 
 				<div id="import-export-contents" class="ui-2">
-					<h3 class="ng-binding">Import/Export</h3>
+					<h3 class="ng-binding">{{i18nMsg('ui_import_export_header')}}</h3>
 					<div id="import-export-btn2" class="bubble ilb ng-binding">
-						Hide Import/Export
+            {{i18nMsg('ui_import_export_btn2')}}
 					</div>
-					<div>
-						<textarea rows="10" cols="50"></textarea>
+          <div id="import-export-btn-import" class="bubble ilb ng-binding">
+            {{i18nMsg('ui_import_export_btn_import')}}
+          </div>
+          <div id="import-export-btn-export" class="bubble ilb ng-binding">
+            {{i18nMsg('ui_import_export_btn_export')}}
+          </div>
+					<div id="import-export-textarea-div">
+						<textarea rows="10" cols="50" id="import-export-textarea"></textarea>
 					</div>
+          <div id="import-export-btn-import-run-div">
+            <div id="import-export-btn-import-run" class="bubble ilb ng-binding">
+              {{i18nMsg('ui_import_export_btn_import_run')}}
+            </div>
+          </div>
 				</div>
       </div>
-			<!--div id="import-export-contents" class="ui-2 contents">
-				<div id="import-export" class="ui-2">
-					<h3 class="ng-binding">Import/Export</h3>
-					<div id="import-export-btn" class="bubble ilb ng-binding">
-						Import/Export
-					</div>
-				</div>
-			</div-->
+
       <div class="ui-2 bottom-overlay"></div>
     </div>
 
@@ -559,6 +563,7 @@
 
       <script type="text/javascript" src="/javascript/tile-maintenance.js?nocache=10"></script>
       <script type="text/javascript" src="/javascript/ui.js?nocache=10" async="async"></script>
+      <script type="text/javascript" src="/javascript/base64.js?nocache=10" async="async"></script>
 
       <script type="text/javascript" src="/javascript/apps-window.js?nocache=10" async="async"></script>
       <script type="text/javascript" src="/javascript/widgets-window.js?nocache=10" async="async"></script>

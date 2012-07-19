@@ -296,5 +296,23 @@
   },
   "rctm_clear_all_confirm": {
     "message": "Clearing the Recently Closed Tabs menu does not clear Chrome's browser history. This feature only clears this list."
+  },
+  "ui_import_export_header": {
+    "message": "Import/Export"
+  },
+  "ui_import_export_btn": {
+    "message": "Import/Export"
+  },
+  "ui_import_export_btn2": {
+    "message": "Hide"
+  },
+  "ui_import_export_btn_import": {
+    "message": "Import"
+  },
+  "ui_import_export_btn_export": {
+    "message": "Export"
+  },
+  "ui_import_export_btn_import_run": {
+    "message": "Run Import"
   }
 }

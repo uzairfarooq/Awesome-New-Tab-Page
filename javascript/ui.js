@@ -55,6 +55,9 @@
 
     closeButton(".ui-2#config");
     $(".ui-2#config").toggle();
+    hideImportSection();
+    // temp function
+    //showImportSection();
   });
 
   $("#logo-button,.ui-2.logo").live("click", function(){
@@ -359,19 +362,109 @@
 
   $(".bg-color").css("background-color", "#" + (localStorage.getItem("color-bg") || "221f20"));
 
+
+  function clearShowExportImportForm() {
+    $("#import-export-textarea").val('');
+    $("#import-export-textarea-div").show();
+    $("#import-export-btn-import-run-div").hide();
+    unsetImportExportTextareaSelection();
+  }
+
+  function clearHideExportImportForm() {
+    $("#import-export-textarea").val('');
+    $("#import-export-textarea-div").hide();
+    $("#import-export-btn-import-run-div").hide();
+    unsetImportExportTextareaSelection();
+  }
+
+  function hideImportSection() {
+    $("#config-contents>div:not(#import-export-contents)").show();
+    $("#import-export-contents").hide();
+    clearHideExportImportForm();
+  }
+
+  // temp function
+  function showImportSection() {
+    $("#config-contents>div:not(#import-export-contents)").hide();
+    $("#import-export-contents").show();
+    clearHideExportImportForm();
+  }
+
+  function selectImportExportTextarea(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    $("#import-export-textarea").select();
+  }
+
+  function setImportExportTextareaSelection() {
+    $("#import-export-textarea").bind("focus mousedown mouseup", selectImportExportTextarea);
+  }
+
+  function unsetImportExportTextareaSelection() {
+    $("#import-export-textarea").unbind("focus mousedown mouseup", selectImportExportTextarea);
+  }
+
   $("#import-export-btn").bind("click", function() {
-    //alert('Ok');
-    //$("#config-contents>div:not(#import-export)").slideUp(700);
     $("#config-contents>div:not(#import-export-contents)").slideUp(700);
     $("#import-export-contents").slideDown(700);
   });
 
   $("#import-export-btn2").bind("click", function() {
-    //alert('Ok');
-    //$("#config-contents>div:not(#import-export)").slideUp(700);
     $("#config-contents>div:not(#import-export-contents)").slideDown(700);
     $("#import-export-contents").slideUp(700);
-});
+    clearHideExportImportForm();
+  });
+
+  $("#import-export-btn-import").bind("click", function() {
+    clearShowExportImportForm();
+    $("#import-export-btn-import-run-div").show();
+  });
+
+  $("#import-export-btn-export").bind("click", function() {
+    clearShowExportImportForm();
+    var exportDataObj = {};
+    var locStor = localStorage;
+    for(var i=0, len=locStor.length; i<len; i++) {
+      var key = locStor.key(i);
+      var value = locStor[key];
+      exportDataObj[key] = value;
+    }
+    var base64str = Base64.encode(JSON.stringify(exportDataObj));
+    //
+    var dateObj = new Date();
+    var fullYearVal = dateObj.getFullYear();
+    var monthVal = dateObj.getMonth()+1;
+    var dateVal = dateObj.getDate();
+    if (dateVal<10) {dateVal='0'+dateVal;}
+    if (monthVal<10) {monthVal='0'+monthVal;}
+    //
+    var resultStr = '[ANTP_EXPORT|' + fullYearVal + '-' + monthVal + '-' + dateVal + '|' + chrome.app.getDetails().version + '|' + base64str + ']';
+    //exportDataObj = JSON.parse(Base64.decode(base64str));
+    var $textArea = $("#import-export-textarea");
+    $textArea.val(resultStr);
+    $textArea.select();
+    setImportExportTextareaSelection();
+  });
+
+  $("#import-export-btn-import-run").bind("click", function() {
+    var $textArea = $("#import-export-textarea");
+    var inputStr = $textArea.val().trim();
+    if (inputStr)
+    {
+      inputStr = inputStr.substring(0, inputStr.length-1);
+      var tArr = inputStr.split('|');
+      var base64str = tArr[tArr.length-1];
+      var exportDataObj = JSON.parse(Base64.decode(base64str));
+      var locStor = localStorage;
+      for(var key in exportDataObj) {
+        locStor.setItem(key, exportDataObj[key]);
+      }
+      $("#import-export-textarea").val('');
+      alert('Import successful!');
+    }
+  });
+
+
 
   $("#toggleBmb").live("click", function(){
     if ($(this).is(':checked')) {
