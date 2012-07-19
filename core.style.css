@@ -283,6 +283,18 @@ body {
   background-color: #FDFCFA;
   box-shadow: 0px 0px 40px 2px rgba(200, 200, 200, .5);
 }
+.rctm-close-btn {
+  background-image: url(/images/ui-2/x.png);
+  background-size: 19px;
+  background-repeat: no-repeat;
+  width: 19px;
+  height: 19px;
+  display: inline-block;
+}
+.rctm-reset-all {
+  cursor: pointer;
+  text-align: center;
+}
 .rctm-item {
   display: block;
   white-space: nowrap;
@@ -301,15 +313,28 @@ body {
 .rctm-link {
   display: inline-block;
 }
+.rctm-link .rctm-title {
+  width: 125px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .rctm-link {
   position: relative;
   top: -3px;
   margin-left: 5px;
-  width: 262px;
   color: #0E3F96;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  cursor: pointer;
+  width: 315px;
+}
+.rctm-close {
+  opacity: .7;
+}
+.rctm-close:hover {
+  opacity: 1;
 }
 #colorselector-bg {
   cursor: pointer;
@@ -459,8 +484,7 @@ body {
   position: fixed;
   z-index: 950;
   width: 800px;
-  /*height: 575px;*/
-  height: 630px;
+  height: 575px;
   border: 1px solid rgba(177, 177, 177, .4);
 
   box-shadow: 0px 0px 40px 2px rgba(200, 200, 200, .5);
@@ -476,8 +500,7 @@ body {
 }
 .ui-2.contents {
   position: relative;
-  /*height: 500px;*/
-  height: 550px;
+  height: 500px;
   top: 0px;
   left: 0px;
   right: 0px;

@@ -56,8 +56,6 @@
     closeButton(".ui-2#config");
     $(".ui-2#config").toggle();
     hideImportSection();
-    // temp function
-    //showImportSection();
   });
 
   $("#logo-button,.ui-2.logo").live("click", function(){
@@ -162,70 +160,68 @@
         resetRecentlyClosedTabs();
   });
 
-  function deleteRecentlyClosedTabById(id)
-  {
-    var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
-    recently_closed.splice(id, 1);
-    localStorage.setItem("recently_closed", JSON.stringify(recently_closed));
-    resetRecentlyClosedTabs();
-  }
-
   function resetRecentlyClosedTabs() {
-    var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
-
+    var recently_closed = JSON.parse(localStorage.getItem("recently_closed")),
+      rctm_html = [];
     $("#recently-closed-tabs-menu").empty();
 
     if(recently_closed !== null) {
       $.each(recently_closed, function(id, tab) {
-        var rct_temp = $("<a></a>").addClass("rctm-item").attr({
-          "href": tab.url,
-          "target": "_top"
-        });
-        var tempDiv = $("<div></div>").appendTo(rct_temp).addClass("rctm-link");
-        $("<img style='float: left;'></div></img>").appendTo(rct_temp).addClass("rctm-icon")
-              .attr("src", "chrome://favicon/"+tab.url);
-        $("<div style='float: left;'></div>").appendTo(tempDiv).text(tab.title);
-        $('<div style="float: right; position: relative; top: 3px;"><img data-rctm_item_id="' + id + '" class="rctm_item_close_btn" src="widgets/close.png" title="Close"></div>').appendTo(tempDiv);
-        rct_temp.appendTo("#recently-closed-tabs-menu");
-      });
-      $('<div style="width: 50%; margin: 0 auto;"><a href="#" id="rctm_clear_all">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + chrome.i18n.getMessage("rctm_clear_all_text") + '</a></div>').appendTo("#recently-closed-tabs-menu");
-      // setting event handlers
-      $('.rctm_item_close_btn').bind('click', function(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        //
-        var sItemId = $(evt.target).attr('data-rctm_item_id');
-        deleteRecentlyClosedTabById(sItemId);
+
+        var rct_temp  = $("<div></div>").addClass("rctm-item");
+        $("<img></img>").appendTo(rct_temp).addClass("rctm-icon")
+          .attr({
+            "src"   : "chrome://favicon/" + tab.url,
+            "height": 16,
+            "width" : 16
+          });
+
+        $("<a></a>").appendTo(rct_temp).addClass("rctm-link")
+          .attr({
+            "id"    : id   ,
+            "title" : tab.title,
+            "href"  : tab.url
+          })
+          .html( tab.title );
+        $("<span></span>").appendTo(rct_temp).html( "<img height='19px' width='19px' src='/images/ui-2/x.png' title='Close'>" )
+          .attr("data-rctm-id", id).addClass("rctm-close");
+
+        rctm_html.push( rct_temp );
       });
 
-      $('#rctm_clear_all').bind('click', function(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        //
-        if (confirm(chrome.i18n.getMessage("rctm_clear_all_confirm")))
-        {
-          localStorage.removeItem("recently_closed");
-        }
-        resetRecentlyClosedTabs();
+      rctm_html.push(
+        $('<div class="rctm-reset-all" id="rctm_clear_all">' + chrome.i18n.getMessage("rctm_clear_all_text") + '</div>')
+      );
+
+      $.each(rctm_html, function(i, e) {
+        $(e).appendTo("#recently-closed-tabs-menu");
       });
     }
   }
 
-  function storageEventHandlerForRct(evt)
-  {
-    if ('recently_closed' === evt.key)
+  $('.rctm-close').live("click", function(e) {
+    var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
+
+    recently_closed.splice( $(e.target).parent().attr("data-rctm-id") , 1);
+
+    localStorage.setItem("recently_closed", JSON.stringify(recently_closed));
+
+    resetRecentlyClosedTabs();
+  });
+
+  $('#rctm_clear_all').live("click", function(e) {
+    if (confirm(chrome.i18n.getMessage("rctm_clear_all_confirm")))
     {
-      resetRecentlyClosedTabs();
+      localStorage.removeItem("recently_closed");
     }
-  }
-
-  window.addEventListener("storage", storageEventHandlerForRct, false);
+    resetRecentlyClosedTabs();
+  });
 
   $(document).ready(function($) {
     setTimeout(resetRecentlyClosedTabs, 500);
   });
 
-/* END :: Recently Closed Tabs */
+  /* END :: Recently Closed Tabs */
 
 /* START :: Tooltips */
 
@@ -383,13 +379,6 @@
     clearHideExportImportForm();
   }
 
-  // temp function
-  function showImportSection() {
-    $("#config-contents>div:not(#import-export-contents)").hide();
-    $("#import-export-contents").show();
-    clearHideExportImportForm();
-  }
-
   function selectImportExportTextarea(evt) {
     evt.preventDefault();
     evt.stopPropagation();
@@ -439,7 +428,7 @@
     if (monthVal<10) {monthVal='0'+monthVal;}
     //
     var resultStr = '[ANTP_EXPORT|' + fullYearVal + '-' + monthVal + '-' + dateVal + '|' + chrome.app.getDetails().version + '|' + base64str + ']';
-    //exportDataObj = JSON.parse(Base64.decode(base64str));
+
     var $textArea = $("#import-export-textarea");
     $textArea.val(resultStr);
     $textArea.select();
@@ -460,7 +449,7 @@
         locStor.setItem(key, exportDataObj[key]);
       }
       $("#import-export-textarea").val('');
-      alert('Import successful!');
+      $.jGrowl("Import complete.", { header: "Import/Export" });
     }
   });
 
