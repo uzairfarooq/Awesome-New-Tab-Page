@@ -1,7 +1,10 @@
 {
+  "manifest_version": 2,
   "update_url":"http://clients2.google.com/service/update2/crx",
   "minimum_chrome_version": "19",
-  "background_page": "background.html",
+  "background": {
+    "scripts": ["/javascript/jquery.js", "/background.js"]
+  }, 
   "chrome_url_overrides" : {
     "newtab": "ntp.html"
   },
@@ -20,5 +23,6 @@
     "storage",
     "unlimitedStorage",
     "<all_urls>"
-  ]
+  ], 
+  "content_security_policy": "script-src 'self' https://apis.google.com https://ssl.google-analytics.com https://platform.twitter.com https://api.flattr.com; object-src 'self'"
 }

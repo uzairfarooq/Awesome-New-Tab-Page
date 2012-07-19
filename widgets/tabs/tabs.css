@@ -1,0 +1,108 @@
+body {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  background-color: #FFF;
+  font-family: "Segoe UI", "Droid Sans", Arial, sans-serif;
+  font-size: 14px;
+}
+
+div#search {
+  background-color: #EEE;
+  top: 0;
+  left: 0; right: 0;
+  height: 32px;
+}
+div#search input {
+  width: 100%;
+  height: 32px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  margin: 0;
+  font-size: 20px;
+}
+
+div#tabs {
+  position: absolute;
+  top: 32px;
+  left: 0; right: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.button {
+  opacity: .2;
+  -webkit-transition: opacity .2s ease-in-out;
+cursor: pointer;
+padding-right: 2px;
+}
+.unpin {
+  opacity: .4;
+}
+.button:hover {
+  opacity: .7;
+}
+
+.tab-item {
+  display: block;
+  white-space: nowrap;
+  padding-right: 5px;
+  padding-top: 4px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+}
+.tab-item:nth-child(even) {
+  background-color: #EEEEEE;
+}
+.tab-item:hover {
+  background-color: #DDDDDD;
+}
+.tab-icon, .tab-link {
+  display: inline-block;
+}
+.tab-link {
+  position: relative;
+  top: -3px;
+  margin-left: 5px;
+  color: #0E3F96;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+  overflow: visible;
+  width: 15px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border: solid #fff;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.8);
+}
+::-webkit-scrollbar-thumb:horizontal {
+  border-width: 4px 4px;
+  min-width: 100px;
+}
+::-webkit-scrollbar-thumb:vertical {
+  border-width: 4px 4px;
+  min-height: 100px;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: #fff;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}

@@ -1,0 +1,155 @@
+<DOCTYPE html>
+<html ng-app="antp" ng-csp>
+  <head>
+    <link rel="stylesheet" href="tutorial.css?nocache=10" type="text/css" media="screen">
+    <script type='text/javascript' src='/javascript/jquery.js'></script>
+    <script type='text/javascript' src='tutorial.js'></script>
+
+    <script type="text/javascript" src="/javascript/angular/angular-1.0.1.min.js"></script>
+    <script type="text/javascript" src="/javascript/angular/modules/filters.js"></script>
+    <script type="text/javascript" src="/javascript/angular/modules/directives.js"></script>
+    <script type="text/javascript" src="/javascript/angular/modules/antp.js"></script>
+  </head>
+
+  <body>
+    <div class="widget">
+      <div class="tutorial">
+        <div class="flattr-left">
+          <a class="FlattrButton" style="display:none;" href="http://antp.co/"></a>
+        </div>
+
+        <div id="1" class="screen">
+          <p>
+            {{'tutorial_1_welcome' | i18n}}
+          </p>
+          <h1><span class="ul">Awesome</span> New Tab Page</h1>
+          <hr>
+          <p>
+            {{'tutorial_1_desc1' | i18n}}
+          </p>
+          <p class="opacity-25">
+            {{'tutorial_1_desc2' | i18n}}
+          </p>
+          <p>&nbsp;</p>
+          <p>
+            <i18n message-id='tutorial_1_desc3' />
+          </p>
+
+          <div class="twitter-left">
+            <a href="https://twitter.com/share" class="twitter-share-button"
+            data-url="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"
+            data-text="Awesome New Tab Page: The Chrome New Tab Page should be awesome, just like you."
+            data-count="horizontal" data-via="NewTabPage" data-related="HartMichael:Developer">Tweet</a>
+          </div>
+        </div>
+
+        <div id="2" class="screen hidden"
+          style="margin-top: 50px;"
+        >
+          <h1>
+            <i18n message-id='tutorial_2_title' />
+          </h1>
+          <hr>
+          <p>
+            {{'tutorial_2_desc1' | i18n}}
+          </p>
+          <p>
+            {{'tutorial_2_desc2' | i18n}}
+          </p>
+          <p>
+            <i18n message-id='tutorial_2_desc3' />
+          </p>
+        </div>
+
+        <div id="3" class="screen hidden"
+          style="margin-top: 100px;"
+        >
+          <img src="widget.tutorial.up_left.png"
+            style="position: fixed; left: -10px; top: 100px; -webkit-transform: rotate(-115deg);"
+          />
+          <h1>
+            <i18n message-id='tutorial_3_title' />
+          </h1>
+          <hr>
+          <p>
+            <i18n message-id='tutorial_3_desc1' />
+          </p>
+        </div>
+
+        <div id="4" class="screen hidden"
+          style="margin-top: 75px;"
+        >
+          <img src="widget.tutorial.up_mid.png"
+            style="position: fixed; left: 35px; top: -20px; -webkit-transform: rotate(-110deg);"
+          />
+          <h1>
+            {{'tutorial_4_title' | i18n}}
+          </h1>
+          <hr>
+          <p>
+            {{'tutorial_4_desc1' | i18n}}
+          </p>
+          <p>
+            {{'tutorial_4_desc2' | i18n}}
+          </p>
+          <p>
+            {{'tutorial_4_desc3' | i18n}}
+          </p>
+        </div>
+
+        <div id="5" class="screen hidden">
+          <h1>
+            {{'tutorial_5_title1' | i18n}}
+          </h1>
+          <hr>
+          <p>
+            {{'tutorial_5_desc1' | i18n}}
+          </p>
+          <p>
+            <i18n message-id="tutorial_5_desc2" />
+          </p>
+          <h1>
+            {{'tutorial_5_title2' | i18n}}
+          </h1>
+          <hr>
+          <p>
+            {{'tutorial_5_desc3' | i18n}}
+          </p>
+          <p>
+            <a href="http://wiki.antp.co/" target="_top" style="color: #A5CB39;">
+              http://wiki.antp.co/
+            </a>
+          </p>
+
+          <div class="twitter-right">
+            <a href="https://twitter.com/share" class="twitter-share-button"
+            data-url="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"
+            data-text="Awesome New Tab Page: The Chrome New Tab Page should be awesome, just like you."
+            data-count="horizontal" data-via="NewTabPage" data-related="HartMichael:Developer">Tweet</a>
+          </div>
+        </div>
+
+        <div class="social">
+          <g:plusone expandTo="top" size="medium"
+          href="https://chrome.google.com/webstore/detail/mgmiemnjjchgkmgbeljfocdjjnpjnmcg"></g:plusone>
+
+          <g:plusone expandTo="top" size="medium"
+          href="https://plus.google.com/101062285048075360930"></g:plusone>
+
+          <iframe allowtransparency="true" frameborder="0" scrolling="no"
+            src="https://platform.twitter.com/widgets/follow_button.html?screen_name=NewTabPage"
+            style="width:147px; height:20px;"></iframe>
+        </div>
+
+        <div class="control">
+          <div id="back" class="bubble hidden">
+            {{'tutorial_ui_back' | i18n}}
+          </div>
+          <div id="next" class="bubble">
+            {{'tutorial_ui_next' | i18n}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
