@@ -55,6 +55,9 @@
 
     closeButton(".ui-2#config");
     $(".ui-2#config").toggle();
+    hideImportSection();
+    // temp function
+    //showImportSection();
   });
 
   $("#logo-button,.ui-2.logo").live("click", function(){
@@ -159,6 +162,14 @@
         resetRecentlyClosedTabs();
   });
 
+  function deleteRecentlyClosedTabById(id)
+  {
+    var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
+    recently_closed.splice(id, 1);
+    localStorage.setItem("recently_closed", JSON.stringify(recently_closed));
+    resetRecentlyClosedTabs();
+  }
+
   function resetRecentlyClosedTabs() {
     var recently_closed = JSON.parse(localStorage.getItem("recently_closed"));
 
@@ -170,18 +181,51 @@
           "href": tab.url,
           "target": "_top"
         });
-        $("<img></img>").appendTo(rct_temp).addClass("rctm-icon")
-          .attr("src", "chrome://favicon/"+tab.url);
-        $("<div></div>").appendTo(rct_temp).addClass("rctm-link").text(tab.title);
+        var tempDiv = $("<div></div>").appendTo(rct_temp).addClass("rctm-link");
+        $("<img style='float: left;'></div></img>").appendTo(rct_temp).addClass("rctm-icon")
+              .attr("src", "chrome://favicon/"+tab.url);
+        $("<div style='float: left;'></div>").appendTo(tempDiv).text(tab.title);
+        $('<div style="float: right; position: relative; top: 3px;"><img data-rctm_item_id="' + id + '" class="rctm_item_close_btn" src="widgets/close.png" title="Close"></div>').appendTo(tempDiv);
         rct_temp.appendTo("#recently-closed-tabs-menu");
+      });
+      $('<div style="width: 50%; margin: 0 auto;"><a href="#" id="rctm_clear_all">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + chrome.i18n.getMessage("rctm_clear_all_text") + '</a></div>').appendTo("#recently-closed-tabs-menu");
+      // setting event handlers
+      $('.rctm_item_close_btn').bind('click', function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        //
+        var sItemId = $(evt.target).attr('data-rctm_item_id');
+        deleteRecentlyClosedTabById(sItemId);
+      });
+
+      $('#rctm_clear_all').bind('click', function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        //
+        if (confirm(chrome.i18n.getMessage("rctm_clear_all_confirm")))
+        {
+          localStorage.removeItem("recently_closed");
+        }
+        resetRecentlyClosedTabs();
       });
     }
   }
+
+  function storageEventHandlerForRct(evt)
+  {
+    if ('recently_closed' === evt.key)
+    {
+      resetRecentlyClosedTabs();
+    }
+  }
+
+  window.addEventListener("storage", storageEventHandlerForRct, false);
+
   $(document).ready(function($) {
     setTimeout(resetRecentlyClosedTabs, 500);
   });
 
-  /* END :: Recently Closed Tabs */
+/* END :: Recently Closed Tabs */
 
 /* START :: Tooltips */
 
@@ -317,6 +361,110 @@
   });
 
   $(".bg-color").css("background-color", "#" + (localStorage.getItem("color-bg") || "221f20"));
+
+
+  function clearShowExportImportForm() {
+    $("#import-export-textarea").val('');
+    $("#import-export-textarea-div").show();
+    $("#import-export-btn-import-run-div").hide();
+    unsetImportExportTextareaSelection();
+  }
+
+  function clearHideExportImportForm() {
+    $("#import-export-textarea").val('');
+    $("#import-export-textarea-div").hide();
+    $("#import-export-btn-import-run-div").hide();
+    unsetImportExportTextareaSelection();
+  }
+
+  function hideImportSection() {
+    $("#config-contents>div:not(#import-export-contents)").show();
+    $("#import-export-contents").hide();
+    clearHideExportImportForm();
+  }
+
+  // temp function
+  function showImportSection() {
+    $("#config-contents>div:not(#import-export-contents)").hide();
+    $("#import-export-contents").show();
+    clearHideExportImportForm();
+  }
+
+  function selectImportExportTextarea(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    $("#import-export-textarea").select();
+  }
+
+  function setImportExportTextareaSelection() {
+    $("#import-export-textarea").bind("focus mousedown mouseup", selectImportExportTextarea);
+  }
+
+  function unsetImportExportTextareaSelection() {
+    $("#import-export-textarea").unbind("focus mousedown mouseup", selectImportExportTextarea);
+  }
+
+  $("#import-export-btn").bind("click", function() {
+    $("#config-contents>div:not(#import-export-contents)").slideUp(700);
+    $("#import-export-contents").slideDown(700);
+  });
+
+  $("#import-export-btn2").bind("click", function() {
+    $("#config-contents>div:not(#import-export-contents)").slideDown(700);
+    $("#import-export-contents").slideUp(700);
+    clearHideExportImportForm();
+  });
+
+  $("#import-export-btn-import").bind("click", function() {
+    clearShowExportImportForm();
+    $("#import-export-btn-import-run-div").show();
+  });
+
+  $("#import-export-btn-export").bind("click", function() {
+    clearShowExportImportForm();
+    var exportDataObj = {};
+    var locStor = localStorage;
+    for(var i=0, len=locStor.length; i<len; i++) {
+      var key = locStor.key(i);
+      var value = locStor[key];
+      exportDataObj[key] = value;
+    }
+    var base64str = Base64.encode(JSON.stringify(exportDataObj));
+    //
+    var dateObj = new Date();
+    var fullYearVal = dateObj.getFullYear();
+    var monthVal = dateObj.getMonth()+1;
+    var dateVal = dateObj.getDate();
+    if (dateVal<10) {dateVal='0'+dateVal;}
+    if (monthVal<10) {monthVal='0'+monthVal;}
+    //
+    var resultStr = '[ANTP_EXPORT|' + fullYearVal + '-' + monthVal + '-' + dateVal + '|' + chrome.app.getDetails().version + '|' + base64str + ']';
+    //exportDataObj = JSON.parse(Base64.decode(base64str));
+    var $textArea = $("#import-export-textarea");
+    $textArea.val(resultStr);
+    $textArea.select();
+    setImportExportTextareaSelection();
+  });
+
+  $("#import-export-btn-import-run").bind("click", function() {
+    var $textArea = $("#import-export-textarea");
+    var inputStr = $textArea.val().trim();
+    if (inputStr)
+    {
+      inputStr = inputStr.substring(0, inputStr.length-1);
+      var tArr = inputStr.split('|');
+      var base64str = tArr[tArr.length-1];
+      var exportDataObj = JSON.parse(Base64.decode(base64str));
+      var locStor = localStorage;
+      for(var key in exportDataObj) {
+        locStor.setItem(key, exportDataObj[key]);
+      }
+      $("#import-export-textarea").val('');
+      alert('Import successful!');
+    }
+  });
+
+
 
   $("#toggleBmb").live("click", function(){
     if ($(this).is(':checked')) {

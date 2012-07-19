@@ -418,6 +418,29 @@ body {
   width: auto !important;
 }
 
+
+#import-export-contents {
+  display: none;
+}
+
+#import-export-btn-import-run-div {
+  display: none;
+}
+
+#import-export-btn-import {
+  position: relative;
+  left: 60px;
+}
+
+#import-export-btn-export {
+  position: relative;
+  left: 70px;
+}
+
+#import-export-textarea-div {
+  display: none;
+}
+
 /* UI-2 */
 .ui-2 h3 {
   margin-bottom: 0;
@@ -436,7 +459,8 @@ body {
   position: fixed;
   z-index: 950;
   width: 800px;
-  height: 575px;
+  /*height: 575px;*/
+  height: 630px;
   border: 1px solid rgba(177, 177, 177, .4);
 
   box-shadow: 0px 0px 40px 2px rgba(200, 200, 200, .5);
@@ -452,7 +476,8 @@ body {
 }
 .ui-2.contents {
   position: relative;
-  height: 500px;
+  /*height: 500px;*/
+  height: 550px;
   top: 0px;
   left: 0px;
   right: 0px;
