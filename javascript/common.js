@@ -47,7 +47,7 @@
       stock: true,
       name: "Tutorial (Stock)",
       id: "tutorial",
-      path: "widgets/widget.tutorial.html"
+      path: "widgets/tutorial/widget.tutorial.html"
     },
     clock: {
       where: [1,3],
@@ -57,7 +57,7 @@
       stock: true,
       name: "Clock (Stock)",
       id: "clock",
-      path: "widgets/widget.clock.html"
+      path: "widgets/clock/widget.clock.html"
     },
     notepad: {
       where: [2,2],
@@ -67,7 +67,7 @@
       stock: true,
       name: "Notepad (Stock)",
       id: "notepad",
-      path: "widgets/widget.notepad.html"
+      path: "widgets/notepad/widget.notepad.html"
     },
     google: {
       where: [0,2],
@@ -77,7 +77,7 @@
       stock: true,
       name: "Google (Wide) (Stock)",
       id: "google",
-      path: "widgets/widget.google.html"
+      path: "widgets/google/widget.google.html"
     },
     fandango: {
       where: [2,1],
@@ -89,8 +89,8 @@
       name: "Fandango (Stock)",
       name_show: false,
       color: "rgba(255, 51, 0,  1)",
-      img: "/widgets/widget.fandango.png",
-      simg: "/widgets/widget.fandango.png",
+      img: "/widgets/fandango/widget.fandango.png",
+      simg: "/widgets/fandango/widget.fandango.png",
       appLaunchUrl: "http://gan.doubleclick.net/gan_click?lid=41000000032569141&amp;pubid=21000000000503246",
       id: "fandango"
     },
@@ -104,8 +104,8 @@
       name: "Amazon (Stock)",
       name_show: false,
       color: "rgba(168, 84, 0,  1)",
-      img: "/widgets/widget.amazon.png",
-      simg: "/widgets/widget.amazon.png",
+      img: "/widgets/amazon/widget.amazon.png",
+      simg: "/widgets/amazon/widget.amazon.png",
       appLaunchUrl: "http://www.amazon.com/?tag=sntp-20",
       id: "amazon"
     },
@@ -119,8 +119,8 @@
       name: "Facebook (Stock)",
       name_show: false,
       color: "rgba(19, 54, 131,  1)",
-      img: "/widgets/widget.facebook.png",
-      simg: "/widgets/widget.facebook.png",
+      img: "/widgets/facebook/widget.facebook.png",
+      simg: "/widgets/facebook/widget.facebook.png",
       appLaunchUrl: "http://www.facebook.com/",
       id: "facebook"
     },
@@ -134,8 +134,8 @@
       name: "Twitter (Stock)",
       name_show: false,
       color: "rgba(51, 204, 255,  1)",
-      img: "/widgets/widget.twitter.png",
-      simg: "/widgets/widget.twitter.png",
+      img: "/widgets/twitter/widget.twitter.png",
+      simg: "/widgets/twitter/widget.twitter.png",
       appLaunchUrl: "http://www.twitter.com/",
       id: "twitter"
     },
@@ -147,13 +147,13 @@
       stock: true,
       name: "Hulu / Netflix (Stock)",
       id: "tv",
-      path: "widgets/widget.tv.html"
+      path: "widgets/tv/widget.tv.html"
     },
     tabs: {
       id: "tabs",
       isApp: false,
       name: "Tab Manager (Stock)",
-      path: "widgets/tabs.html",
+      path: "widgets/tabs/tabs.html",
       poke: 2,
       resize: true,
       size: [1,1],

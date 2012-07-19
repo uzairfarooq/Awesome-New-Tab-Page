@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  margin-top: 10px;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  width: 200px;
+
+  background-image: linear-gradient(right bottom, rgb(168,84,0) 100%, rgb(204,154,104) 0%);
+  background-image: -o-linear-gradient(right bottom, rgb(168,84,0) 100%, rgb(204,154,104) 0%);
+  background-image: -moz-linear-gradient(right bottom, rgb(168,84,0) 100%, rgb(204,154,104) 0%);
+  background-image: -webkit-linear-gradient(right bottom, rgb(168,84,0) 100%, rgb(204,154,104) 0%);
+  background-image: -ms-linear-gradient(right bottom, rgb(168,84,0) 100%, rgb(204,154,104) 0%);
+
+  background-image: -webkit-gradient(
+    linear,
+    right bottom,
+    left top,
+    color-stop(1, rgb(168,84,0)),
+    color-stop(0, rgb(204,154,104))
+  );
+}
+#amazon {
+  width: 100%;
+  height: 100%;
+  background-image:url('widget.amazon.png');
+  background-repeat:no-repeat;
+  background-position:center center;
+}
+a {
+  text-decoration: none;
+}
+#msg {
+  position: absolute; bottom: 0;
+  margin-left: 7px; margin-right: 7px;
+  text-align: center;
+  opacity: .25;
+  font-family: Arial, "MS Trebuchet", sans-serif;
+  font-size: 10px;
+  cursor: help;
+}
+#msg:hover {
+  opacity: 1;
+}

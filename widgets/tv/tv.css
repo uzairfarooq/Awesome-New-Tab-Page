@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  width: 200px;
+}
+#hulu {
+  width: 100%;
+  height: 97px;
+  margin-bottom: 0px;
+
+  background-image:url('widget.tv.hulu.png');
+  background-repeat:no-repeat;
+  background-position:center center;
+
+}
+
+a#hulu-bg {
+  background-image: linear-gradient(right bottom, rgb(162,207,56) 17%, rgb(115,181,61) 49%);
+  background-image: -o-linear-gradient(right bottom, rgb(162,207,56) 17%, rgb(115,181,61) 49%);
+  background-image: -moz-linear-gradient(right bottom, rgb(162,207,56) 17%, rgb(115,181,61) 49%);
+  background-image: -webkit-linear-gradient(right bottom, rgb(162,207,56) 17%, rgb(115,181,61) 49%);
+  background-image: -ms-linear-gradient(right bottom, rgb(162,207,56) 17%, rgb(115,181,61) 49%);
+
+  background-image: -webkit-gradient(
+    linear,
+    right bottom,
+    left top,
+    color-stop(0.17, rgb(162,207,56)),
+    color-stop(0.49, rgb(115,181,61))
+  );
+
+  display: block;
+}
+
+#netflix {
+  width: 100%;
+  height: 97px;
+  margin-top: 6px;
+
+  background-image:url('widget.tv.netflix.png');
+  background-repeat:no-repeat;
+  background-position:center center;
+}
+a#netflix-bg {
+  display: block;
+
+  background-image: linear-gradient(right bottom, rgb(189,102,105) 0%, rgb(185,9,12) 100%);
+  background-image: -o-linear-gradient(right bottom, rgb(189,102,105) 0%, rgb(185,9,12) 100%);
+  background-image: -moz-linear-gradient(right bottom, rgb(189,102,105) 0%, rgb(185,9,12) 100%);
+  background-image: -webkit-linear-gradient(right bottom, rgb(189,102,105) 0%, rgb(185,9,12) 100%);
+  background-image: -ms-linear-gradient(right bottom, rgb(189,102,105) 0%, rgb(185,9,12) 100%);
+
+  background-image: -webkit-gradient(
+    linear,
+    right bottom,
+    left top,
+    color-stop(0, rgb(189,102,105)),
+    color-stop(1, rgb(185,9,12))
+  );
+}
+a {
+  text-decoration: none;
+}
