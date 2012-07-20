@@ -333,7 +333,7 @@ function stitch(type, id, name, url, img, height, width, top, left, poke) {
 
 // Renders widgets from localStorage
 function placeWidgets() {
-  if(JSON.parse(localStorage.getItem("widgets")) === null) {
+  if(localStorage.getItem("widgets") === null) {
     localStorage.setItem("widgets", JSON.stringify( stock_widgets ));
   }
 
@@ -361,7 +361,7 @@ function placeWidgets() {
       if( id === ("webstore") ) {
         img = "app.webstore.png";
       }
-
+      
       $(stitch(
         /*  Type: str [app, widget, app-drawer, widget-drawer]*/  "app",
         /*  Ext. ID: str [mgmiemnjjchgkmgbeljfocdjjnpjnmcg]   */  id,
